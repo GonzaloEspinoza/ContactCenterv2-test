@@ -1,0 +1,89 @@
+﻿@using Logica;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model List<Entidad.EPerfil>
+@{
+    LPermiso LPermiso = LPermiso.Instancia.LPermiso;
+    List<Permiso> HijosMenu = ViewBag.PermisosH;
+    bool PermisoModificar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Modificar);
+    bool PermisoEliminar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Eliminar);
+}
+<table class="table table-striped table-bordered table-hover" id="sample_1">
+    <thead>
+        <tr>
+            <th>NOMBRE</th>
+            <th>DESCRIPCION</th>
+            <th>ESTADO</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            try
+            {
+                foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.Nombre</td>
+                        <td>@p.Decripcion</td>
+
+                        <td>
+                            @{
+                                if (PermisoModificar && string.IsNullOrWhiteSpace(p.TituloDeshabilitar))
+                                {
+                                    if (p.Habilitado == true)
+                                    {
+                                        <span class="label label-sm label-success" onclick="deshabilitarPerfil('@p.Nombre', '@p.PerfilId' ,'@Url.Action("DeshabilitarPerfil", "Perfil")')"> Habilitado </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-sm label-danger" onclick="habilitarPerfil('@p.Nombre', '@p.PerfilId' , '@Url.Action("HabilitarPerfil", "Perfil")')"> Bloqueado </span>
+                                    }
+                                }
+                                else
+                                {
+                                    if (p.Habilitado == true)
+                                    {
+                                        <span title="@p.TituloDeshabilitar" class="label label-sm label-default"> Habilitado </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-sm label-default"> Bloqueado </span>
+                                    }
+                                }
+                            }
+                        </td>
+
+                        <td>
+                            @{
+                                if (PermisoModificar)
+                                {
+                                    <a href="@Url.Action("Perfil", "Perfil", new { id = p.PerfilId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple">
+                                        <i class="fa fa-edit"></i> Editar
+                                    </a>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @{
+                                if (PermisoEliminar && string.IsNullOrWhiteSpace(p.TituloEliminar))
+                                {
+                                    <a onclick="eliminarPerfil('@p.Nombre', '@p.PerfilId' ,'@Url.Action("EliminarPerfil", "Perfil")')" class="btn btn-outline btn-circle dark btn-sm black">
+                                        <i class="fa fa-trash-o"></i> Eliminar
+                                    </a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                                    }
+                                }
+                                catch
+                                {
+                                }
+
+        }
+    </tbody>
+</table>
+

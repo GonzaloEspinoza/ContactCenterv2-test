@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Cambiar Contraseña";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section EtiquetaHead
+{
+    <script type="text/javascript">
+        function MostrarMensaje(msj) {
+            $("#mensajeErrorPass").show();
+            $("#mensajeErrorPass").html(msj);
+        }
+
+        function CambiarContrasena() {
+            $("#mensajeErrorPass").hide();
+            $("#mensajeErrorPass").html('');
+            if ($("#txtContrasenaActual").val() == '' || $("#txtContrasenaNueva").val() == '' || $("#txtContrasenaConfirmar").val() == '') {
+                MostrarMensaje('Por favor, ingresar todos los campos');
+                return false;
+            }
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action("CambiarContrasena", "CambioContrasena")",
+                cache: false,
+                data: { oldPass: $("#txtContrasenaActual").val(), newPass1: $("#txtContrasenaNueva").val(), newPass2: $("#txtContrasenaConfirmar").val() },
+                type: "POST",
+                dataType: "script"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function () {
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+
+        function limpiarCampos() {
+            $("#mensajeErrorPass").hide();
+            $("#mensajeErrorPass").html('');
+            $("#txtContrasenaActual").val('');
+            $("#txtContrasenaNueva").val('');
+            $("#txtContrasenaConfirmar").val('');
+            $("#txtContrasenaActual").focus();
+            $("#mensajeErrorPass").html('Su cambio de contraseña fue realizada con éxito.');
+        }
+    </script>
+}
+
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Seguridad
+            <small>Cambio de contraseña</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a class="font-yellow" href="@Url.Action("Index","Inicio")">Principal</a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <span class="active">Cambio de contraseña</span>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="form-group form-md-line-input form-md-line-input has-warning">
+                    <input class="form-control" id="txtContrasenaActual" type="password" style="width: 100%" maxlength="25" />
+                    <label class="bold" for="txtContrasenaActual">Contraseña actual:</label>
+                    <span class="help-block">Debe contener 1 Mayúscula y un Número como mínimo.</span>
+                </div>
+                <div class="well">
+                    * La nueva contraseña debe tener de 6 a 25 caracteres, ésta debe ser alfanumérica.
+                </div>
+                <div class="form-group form-md-line-input form-md-line-input has-warning">
+                    <input class="form-control" id="txtContrasenaNueva" type="password" style="width: 100%" maxlength="8" />
+                    <label class="bold" for="txtContrasenaNueva">Nueva contraseña:</label>
+                    <span class="help-block">Debe contener 1 Mayúscula y un Número como mínimo</span>
+                </div>
+
+                <div class="form-group form-md-line-input form-md-line-input has-warning">
+                    <input class="form-control" id="txtContrasenaConfirmar" type="password" style="width: 100%" maxlength="25" />
+                    <label class="bold" for="txtContrasenaConfirmar">Confirmar contraseña:</label>
+                    <span class="help-block">Debe contener 1 Mayúscula y un Número como mínimo</span>
+                </div>
+                <div class="alert alert-danger" id="mensajeErrorPass" hidden style="margin-top:20px">
+                </div>
+                <input id="btnContrasenaGuardar" type="button" value="Guardar" class="btn btn-flat dark" onclick="CambiarContrasena()" />
+            </div>
+        </div><!--.panel-->
+    </div><!--.col-md-12-->
+</div><!--.row-->

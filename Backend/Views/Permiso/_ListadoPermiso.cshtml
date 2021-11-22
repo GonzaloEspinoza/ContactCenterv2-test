@@ -1,0 +1,92 @@
+﻿@using Logica;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model List<Permiso>
+@{
+    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+    Usuario oUsuario = Util.SessionToUsuario<Usuario>(Session["Usuario"]);
+}
+<table class="table table-striped table-bordered table-hover" id="sample_1">
+    <thead>
+        <tr>
+            <th>CÓDIGO</th>
+            <th>ORDEN</th>
+            <th>NOMBRE</th>
+            <th>DESCRIPCION</th>
+            <th>ICONO MENU</th>
+            <th>TIPO</th>
+            <th>PADRE</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            try
+            {
+                foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.PermisoId</td>
+                        <td>@p.Orden</td>
+                        <td>@p.Nombre</td>
+                        <td>@p.Descripcion</td>
+                        <td>
+                            @{
+                                if (!string.IsNullOrEmpty(p.IconoMenu))
+                                {
+                                    <i class="@p.IconoMenu"></i>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @{
+                                if (p.Tipo == (int)TipoPermiso.PermisoCC)
+                                {
+                                    <span class="label label-sm label-success"> Super Administrador </span>
+                                }
+                                else if (p.Tipo == (int)TipoPermiso.PermisoAdmin)
+                                {
+                                    <span class="label label-sm label-success"> Administrador </span>
+                                }
+                                else if (p.Tipo == (int)TipoPermiso.PermisoNormal)
+                                {
+                                    <span class="label label-sm label-success"> Normal </span>
+                                }
+                            }
+                        </td>
+                        @{
+                            var NombrePadre = "";
+                            Permiso PermisoPadre = null;
+                            if (p.PermisoPadreId != null)
+                            {
+                                PermisoPadre = NPermiso.ObtenerPermiso(p.PermisoPadreId.Value, oUsuario.TipoUsuario);
+                                if (PermisoPadre != null)
+                                {
+                                    NombrePadre = PermisoPadre.Nombre;
+                                }
+                            }
+                        }
+                        <td>@NombrePadre</td>
+                        <td>
+                            <a href="@Url.Action("Permiso", "Permiso", new { id = p.PermisoId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple">
+                                <i class="fa fa-edit"></i> Editar
+                            </a>
+                        </td>
+                        <td>
+                            <a onclick="eliminarPermiso('@p.Nombre', '@p.PermisoId' ,'@Url.Action("EliminarPermiso", "Permiso")')" class="btn btn-outline btn-circle dark btn-sm black">
+                                <i class="fa fa-trash-o"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                                }
+                            }
+                            catch
+                            {
+                            }
+
+        }
+    </tbody>
+</table>
+

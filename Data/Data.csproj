@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{535C4205-D83A-4AD0-8481-0CD8DC0464E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Data</RootNamespace>
+    <AssemblyName>Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Area.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Bitacora.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CalificacionColaborador.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CategoriaPreguntaFrecuente.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Ciudad.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Cliente.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dbFexpoCruzModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbFexpoCruzModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dbFexpoCruzModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dbFexpoCruzModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbFexpoCruzModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Dia.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Empresa.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EstadoEvento.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Evento.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EventoHilo.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Funcionario.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getComisionesProductos_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getComisionesServicios1_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getComisionesServicios_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getDeudasCobrosProducto_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getDeudasCobrosServicio_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getPermisoSolicitud_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getProductoMasVendidos_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getRendimientoProfesional_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getServicioMasVendidos_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getVentaProducto_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getVentaServicio_Result.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Hilo.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HistorialEstadoEvento.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HorarioColaborador.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Mensaje.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NotificacionFuncionario.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Pais.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Perfil.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Permiso.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PreguntaFrecuente.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TipoAtencion.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Usuario.cs">
+      <DependentUpon>dbFexpoCruzModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="dbFexpoCruzModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>dbFexpoCruzModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="dbFexpoCruzModel.edmx.diagram">
+      <DependentUpon>dbFexpoCruzModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dbFexpoCruzModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbFexpoCruzModel.edmx</DependentUpon>
+      <LastGenOutput>dbFexpoCruzModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="dbFexpoCruzModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbFexpoCruzModel.edmx</DependentUpon>
+      <LastGenOutput>dbFexpoCruzModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

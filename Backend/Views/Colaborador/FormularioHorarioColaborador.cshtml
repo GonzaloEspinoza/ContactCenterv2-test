@@ -1,0 +1,169 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model EHorarioColaborador
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string accion = "Nuevo horario colabrador";
+    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+    List<Permiso> HijosMenu = ViewBag.PermisosH;
+    EFuncionario funcionario = ViewBag.funcionario;
+    List<EDia> dias = ViewBag.dias;
+    Model.HoraInicio = EUtils.TimeNow;
+    Model.HoraFin = EUtils.TimeNow;
+}
+@section EtiquetaHead
+{
+
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/js/bootstrap-select.js")"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-datepicker/css/bootstrap-datepicker3.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+    <script src="@Url.Content("~/Content/bootstrap-datepicker/js/components-date-time-pickers.min.js")"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/clockface/css/clockface.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/moment.min.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/moment.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/clockface/js/clockface.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/js/bootstrap-select.min.js")"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/css/multi-select.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/js/jquery.multi-select.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/js/jquery.quicksearch.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/ckeditor/ckeditor.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js")"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css")" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.bs-select').selectpicker({
+                iconBase: 'fa',
+                tickIcon: 'fa-check'
+            });
+        });
+        function Procesar() {
+            LimpiarMensaje();
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action("NuevoHorarioColaborador", "Colaborador")",
+                cache: false,
+                data: {
+                    diaId: $("#Dia").val(),
+                    horaInicio: $("#HoraInicio").val(),
+                    horaFin: $("#HoraFin").val(),
+                    nFuncionarioId: '@funcionario.nFuncionarioId'
+                },
+                type: "POST",
+                dataType: "script"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function () {
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+        function volver() {
+            $("#btn_cancelar").click();
+            BloquearPantalla();
+            redireccionar('@Url.Action("Horarios", "Colaborador", new { id = @funcionario.nFuncionarioId })');
+        }
+    </script>
+}
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Nuevo horario colaborador
+            <small>@ViewBag.Title</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", "Inicio")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "Colaborador")">Colaboradores</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="@Url.Action("Horarios", "Colaborador", new { id = @funcionario.nFuncionarioId })">Horarios colaborador</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">@ViewBag.Title</span>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                @Html.Hidden("emp")
+                <div class="alert alert-danger" style="display:none" role="alert" id="mensajeError"></div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Dia</label>
+                        <select class="bs-select form-control" id="Dia" data-live-search="true">
+                            @{
+                                    foreach (var item in dias)
+                                    {
+                                        <option value="@item.DiaId"> @item.Nombre </option>
+                                    }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Hora Inicio</label>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <i class="fa fa-clock-o"></i>
+                                <input type="text" class="form-control timepicker timepicker-24"  value="@Model.HoraInicio" id="HoraInicio">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Hora Fin</label>
+                        <div class="form-group">
+                            <div class="input-icon">
+                                <i class="fa fa-clock-o"></i>
+                                <input type="text" class="form-control timepicker timepicker-24" value="@Model.HoraFin" id="HoraFin">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <br /><br />
+                        <button class="btn btn-default" data-toggle="modal" data-target="#defaultModal">Volver</button>
+                        <input type="button" value="Guardar" class="btn btn-success" onclick="Procesar()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal scale fade" id="defaultModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Diálogo de confirmación</h4>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro que desea cancelar la operación y volver a la lista de noticia sin guardar los cambios?
+            </div>
+            <div class="modal-footer">
+                <button id="btn_cancelar" type="button" class="btn btn-flat btn-default" data-dismiss="modal"> Cancelar </button>
+                <button type="button" class="btn btn-flat btn-primary" onclick="volver()"> Aceptar </button>
+            </div>
+        </div>
+    </div>
+</div>

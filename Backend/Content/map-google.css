@@ -1,0 +1,20 @@
+﻿    .gm-style img:not([role~="presentation"]) {
+        border-radius: 20px !important;
+    }
+    [role~="presentation"]{
+       border-radius: 0px !important;    
+    }   
+    .delete-menu {
+        position: absolute;
+        background: red;
+        padding: 10px;
+        color: white;
+        font-weight: bold;
+        border: 1px solid #999;
+        font-family: sans-serif;
+        font-size: 12px;
+        box-shadow: 1px 3px 3px rgba(0, 0, 0, .3);
+        margin-top: -10px;
+        margin-left: 10px;
+        cursor: pointer;
+    }

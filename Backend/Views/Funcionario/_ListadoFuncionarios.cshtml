@@ -1,0 +1,110 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@model List<EFuncionario>
+@{
+    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+    List<Permiso> HijosMenu = ViewBag.PermisosH;
+    bool PermisoModificar = NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Modificar);
+    bool PermisoEliminar = NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Eliminar);
+}
+<table class="table table-striped table-bordered table-hover" id="sample_1">
+    <thead>
+        <tr>
+            <th>USUARIO</th>
+            <th>NOMBRE COMPLETO</th>            
+            <th>NRO CI</th>
+            <th>ESTADO</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            try
+            {
+                foreach (var u in Model)
+                {
+                    <tr>
+                        @{
+                            if (u.Usuario != null)
+                            {
+                                <td>@u.Usuario.NickName</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        }
+
+                        <td>@u.sNombre @u.sApellido</td>                        
+                        <td>@u.sCi</td>
+                        <td>
+                            @{
+                                if (PermisoModificar && string.IsNullOrWhiteSpace(u.TituloDeshabilitar))
+                                {
+                                    if (u.nEstado == (int)Estado.Habilitado)
+                                    {
+                                        <span class="label label-sm label-success" onclick="deshabilitar('@u.nFuncionarioId','@u.sNombre @u.sApellido' ,'@Url.Action("Deshabilitar", "funcionario")')"> Habilitado </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-sm label-danger" onclick="habilitar('@u.nFuncionarioId','@u.sNombre @u.sApellido', '@Url.Action("Habilitar", "funcionario")')"> Bloqueado </span>
+                                    }
+                                }
+                                else
+                                {
+                                    if (u.nEstado == (int)Estado.Habilitado)
+                                    {
+                                        <span title="@u.TituloDeshabilitar" class="label label-sm label-default"> Habilitado </span>
+                                    }
+                                    else
+                                    {
+                                        <span title="@u.TituloDeshabilitar" class="label label-sm label-default"> Bloqueado </span>
+                                    }
+                                }
+                            }
+
+                        </td>
+                        <td>
+                            @{
+                                if (PermisoModificar && u.Usuario != null)
+                                {
+                                    <a class="btn btn-outline btn-circle dark btn-sm red" onclick="resetearPassword('@u.sNombre','@u.nFuncionarioId','@Url.Action("ResetearContrasena", "funcionario")')">
+                                        <i class="fa fa-key"></i> Resetear Contraseña
+                                    </a>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @{
+                                if (PermisoModificar)
+                                {
+                                    <a href="@Url.Action("Funcionario", "funcionario", new { id = u.nFuncionarioId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple">
+                                        <i class="fa fa-edit"></i> Editar
+                                    </a>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @{
+                                if (PermisoEliminar && string.IsNullOrWhiteSpace(u.TituloEliminar))
+                                {
+                                    <a class="btn btn-outline btn-circle dark btn-sm black" onclick="eliminar('@u.sNombre','@u.nFuncionarioId','@Url.Action("Eliminar", "Funcionario")')">
+                                        <i class="fa fa-trash-o"></i> Eliminar
+                                    </a>
+                                }
+                            }
+                        </td>
+
+                    </tr>
+                                    }
+                                }
+                                catch
+                                {
+                                }
+        }
+    </tbody>
+</table>

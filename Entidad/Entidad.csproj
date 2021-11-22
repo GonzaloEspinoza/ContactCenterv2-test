@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AA2DEDC6-2E1F-4C9D-BFA6-55DF5C929A49}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Entidad</RootNamespace>
+    <AssemblyName>Entidad</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Device" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BussinessException.cs" />
+    <Compile Include="Datatable\ECalifiacionColaboradorDataTable.cs" />
+    <Compile Include="Datatable\EClienteDataTable.cs" />
+    <Compile Include="ECalificacionColaborador.cs" />
+    <Compile Include="EArea.cs" />
+    <Compile Include="ECategoriaPreguntaFrecuente.cs" />
+    <Compile Include="EEstadoEvento.cs" />
+    <Compile Include="EPreguntaFrecuente.cs" />
+    <Compile Include="EHilo.cs" />
+    <Compile Include="EEvento.cs" />
+    <Compile Include="ECliente.cs" />
+    <Compile Include="EDia.cs" />
+    <Compile Include="EEventoHilo.cs" />
+    <Compile Include="EHorarioColaborador.cs" />
+    <Compile Include="EEmpresa.cs" />
+    <Compile Include="EMensaje.cs" />
+    <Compile Include="ENotificacionFuncionario.cs" />
+    <Compile Include="Enums\EstadoDeEvento.cs" />
+    <Compile Include="Enums\TipoNotificacionFuncionario.cs" />
+    <Compile Include="EPais.cs" />
+    <Compile Include="ECiudad.cs" />
+    <Compile Include="EFuncionario.cs" />
+    <Compile Include="EMenu.cs" />
+    <Compile Include="Enums\AccionBitacora.cs" />
+    <Compile Include="Enums\AccionPermiso.cs" />
+    <Compile Include="Enums\Estado.cs" />
+    <Compile Include="Enums\Sexo.cs" />
+    <Compile Include="Enums\TipoBitacora.cs" />
+    <Compile Include="Enums\TipoFuncionario.cs" />
+    <Compile Include="Enums\TipoPermiso.cs" />
+    <Compile Include="Enums\TipoUsuario.cs" />
+    <Compile Include="EPerfil.cs" />
+    <Compile Include="EPermiso.cs" />
+    <Compile Include="ERequest\ReqListarCalificaciones.cs" />
+    <Compile Include="ERequest\ReqCalificacionColaborador.cs" />
+    <Compile Include="ERequest\ReqEnviarMensaje.cs" />
+    <Compile Include="ERequest\ReqNumeroEventoDisponibles.cs" />
+    <Compile Include="ERequest\ReqListarPreguntaFrecuente.cs" />
+    <Compile Include="ERequest\ReqListarCiudad.cs" />
+    <Compile Include="ERequest\ReqListarMensajesPorEventoHilo.cs" />
+    <Compile Include="ERequest\ReqListarEventoPorCliente.cs" />
+    <Compile Include="ERequest\ReqListarTipoAtencion.cs" />
+    <Compile Include="ERequest\ReqListarArea.cs" />
+    <Compile Include="ERequest\ReqCliente.cs" />
+    <Compile Include="ERequest\ReqRegistrarEvento.cs" />
+    <Compile Include="EResponse\ResCalificacionColaborador.cs" />
+    <Compile Include="EResponse\ResMensajeV2.cs" />
+    <Compile Include="EResponse\ResPreguntaFrecuente.cs" />
+    <Compile Include="EResponse\ResCiudad.cs" />
+    <Compile Include="EResponse\ResEvento.cs" />
+    <Compile Include="EResponse\ResCliente.cs" />
+    <Compile Include="EResponse\ResFuncionario.cs" />
+    <Compile Include="EResponse\ResEstadoEvento.cs" />
+    <Compile Include="EResponse\ResArea.cs" />
+    <Compile Include="EResponse\ResMensaje.cs" />
+    <Compile Include="EResponse\ResHilo.cs" />
+    <Compile Include="EResponse\ResCategoriaPreguntaFrecuente.cs" />
+    <Compile Include="EResponse\ResTipoAtencion.cs" />
+    <Compile Include="ETipoAtencion.cs" />
+    <Compile Include="EUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataP\DataP.csproj">
+      <Project>{9a31f77a-24a0-4111-b895-3b3af0e3b67c}</Project>
+      <Name>DataP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{535c4205-d83a-4ad0-8481-0cd8dc0464e6}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

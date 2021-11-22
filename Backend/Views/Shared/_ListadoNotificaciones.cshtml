@@ -1,0 +1,69 @@
+﻿@using Entidad;
+@model List<ENotificacionFuncionario>
+@{
+
+}
+
+<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+    <i class="icon-envelope-open"></i>
+    <span class="badge badge-danger">@Model.Count </span>
+</a>
+<ul class="dropdown-menu">
+    <li class="external">
+        <h3>
+            <span class="bold">Tiene @Model.Count mensaje(s) </span>
+        </h3>
+        <a onclick="EliminarNotificaciones();">Eliminar todos</a>
+    </li>
+    <li>
+        <ul class="dropdown-menu-list scroller" id="list_notificacion" style="height: 275px;" data-handle-color="#637283">
+            @foreach (ENotificacionFuncionario item in Model)
+            {
+                if (item.Leido == 0)
+                {
+                <li style="background-color: #283949;">
+                    <a onclick="MarcarNotificacionLeida('@item.Url','@item.NotificacionFuncionarioId')">
+                        <span class="photo">
+                            @if (@item.ImagenCliente != null && @item.ImagenCliente != "")
+                            {
+                                <img src="~/Content/img/user.png" class="img-circle" alt="">
+                            }
+                            else
+                            {
+                                <img src="~/Content/img/user.png" class="img-circle" alt="">
+                            }
+                        </span>
+                        <span class="subject">
+                            <span class="from"> @item.NombreCliente </span>
+                            <span class="time"> @item.Tiempo </span>
+                        </span>
+                        <span class="message"> @item.Descripcion </span>
+                    </a>
+                </li>
+                }
+                else
+                {
+                <li>
+                    <a onclick="MarcarNotificacionLeida('@item.Url','@item.NotificacionFuncionarioId')">
+                        <span class="photo">
+                            @if (@item.ImagenCliente != null && @item.ImagenCliente != "")
+                            {
+                                <img src="~/Content/img/user.png" class="img-circle" alt="">
+                            }
+                            else
+                            {
+                                <img src="~/Content/img/user.png" class="img-circle" alt="">
+                            }
+                        </span>
+                        <span class="subject">
+                            <span class="from"> @item.NombreCliente </span>
+                            <span class="time"> @item.Tiempo </span>
+                        </span>
+                        <span class="message"> @item.Descripcion </span>
+                    </a>
+                </li>
+                }
+            }
+        </ul>
+    </li>
+</ul>

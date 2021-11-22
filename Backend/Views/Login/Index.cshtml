@@ -1,0 +1,286 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/font-awesome/css/font-awesome.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/simple-line-icons/simple-line-icons.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/uniform/css/uniform.default.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css")" rel="stylesheet" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="@Url.Content("~/Content/metronic/global/css/components-md.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/css/plugins-md.min.css")" rel="stylesheet" />
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    @*<link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css")" rel="stylesheet" />*@
+    @*<link href="@Url.Content("~/Content/metronic/global/plugins/morris/morris.css")" rel="stylesheet" />*@
+    @*<link href="@Url.Content("~/Content/metronic/global/plugins/fullcalendar/fullcalendar.min.css")" rel="stylesheet" />*@
+    @*<link href="@Url.Content("~/Content/metronic/global/plugins/jqvmap/jqvmap/jqvmap.css")" rel="stylesheet" />*@
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    @*<link href="@Url.Content("~/Content/metronic/layouts/layout4/css/layout.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/metronic/layouts/layout4/css/themes/light.min.css")" rel="stylesheet" id="style_color" />
+        <link href="@Url.Content("~/Content/metronic/layouts/layout4/css/custom.min.css")" rel="stylesheet" />*@
+
+    <!-- END THEME LAYOUT STYLES -->
+
+    <link href="@Url.Content("~/Content/jquery-ui.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/pages/css/login-4.css")" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/img/logo.png " />
+    <style>
+        .backstretch {
+            opacity: 0.3 !important;
+        } 
+    </style>
+    <title>@ViewBag.Titulo </title>
+
+</head>
+
+<body class="login">
+    <!-- BEGIN LOGO -->
+   <div class="logo">
+        <img src="~/Content/slices/logo_login.png" alt="CONTACT CENTER"/>
+    </div>
+    <!-- END LOGO -->
+    <!-- BEGIN LOGIN -->
+    <div id="blockui_sample_3_2_element" class="content">
+        <!-- BEGIN LOGIN FORM -->
+        <form class="login-form" action="javascript:;" method="post">
+            <h3 class="form-title">FORMULARIO DE LOGIN</h3>
+            <div class="alert alert-danger" id="mensajeError" hidden>
+                @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+                {
+                    <text>@ViewBag.Mensaje</text>
+                }
+            </div>
+            <div class="form-group">
+                <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                <label class="control-label visible-ie8 visible-ie9">Username</label>
+                <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    <input value="" class="form-control placeholder-no-fix" type="text" autocomplete="off" maxlength="30" placeholder="Usuario" name="username" id="loginUser" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">Password</label>
+                <div class="input-icon">
+                    <i class="fa fa-lock"></i>
+                    <input value="" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Contraseña" id="loginPassword" onkeypress="return onEnter(event,'IniciarSesion();');" maxlength="25" name="password" required />
+                </div>
+            </div>
+            <div class="form-actions  text-center mx-auto">
+                <button class="btn green" onclick="IniciarSesion();"> Ingresar </button>
+            </div>
+
+        </form>
+        <!-- END LOGIN FORM -->
+
+    </div>
+    <!-- END LOGIN -->
+    <!-- BEGIN COPYRIGHT -->
+    <div class="copyright"> Copyright &copy; Yaigo @DateTime.Now.Year</div>
+
+    <div class="modal fade" id="dialogoContrasena" tabindex="-1" role="basic" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Por motivo de seguridad debe cambiar su contraseña</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group form-md-line-input form-md-floating-label">
+                        <input class="form-control" id="newPass1" onkeypress="return onEnter(event,'CambiarContrasena();');" type="password" style="width: 100%" maxlength="25" />
+                        <label for="newPass1">Nueva contraseña</label>
+                        <span class="help-block">Debe contener 1 Mayúscula y un Número como mínimo</span>
+                    </div>
+                    <div class="well">
+                        * La nueva contraseña debe tener de 6 a 25 caracteres,
+                        ésta debe ser alfanumérica
+                    </div>
+                    <div class="form-group form-md-line-input form-md-floating-label">
+                        <input class="form-control" id="newPass2" onkeypress="return onEnter(event,'CambiarContrasena();');" type="password" style="width: 100%" maxlength="25" />
+                        <label for="newPass2">Confirmar contraseña</label>
+                        <span class="help-block">Debe contener 1 Mayúscula y un Número como mínimo</span>
+                    </div>
+                    <br />
+                    <div class="alert alert-danger" id="mensajeErrorPass" hidden style="margin-top:25px">
+                        @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+                        {
+                            <text>@ViewBag.Mensaje</text>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_cancelar" type="button" class="btn default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn dark" onclick="CambiarContrasena()">Aceptar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <!-- BEGIN CORE PLUGINS -->
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/bootstrap/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/js.cookie.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery.blockui.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/uniform/jquery.uniform.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js")"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/moment.min.js")"></script>
+    @*<script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js")"></script>*@
+    @*<script src="@Url.Content("~/Content/metronic/global/plugins/morris/morris.min.js")"></script>
+        <script src="@Url.Content("~/Content/metronic/global/plugins/morris/raphael-min.js")"></script>*@
+    @*<script src="@Url.Content("~/Scripts/metronic/global/plugins/counterup/jquery.waypoints.min.js")"></script>*@
+    @*<script src="@Url.Content("~/Scripts/metronic/global/plugins/counterup/jquery.counterup.js")"></script>*@
+    @*<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/amcharts.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/serial.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/pie.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/radar.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/themes/light.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/themes/patterns.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/themes/chalk.js")"></script>*@
+    @*<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/ammap/ammap.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/ammap/maps/js/worldLow.js")"></script>*@
+    @*<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amstockcharts/amstock.js")"></script>*@
+    @*<script src="@Url.Content("~/Content/metronic/global/plugins/fullcalendar/fullcalendar.min.js")"></script>*@
+    @*<script src="@Url.Content("~/Scripts/metronic/global/plugins/flot/jquery.flot.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/flot/jquery.flot.resize.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/flot/jquery.flot.categories.min.js")"></script>*@
+    @*<script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery.sparkline.min.js")"></script>*@
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+    <script src="@Url.Content("~/Scripts/metronic/global/scripts/app.min.js")"></script>
+    <!-- END THEME GLOBAL SCRIPTS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    @*<script src="@Url.Content("~/Scripts/metronic/pages/scripts/dashboard.min.js")"></script>*@
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!-- BEGIN THEME LAYOUT SCRIPTS -->
+    @*<script src="@Url.Content("~/Scripts/metronic/layouts/layout4/scripts/layout.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/layouts/layout4/scripts/demo.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/metronic/layouts/global/scripts/quick-sidebar.min.js")"></script>*@
+    <script src="@Url.Content("~/Scripts/metronic/pages/scripts/login-4.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery-validation/js/jquery.validate.min.js")"></script></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery-validation/js/additional-methods.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/backstretch/jquery.backstretch.min.js")"></script>
+
+    <script type="text/javascript">
+            history.pushState(null, null, location.href);
+            window.onpopstate = function (event) {
+                history.go(1);
+            };
+
+            function BloquearPantalla() {
+                App.blockUI({
+                    target: '#blockui_sample_3_2_element',
+                    animate: true
+                });
+
+                @*$.blockUI(
+		    {
+		        message: '<img src="@Url.Content("~/Content/Estilos/icono.gif")" />',
+		        css: { border: 'none', 'border-radius': '30px', padding: "0.2em", background: "none" }
+		    });*@
+            }
+            function DesbloquearPantalla() {
+                App.unblockUI('#blockui_sample_3_2_element');
+                //$.unblockUI();
+            }
+
+            function BloquearDiv(div) {
+                App.blockUI({
+                    target: div,
+                    animate: true
+                });
+            }
+
+            function DesbloquearDiv(div) {
+                App.unblockUI(div);
+            }
+
+            function IniciarSesion() {
+                $("#mensajeError").html('');
+                $("#mensajeError").hide();
+                BloquearPantalla();
+                if ($("#loginUser").val() != 0 && $("#loginPassword").val() != 0) {
+                    $.ajax({
+                        url: "@Url.Action("IniciarSesion", "Login")",
+                        cache: false,
+                        data: { usr: $("#loginUser").val(), pass: $("#loginPassword").val() },
+                        type: "POST",
+                        dataType: "script"
+                    });
+                } else {
+                    return MostrarMensaje('Nombre de <b>Usuario</b> o <b>Contraseña</b> incorrectos');
+                }
+            }
+
+            function MostrarMensaje(msj) {
+                $("#mensajeError").show();
+                $("#mensajeError").html(msj);
+                DesbloquearPantalla();
+            }
+
+            function redireccionar(url) {
+                window.location = url;
+            }
+
+            function PopupCambiarContrasena() {
+                $("#newPass1").val('');
+                $("#newPass2").val('');
+                $("#mensajeErrorPass").hide();
+                $("#mensajeErrorPass").html('');
+                DesbloquearPantalla();
+                $('#dialogoContrasena').modal("show");
+            }
+
+            function CerrarPopupCambiarContrasena() {
+                $('#btn_cancelar').click();
+                return false;
+            }
+
+            function CambiarContrasena() {
+                BloquearDiv('dialogoContrasena');
+                $.ajax({
+                    url: "@Url.Action("CambiarContrasena", "Login")",
+                    cache: false,
+                    data: { newPass1: $("#newPass1").val(), newPass2: $("#newPass2").val() },
+                    type: "POST",
+                    dataType: "script"
+                });
+            }
+
+            function MostrarMensajeCambiarPass(msj) {
+                PopupCambiarContrasena();
+                DesbloquearDiv('dialogoContrasena');
+                $("#mensajeErrorPass").show();
+                $("#mensajeErrorPass").html(msj);
+            }
+
+            function onEnter(e, funcion) {
+                if (e.keyCode == 13) {
+                    eval(funcion);
+                }
+            }
+    </script>
+</body>
+</html>

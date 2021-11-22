@@ -1,0 +1,30 @@
+﻿@model List<Entidad.EPerfil>
+@{
+    if (Model != null && Model.Count() > 0)
+    {
+        <select class="multi-select" multiple="" id="my_multi_select3">
+            @{
+                foreach (var m in Model)
+                {
+                    if (m.Selected)
+                    {
+                        <option class="profile-desc-text" selected value="@m.PerfilId">@m.Nombre</option>
+                    }
+                    else
+                    {
+                        <option class="profile-desc-text" value="@m.PerfilId">@m.Nombre</option>
+                    }
+                }
+            }
+        </select>
+    <p class="help-block"> Seleccione uno o más perfiles. </p>
+    <br />
+    <button type="button" class="btn btn-flat btn-primary" onclick="SeleccinarTodos('#my_multi_select3')"> Seleccionar Todos</button>
+    <button type="button" class="btn btn-flat btn-default" onclick="DeseleccinarTodos('#my_multi_select3')"> Deseleccionar Todos</button>
+    }
+    else
+    {
+                    <p class="help-block"> No existen perfiles disponibles. </p>
+                }
+
+}

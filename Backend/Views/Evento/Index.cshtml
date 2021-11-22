@@ -1,0 +1,688 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model List<EHilo>
+@{
+    ViewBag.Title = "Eventos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+    List<Permiso> HijosMenu = ViewBag.PermisosH;
+    DataP.Usuario usuario = Util.SessionToUsuario<DataP.Usuario>(Session["Usuario"]);
+
+    List<EFuncionario> colaboradores = ViewBag.colaboradores;
+    List<ECliente> clientes = ViewBag.clientes;
+
+}
+@section EtiquetaHead
+{
+<link href="@Url.Content("~/Content/metronic/pages/css/sms.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css")" rel="stylesheet" />
+<script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/js/bootstrap-select.js")"></script>
+<link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+}
+
+
+
+<body>
+    <input type="hidden" id="idEventoHilo" />
+    <div class="home-page__content messages-page" id="divPadre">
+        <div class="container-fluid h-100">
+            <div class="row px-0 h-100">
+                <!-- start message list section  -->
+                <div class="col-md-4 messages-page__list-scroll">
+
+                    <div class="messages-page__header mb-0 px-4 pt-3 pb-3 hidden">
+                        <span class="messages-page__title">Eventos <button type="button" class="btn btn-flat btn-primary" onclick="abrirModalNuevoEvento()">Nuevo</button></span>
+                    </div>
+                    <div class="messages-page__search mb-0 px-3 pb-3">
+                        <div class="custom-form__search-wrapper">
+                            <input type="text" class="form-control custom-form"  placeholder="Busqueda" autocomplete="off" id="inputBusqueda">
+                            <button type="button" class="custom-form__search-submit" onclick="busquedaChats();" >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="svg-icon svg-icon--search" viewBox="0 0 46.6 46.6">
+                                    <path d="M46.1,43.2l-9-8.9a20.9,20.9,0,1,0-2.8,2.8l8.9,9a1.9,1.9,0,0,0,1.4.5,2,2,0,0,0,1.5-.5A2.3,2.3,0,0,0,46.1,43.2ZM4,21a17,17,0,1,1,33.9,0A17.1,17.1,0,0,1,33,32.9h-.1A17,17,0,0,1,4,21Z" fill="#f68b3c" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <ul class="messages-page__list pb-5 px-1 px-md-3" id="contenedorChats">
+
+                        @foreach (var item in Model)
+                        {
+                        <li class="messaging-member messaging-member--new messaging-member--online">
+                            <div class="messaging-member__wrapper" onclick="abrirChat('@item.EventoHilo.nEventoHiloId','@item.EventoHilo.nEventoId');">
+
+                                <div class="messaging-member__avatar">
+                                    <img src="~/Content/img/user.png" alt="@item.Cliente.sNombres @item.Cliente.sApellidos" loading="lazy">
+                                    <div class="user-status"></div>
+                                </div>
+
+                                <span class="messaging-member__name"> @item.Cliente.sNombres @item.Cliente.sApellidos</span>
+
+                                @if (item.Mensaje == null)
+                                {
+                                    <span class="messaging-member__message">
+                                        Nuevo evento asignado <strong style="font-size: 10px;font-weight: 200;">@item.FechaCreacion.ToString("dd/MM/yyyy hh:mm")</strong>
+                                    </span>
+
+                                }
+                                else if (item.Mensaje.sTexto == "")
+                                {
+                                    <span class="messaging-member__message">
+                                        Imagen <strong style="font-size: 10px;font-weight: 200;">@item.Mensaje.dFechaCreacion.ToString("dd/MM/yyyy hh:mm")</strong>
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="messaging-member__message">
+
+                                        @if (item.Mensaje.sTexto.Length >= 30)
+                                        {
+                                            @item.Mensaje.sTexto.Substring(0, 30)
+                                        }
+                                        else
+                                        {
+                                            @item.Mensaje.sTexto.Substring(0, @item.Mensaje.sTexto.Length - 1)
+                                        }
+                                        <strong style="font-size: 10px;font-weight: 200;">.... @item.Mensaje.dFechaCreacion.ToString("dd/MM/yyyy hh:mm")</strong>
+                                    </span>
+                                }
+                               
+
+                                @if (item.EstadoEvento.nEstadoEventoId == (int)EstadoDeEvento.SinAsignacion)
+                                {
+                                    <span class="messaging-member__message label label-sm label-danger">
+                                        @item.EstadoEvento.sNombre
+                                    </span>
+                                }
+                                else if (item.EstadoEvento.nEstadoEventoId == (int)EstadoDeEvento.Asignado)
+                                {
+                                    <span class="messaging-member__message label label-sm label-success">
+                                        @item.EstadoEvento.sNombre
+                                    </span>
+                                }
+                                else if (item.EstadoEvento.nEstadoEventoId == (int)EstadoDeEvento.Reasignado)
+                                {
+                                    <span class="messaging-member__message label label-sm label-warning">
+                                        @item.EstadoEvento.sNombre
+                                    </span>
+                                }
+
+
+
+                            </div>
+                        </li>
+                        }
+                      
+                      
+                    </ul>
+
+                </div>
+                <!-- end message list section  -->
+                <!-- start content section  -->
+                <div class="chat col-md-8">
+                    <div class="chat__container">
+                        <div class="chat__wrapper py-2 pt-mb-2 pb-md-3" id="contenedorMensajes">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end content section  -->
+        
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal scale fade" id="modalEnviarImagen" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Adjuntar imagen</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-12">
+                        <div class="col-sm-12">
+                            <div class="portlet box green">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-image"></i> Imagen
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form-group">
+                                        <div id="contenedorImagen" class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail">
+                                                <img src="@Url.Content("~/Content/Slices/noimages.jpg")" alt="" />
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" id="imagen-servicio"> </div>
+                                            <div>
+                                                <span class="btn default btn-file">
+                                                    <span class="fileinput-new"> Seleccionar Imagen </span>
+                                                    <span class="fileinput-exists"> Cambiar Imagen </span>
+                                                    <input type="file" name="...">
+                                                </span>
+                                                <br />
+                                                <br />
+                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput" id="eliminarImagen"> Eliminar Imagen </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_cancelar" type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-flat btn-primary" onclick="enviarImagen()">Enviar</button>
+                </div>
+            </div><!--.modal-content-->
+        </div><!--.modal-dialog-->
+    </div><!--.modal-->
+
+
+
+    <div class="modal scale fade" id="modalVerImagen" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Visualización de imagen</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-12">
+                        <img id="imagenMensaje" style="height: 400px; width: 400px;object-fit: contain;"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div><!--.modal-content-->
+        </div><!--.modal-dialog-->
+    </div><!--.modal-->
+
+
+
+
+    <div class="modal scale fade" id="modalOpciones" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Opciones del evento</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="bloqueTomarEvento">
+                        <div class="col-md-12">
+                            <label>Tomar evento</label>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-flat btn-primary" onclick="tomarEvento()">
+                                Tomar evento
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Marcar evento como no resuelto</label>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-flat btn-primary" onclick="marcarEventoNoResuelto()">
+                            Marcar como no resuelto</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Marcar evento como atendido</label>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-flat btn-primary" onclick="marcarEventoAtendido()">
+                            Marcar como atendido</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Reasignar evento a un colaborador</label>
+                            <div class="form-group">
+                                <select class="bs-select form-control" id="funcionarioId" data-live-search="true">
+                                    @{
+
+                                        foreach (var item in colaboradores)
+                                        {
+                                            if (usuario.UsuarioId != @item.nFuncionarioId)
+                                            {
+                                                <option value="@item.nFuncionarioId">@item.sNombre @item.sApellido | @item.sNombreArea | @item.sNombreCiudad</option>
+                                            }
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-flat btn-primary" onclick="reasignarEvento()">Reasignar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div><!--.modal-content-->
+        </div><!--.modal-dialog-->
+    </div><!--.modal-->
+
+
+
+
+    <div class="modal scale fade" id="modalNuevoEvento" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Nuevo evento</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Seleccione a un colaborador</label>
+                            <div class="form-group">
+                                <select class="bs-select form-control" id="funcionarioNuevoEventoId" data-live-search="true">
+                                    @{
+
+                                        foreach (var item in colaboradores)
+                                        {
+                                            <option value="@item.nFuncionarioId">@item.sNombre @item.sApellido</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label>Seleccione un cliente</label>
+                            <div class="form-group">
+                                <select class="bs-select form-control" id="clienteNuevoEventoId" data-live-search="true">
+                                    @{
+
+                                        foreach (var item in clientes)
+                                        {
+                                            <option value="@item.ClienteId">@item.Nombres @item.Apellidos</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-flat btn-primary" onclick="registrarNuevoEvento()">Reasignar</button>
+                </div>
+            </div><!--.modal-content-->
+        </div><!--.modal-dialog-->
+    </div><!--.modal-->
+
+
+
+
+
+</body>
+
+@section Scripts
+{
+<script>
+    $(document).ready(function () {
+       
+        $('.bs-select').selectpicker({
+            iconBase: 'fa',
+            tickIcon: 'fa-check'
+        });
+           
+    });
+
+
+    
+    
+    function registrarNuevoEvento() {
+        
+        LimpiarMensaje(); 
+        BloquearPantalla();
+        $.ajax({
+            url: "@Url.Action("nuevoEvento", "Evento")",
+            cache: false,
+            data: { clienteNuevoEventoId: $("#clienteNuevoEventoId").val(), funcionarioNuevoEventoId: $("#funcionarioNuevoEventoId").val() },
+            type: "POST"
+        }).done(function (response) {
+            DesbloquearPantalla();
+            if (response.success) {
+                $('#contenedorChats').empty();
+                $('#contenedorMensajes').empty();
+
+                $("#inputBusqueda").val("");
+                showToast("Correcto", response.message);
+                busquedaChats();
+                $('#modalNuevoEvento').modal('hide');
+            } else {
+                showToastError("Ocurrio un error", response.message);
+            }
+
+        }).error(function (er) {
+            MostrarMensaje(procesarErrorGenerico(er));
+            DesbloquearPantalla();
+        });
+    }
+
+    function abrirModalNuevoEvento() {
+        $('#modalNuevoEvento').modal('show');
+    }
+    
+
+    
+    function tomarEvento() {
+        LimpiarMensaje(); 
+        BloquearPantalla();
+        $.ajax({
+            url: "@Url.Action("tomarEvento", "Evento")",
+            cache: false,
+            data: {  idEventoHilo: $("#idEventoHilo").val() },
+            type: "POST"
+        }).done(function (response) {
+            DesbloquearPantalla();
+            if (response.success) {
+                $('#contenedorChats').empty();
+                $('#contenedorMensajes').empty();
+
+                $("#inputBusqueda").val("");
+                showToast("Correcto", response.message);
+                busquedaChats();
+                $('#modalOpciones').modal('hide');
+            } else {
+                showToastError("Ocurrio un error", response.message);
+            }
+
+        }).error(function (er) {
+            MostrarMensaje(procesarErrorGenerico(er));
+            DesbloquearPantalla();
+        });
+    }
+
+    function marcarEventoNoResuelto() {
+        LimpiarMensaje(); 
+        BloquearPantalla();
+        $.ajax({
+            url: "@Url.Action("marcarEventoNoResuelto", "Evento")",
+            cache: false,
+            data: {  idEventoHilo: $("#idEventoHilo").val() },
+            type: "POST"
+        }).done(function (response) {
+            DesbloquearPantalla();
+            if (response.success) {
+                $('#contenedorChats').empty();
+                $('#contenedorMensajes').empty();
+
+                $("#inputBusqueda").val("");
+                showToast("Correcto", response.message);
+                busquedaChats();
+                $('#modalOpciones').modal('hide');
+            } else {
+                showToastError("Ocurrio un error", response.message);
+            }
+
+        }).error(function (er) {
+            MostrarMensaje(procesarErrorGenerico(er));
+            DesbloquearPantalla();
+        });
+    }
+
+    function marcarEventoAtendido() {
+        
+        LimpiarMensaje(); 
+        BloquearPantalla();
+        $.ajax({
+            url: "@Url.Action("marcarEventoAtendido", "Evento")",
+            cache: false,
+            data: {  idEventoHilo: $("#idEventoHilo").val() },
+            type: "POST"
+        }).done(function (response) {
+            DesbloquearPantalla();
+            if (response.success) {
+                $('#contenedorChats').empty();
+                $('#contenedorMensajes').empty();
+
+                $("#inputBusqueda").val("");
+                showToast("Correcto", response.message);
+                busquedaChats();
+                $('#modalOpciones').modal('hide');
+            } else {
+                showToastError("Ocurrio un error", response.message);
+            }
+
+        }).error(function (er) {
+            MostrarMensaje(procesarErrorGenerico(er));
+            DesbloquearPantalla();
+        });
+    }
+
+
+    
+    function abrirWhatsappWeb(celular) {
+        const link = 'https://api.whatsapp.com/send?phone='+celular;
+
+        const a = document.createElement("a");
+        a.setAttribute('href', link);
+        a.setAttribute('target', '_blank');
+        a.click();
+    }
+    function reasignarEvento() {
+        LimpiarMensaje(); 
+        BloquearPantalla();
+        $.ajax({
+            url: "@Url.Action("reasignarEvento", "Evento")",
+            cache: false,
+            data: { funcionarioId: $("#funcionarioId").val(), idEventoHilo: $("#idEventoHilo").val() },
+            type: "POST"
+        }).done(function (response) {
+            DesbloquearPantalla();
+            if (response.success) {
+                $('#contenedorChats').empty();
+                $('#contenedorMensajes').empty();
+
+                $("#inputBusqueda").val("");
+                showToast("Correcto", response.message);
+                busquedaChats();
+                $('#modalOpciones').modal('hide');
+            } else {
+                showToastError("Ocurrio un error", response.message);
+            }
+
+        }).error(function (er) {
+            MostrarMensaje(procesarErrorGenerico(er));
+            DesbloquearPantalla();
+        });
+            
+    }
+
+    function abrirModalOpciones(estadoEventoId)
+    {
+        if(estadoEventoId==1){
+            $('#bloqueTomarEvento').show();
+        } else {
+            $('#bloqueTomarEvento').hide();
+        }
+        $('#modalOpciones').modal('show');
+    }
+
+    function verMensajeImagen(urlImagen)
+    {
+        $('#imagenMensaje').attr("src", urlImagen);
+        $('#modalVerImagen').modal('show');
+    }
+
+    function enviarMensajeEnter(e)
+    {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            enviarMensaje();
+        }
+    }
+
+    function busquedaChats()
+    {
+            LimpiarMensaje();
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action("ListarMensajesPorBusqueda", "Evento")",
+                cache: false,
+                data: { busqueda: $("#inputBusqueda").val() },
+                type: "POST"
+            }).done(function (html) {
+                $("#contenedorChats").html(html);
+                DesbloquearPantalla();
+            }).error(function (er) {
+                MostrarMensaje(procesarErrorGenerico(er));
+                DesbloquearPantalla();
+            });
+    }
+
+
+    function enviarMensaje()
+    {
+        if ($("#mensajeTexto").val()=="") {
+            showToastError("Campo obligatorio", "Escriba un mensaje");
+            return;
+        }
+        LimpiarMensaje();
+        BloquearPantalla();
+        $.ajax({
+            url: "@Url.Action("enviarMensajeTexto", "Evento")",
+            cache: false,
+            data: { texto: $("#mensajeTexto").val() ,idEventoHilo: $("#idEventoHilo").val() },
+            type: "POST"
+        }).done(function (response) {
+            //console.log(response);
+            if (response.success) {
+                //showToast("Correcto", response.message);
+                $("#mensajeTexto").val("");
+                $("#chat").append(`<li><div class="chat__time">` + response.fechaCreacion +
+                    `</div><div class="chat__bubble chat__bubble--me">` + response.data.sTexto + `</div></li>`);
+                var c = $('#bloqueSMS');
+                c.scrollTop(c.prop("scrollHeight"));
+            } else {
+                showToastError("Ocurrio un error", response.message);
+            }
+            DesbloquearPantalla();
+        }).error(function (er) {
+            MostrarMensaje(procesarErrorGenerico(er));
+            DesbloquearPantalla();
+        });
+    }
+
+    function abrirChat(idEventoHilo, idEvento) {
+        //console.log(idEventoHilo);
+            $("#idEventoHilo").val(idEventoHilo);
+            LimpiarMensaje();
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action("ListarMensajes", "Evento")",
+                cache: false,
+                data: {idEvento: idEvento },
+                type: "POST"
+            }).done(function (html) {
+                $("#contenedorMensajes").html(html);
+                var c = $('#bloqueSMS');
+                c.scrollTop(c.prop("scrollHeight"));
+                DesbloquearPantalla();
+            }).error(function (er) {
+                MostrarMensaje(procesarErrorGenerico(er));
+                DesbloquearPantalla();
+            });
+    }
+
+
+    var imageBase64;
+    var imageW = 300, imageH = 300;
+
+    function OnLoadImage(src) {
+        var element = $("#contenedorImagen");
+        var preview = element.find('.fileinput-preview');
+
+        var $img = $('<img>')
+        $img[0].src = src;
+        resizedataURL(src, imageW, imageH, function(){
+            imageBase64 = '';
+        });
+        if (preview.css('max-height') != 'none') $img.css('max-height', parseInt(preview.css('max-height'), 10)
+            - parseInt(preview.css('padding-top'), 10) - parseInt(preview.css('padding-bottom'), 10)
+            - parseInt(preview.css('border-top'), 10) - parseInt(preview.css('border-bottom'), 10))
+        preview.html($img)
+        element.addClass('fileinput-exists').removeClass('fileinput-new')
+    }
+
+
+
+    function base64ToDataUri(base64) {
+        return 'data:image/png;base64,' + base64;
+    }
+    function imageToDataUri(img, width, height) {
+        // create an off-screen canvas
+        var canvas = document.createElement('canvas'),
+            ctx = canvas.getContext('2d');
+        // set its dimension to target size
+        canvas.width = width;
+        canvas.height = height;
+        // draw source image into the off-screen canvas:
+        ctx.drawImage(img, 0, 0, width, height);
+        // encode image to data-uri with base64 version of compressed image
+        return canvas.toDataURL();
+    }
+
+    function enviarImagen() {
+        //console.log(imageBase64);
+        if (typeof imageBase64 === 'undefined') {
+            showToastError("Campo obligatorio", "Adjunte una imagen");
+            return;
+        }
+
+        LimpiarMensaje();
+        BloquearPantalla();
+        $.ajax({
+            url: "@Url.Action("enviarMensajeImagen", "Evento")",
+            cache: false,
+            data: { archivo: imageBase64, idEventoHilo: $("#idEventoHilo").val() },
+        type: "POST"
+        }).done(function (response) {
+            console.log(response);
+            if (response.success) {
+                //showToast("Correcto", response.message);
+                $("#mensajeTexto").val("");
+                $("#eliminarImagen").click();
+                $('#modalEnviarImagen').modal('hide');
+                $("#chat").append(`<li><div class="chat__time">` + response.fechaCreacion +
+                    `</div><div class="chat__bubble chat__bubble--me""><img src="` + response.data.sArchivo + `" alt="" loading="lazy" style="height: 200px; width: 200px;object-fit: contain;" onclick="verMensajeImagen('` + response.data.sArchivo + `');"></div></li>`);
+                var c = $('#bloqueSMS');
+                c.scrollTop(c.prop("scrollHeight"));
+            } else {
+                showToastError("Ocurrio un error", response.message);
+            }
+            DesbloquearPantalla();
+        }).error(function (er) {
+            MostrarMensaje(procesarErrorGenerico(er));
+            DesbloquearPantalla();
+        });
+    }
+
+    function abrirModalImagen() {
+        $('#modalEnviarImagen').modal('show');
+    }
+
+
+
+</script>
+
+}
+    
+

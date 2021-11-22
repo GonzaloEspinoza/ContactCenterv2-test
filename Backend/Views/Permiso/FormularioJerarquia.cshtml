@@ -1,0 +1,129 @@
+﻿@using Logica;
+@using DataP;
+@model  List<Permiso>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section EtiquetaHead
+{
+    <link href="@Url.Content("~/Content/metronic/global/plugins/jquery-nestable/jquery.nestable.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-nestable/jquery.nestable.js")"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#nestable_list_1').nestable({
+                group: 1,
+                maxDepth:3
+            })
+        });
+
+
+        function MostrarMensaje(msj) {
+            $("#mensajeError").show();
+            $("#mensajeError").attr('class', 'alert alert-danger');
+            $("#mensajeError").html(msj);
+        }
+
+        function ProcesarPermiso() {
+            $("#mensajeError").hide();
+            $("#mensajeError").html('');
+
+            var e = $('#nestable_list_1').data('output', $('#nestable_list_1_output'))
+            var list = e.length ? e : $(e.target);
+            var items = '';
+            if (window.JSON) {
+                items = window.JSON.stringify(list.nestable('serialize'))
+            } else {
+                MostrarMensaje('JSON browser support required.'); return;
+            }
+
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action("GuardarJerarquia", "Permiso")",
+                cache: false,
+                data: {
+                    jsonItems: items
+                },
+                type: "POST",
+                dataType: "script"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function () {
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+
+        function volver() {
+            $("#btn_cancelar").click();
+            BloquearPantalla();
+            redireccionar('@Url.Action("Index", "Permiso")');
+        }
+    </script>
+}
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Permisos
+            <small>Jerarquia de Permisos</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", "Inicio")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "Permiso")">Permisos</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">Permisos</span>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+
+                <div class="dd" id="nestable_list_1">
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        <ol class="dd-list">
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    @Html.Partial("_ListadoPermisoJ", item)
+                                }
+                            }
+                        </ol>
+                                }
+                </div>
+
+                <br />
+                <button class="btn btn-default" data-toggle="modal" data-target="#defaultModal">Volver</button>
+                <input type="button" value="Guardar" class="btn btn-success" onclick="ProcesarPermiso()" />
+            </div>
+        </div><!--.panel-->
+    </div><!--.col-md-12-->
+</div><!--.row-->
+<!-- Modals -->
+<div class="modal scale fade" id="defaultModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Diálogo de confirmación</h4>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro que desea cancelar la operación y volver a la lista de permisos sin guardar los cambios?
+            </div>
+            <div class="modal-footer">
+                <button id="btn_cancelar" type="button" class="btn btn-flat btn-default" data-dismiss="modal"> Cancelar </button>
+                <button type="button" class="btn btn-flat btn-primary" onclick="volver()"> Aceptar </button>
+            </div>
+        </div><!--.modal-content-->
+    </div><!--.modal-dialog-->
+</div><!--.modal-->

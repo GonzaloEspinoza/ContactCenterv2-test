@@ -1,0 +1,231 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model EPreguntaFrecuente
+@{
+    ViewBag.Title = ViewBag.Titulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string accion = "Nuevo";
+
+    try
+    {
+        accion = ViewBag.Accion;
+    }
+    catch
+    {
+        accion = "Nuevo";
+    }
+    string lblBotonGuardar = "Guardar";
+    if (accion.ToUpper().Equals("NUEVO"))
+    {
+        lblBotonGuardar = "Guardar";
+    }
+    else
+    {
+        lblBotonGuardar = "Actualizar";
+    }
+    bool Habilitado = true;
+    Habilitado = Model == null || (Model != null && Model.PreguntaFrecuenteId == 0) ? true : Model.Estado == (int)Estado.Habilitado ? true : false;
+    string check = Habilitado ? "true" : "false";
+    List<ECategoriaPreguntaFrecuente> Categorias = (List<ECategoriaPreguntaFrecuente>)ViewBag.categorias;
+    List<ETipoAtencion> Atencion = (List<ETipoAtencion>)ViewBag.TipoAtencion;
+
+}
+@section EtiquetaHead
+{
+
+
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/map-google.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-colorpicker/css/colorpicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/jquery-minicolors/jquery.minicolors.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-modal/css/bootstrap-modal.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/js/bootstrap-select.js")"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/css/multi-select.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/js/jquery.multi-select.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/js/jquery.quicksearch.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/ckeditor/ckeditor.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-modal/js/bootstrap-modal.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-minicolors/jquery.minicolors.min.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/pages/scripts/components-color-pickers.min.js")"></script>
+
+
+    <script type="text/javascript">
+          $(document).ready(function () {
+            
+            $('#Habilitado')[0].checked = @check;
+            $('.bs-select').selectpicker({
+                iconBase: 'fa',
+                tickIcon: 'fa-check'
+            });
+
+        });
+
+        function Procesar() {
+            LimpiarMensaje();
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action(accion,"PreguntaFrecuente")",
+                cache: false,
+                data: {
+                    id: $("#PreguntaFrecuenteId").val(),
+                    pregunta: $("#Pregunta").val(),
+                    idcategoria: $("#CategoriaId").val(),
+                    idatencion: $("#TipoAtencionId").val(),
+                    habilitado: $("#Habilitado").is(":checked")
+                },
+                type: "POST",
+                dataType: "script"
+            }).complete(function (response) {
+
+                DesbloquearPantalla();
+            }).done(function () {
+                DesbloquearPantalla();
+            }).error(function () {
+               DesbloquearPantalla();
+            });
+
+        }
+        function volver() {
+            $("#btn_cancelar").click();
+            BloquearPantalla();
+            redireccionar('@Url.Action("Index", "PreguntaFrecuente")');
+        }
+    </script>
+}
+
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Pregunta Frecuente
+            <small>@ViewBag.Title</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", "Inicio")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "PreguntaFrecuente")">Categoria pregunta frecuente</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">@ViewBag.Title</span>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+              
+                @Html.HiddenFor(x => x.PreguntaFrecuenteId)
+                <div class="alert alert-danger" style="display:none" role="alert" id="mensajeError"></div>
+                <div class="row">
+                  
+                    <div class="col-sm-9">
+                        <div class="col-md-12">
+                            <div class="form-group form-md-line-input form-md-floating-label">
+                                @Html.TextBoxFor(x => x.Pregunta, new { @class = "form-control", @maxlength = "200" })
+                                @Html.LabelFor(x => x.Pregunta, "Pregunta")
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label>Categoría</label>
+                            <div class="form-group">
+                                <select class="bs-select form-control" id="CategoriaId" data-live-search="true">
+                                    @{
+                                        if (Model.CategoriaPreguntaFrecuente != null)
+                                        {
+                                            foreach (var item in Categorias)
+                                            {
+                                                if (Model.CategoriaPreguntaFrecuente.nCategoriaPreguntaFrecuenteId == item.CategoriaPreguntaFrecuenteId)
+                                                {
+                                                    <option selected value="@item.CategoriaPreguntaFrecuenteId">@item.Nombre</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.CategoriaPreguntaFrecuenteId">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in Categorias)
+                                            {
+                                                <option value="@item.CategoriaPreguntaFrecuenteId"> @item.Nombre </option>
+                                            }
+
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label>Tipo de Atención</label>
+                            <div class="form-group">
+                                <select class="bs-select form-control" id="TipoAtencionId" data-live-search="true">
+                                    @{
+                                        if (Model.TipoAtencion != null)
+                                        {
+                                            foreach (var item in Atencion)
+                                            {
+                                                if (Model.TipoAtencion.nTipoAtencionId == item.TipoAtencionID)
+                                                {
+                                                    <option selected value="@item.TipoAtencionID">@item.Nombre</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.TipoAtencionID">@item.Nombre</option>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            foreach (var item in Atencion)
+                                            {
+                                                <option value="@item.TipoAtencionID"> @item.Nombre </option>
+                                            }
+
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <br /><br />
+                            <div class="md-checkbox">
+                                <input type="checkbox" id="Habilitado" class="md-check">
+                                <label for="Habilitado" title="">
+                                    <span></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span> Habilitado
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <br />
+                        <button class="btn btn-default" onclick="volver();">Volver</button>
+                        <input type="button" value="@lblBotonGuardar" class="btn btn-success" onclick="Procesar()" />
+                    </div>
+                </div>
+                <br><br>
+            </div>
+        </div>
+    </div>
+</div>
+
+

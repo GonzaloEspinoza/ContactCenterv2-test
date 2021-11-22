@@ -1,0 +1,36 @@
+﻿@model List<Entidad.EMenu>
+@using Newtonsoft.Json;
+@{
+    bool menuAbierto = (bool)Session["menuAbierto"];
+    string claseMenuUl = menuAbierto == true ? "" : "page-sidebar-menu-closed";
+
+    string ActualController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+}
+<ul class="page-sidebar-menu  page-header-fixed @claseMenuUl" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+    @if (ActualController.Equals("Inicio"))
+    {
+        <li class="nav-item start active open">
+            <a href="@Url.Action("Index", "Inicio")">
+                <i class="icon-home"></i>
+                <span class="title">INICIO</span>
+                <span class="selected"></span>
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item  ">
+            <a href="@Url.Action("Index", "Inicio")">
+                <i class="icon-home"></i>
+                <span class="title">INICIO</span>
+            </a>
+
+        </li>
+    }
+
+    @foreach (var menu in Model)
+    {
+        @Html.Partial("_Menu_item", menu)
+    }
+</ul>
+

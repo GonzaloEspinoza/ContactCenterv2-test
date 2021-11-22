@@ -1,0 +1,12 @@
+﻿
+@using DataP;
+@model List<Usuario>
+<select id="usuario_selector" class="bs-select form-control">
+    <option value="" selected>Todos</option>
+    @{
+        foreach (var item in Model)
+        {
+            <option value="@item.UsuarioId">@item.NickName</option>
+        }
+    }
+</select>    

@@ -1,0 +1,147 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model ECliente
+@{
+    ViewBag.Title = ViewBag.Titulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+    List<Permiso> HijosMenu = ViewBag.PermisosH;
+}
+
+
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Cliente
+            <small>@ViewBag.Title</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", "Inicio")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "Cliente")">Clientes</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">@ViewBag.Title</span>
+    </li>
+</ul>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">
+                        Cliente # @Model.ClienteId
+                        <span class="hidden-xs">| @Model.Nombres @Model.Apellidos</span>
+                    </span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger" id="mensajeError" hidden>
+                            @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+                            {
+                                <text>@ViewBag.Mensaje</text>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="tabbable-line">
+                    <ul class="nav nav-tabs nav-tabs-lg">
+                        <li class="active">
+                            <a href="#tab_1" data-toggle="tab"> Detalle </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_1">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="portlet yellow-crusta box">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <i class="fa fa-info-circle"></i>Datos del cliente
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body">
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> ID Cliente: </div>
+                                                <div class="col-md-7 value">
+                                                    @Model.ClienteId
+                                                </div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Codigo cliente: </div>
+                                                <div class="col-md-7 value"> @Model.CodigoCliente </div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Nombres: </div>
+                                                <div class="col-md-7 value"> @Model.Nombres </div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Apellidos: </div>
+                                                <div class="col-md-7 value"> @Model.Apellidos </div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Codigo pais: </div>
+                                                <div class="col-md-7 value"> @Model.CodigoPais </div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Numero celular: </div>
+                                                <div class="col-md-7 value"> @Model.NumeroCelular </div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Correo: </div>
+                                                <div class="col-md-7 value"> @Model.Correo </div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Foto: </div>
+                                                <div class="col-md-7 value"><img src="@Model.UrlFoto" alt="bandera" style="width: 70px;height: 70px;border-radius: 10px !important;"></div>
+                                            </div>
+
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Empresa: </div>
+                                                <div class="col-md-7 value"> @Model.Empresa.sNombre </div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Estado: </div>
+                                                <div class="col-md-7 value">
+                                                    @if (Model.Estado == (int)Estado.Habilitado)
+                                                    {
+                                                        <span class="label label-sm label-success"> Habilitado </span>
+                                                    }
+                                                    else if (Model.Estado == (int)Estado.Desabilitado)
+                                                    {
+                                                        <span class="label label-sm label-danger"> Deshabilitado </span>
+                                                    }
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+}

@@ -1,0 +1,509 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<ECiudad> Ciudades = (List<ECiudad>)ViewBag.Ciudad;
+    List<EEstadoEvento> Estados = (List<EEstadoEvento>)ViewBag.Estado;
+    List<EFuncionario> Funcionarios = (List<EFuncionario>)ViewBag.Funcionario;
+}
+
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Reporte Eventos
+            <small>Inicio</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index","ReporteEvento")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">Reporte Evento</span>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="row">
+
+
+
+                    <div class="col-md-3">
+                        <label>Ciudades</label>
+                        <div class="form-group">
+                            <select class="bs-select form-control" id="CiudadId" data-live-search="true">
+
+                                <option selected disabled value="">Seleccione una Ciudad</option>
+                                @foreach (var i in Ciudades)
+                                {
+                                    <option value=@i.CiudadId>@i.Nombre</option>
+                                }
+
+
+                            </select>
+                        </div>
+                        <div class="dashboard-stat blue">
+                            <div class="visual">
+                                <i class="fa fa-comments"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">
+                                    <span id="ticket_ciudad">0</span>
+                                </div>
+                                <div class="desc"> Tickets </div>
+                            </div>
+                            @*<a class="more" href="javascript:;">
+                    View more
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>*@
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Tiempo</label>
+                        <div class="form-group">
+                            <select class="bs-select form-control" id="TiempoId" data-live-search="true">
+
+                                <option selected disabled value="">Seleccione un filtro</option>
+                                <option value="1">Hoy dia</option>
+                                <option value="2">Este mes</option>
+                                <option value="3">Este año</option>
+
+                            </select>
+                        </div>
+                        <div class="dashboard-stat red">
+                            <div class="visual">
+                                <i class="fa fa-bar-chart-o"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">
+                                    <span id="ticket_tiempo">0</span>
+                                </div>
+                                <div class="desc"> Tickets </div>
+                            </div>
+                            @*<a class="more" href="javascript:;">
+                    View more
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>*@
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Estado</label>
+                        <div class="form-group">
+                            <select class="bs-select form-control" id="EstadoId" data-live-search="true">
+
+                                <option disabled selected value="">Seleccione un estado</option>
+                                @foreach (var i in Estados)
+                                {
+                                    <option value=@i.EstadoEventoId>@i.Nombre</option>
+                                }
+
+
+                            </select>
+                        </div>
+                        <div class="dashboard-stat green">
+                            <div class="visual">
+                                <i class="fa fa-shopping-cart"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">
+                                    <span data-counter="counterup" id="ticket_estado">0</span>
+                                </div>
+                                <div class="desc">Tickets </div>
+                            </div>
+                            @*<a class="more" href="javascript:;">
+                    View more
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>*@
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Tiempo Promedio de Respuesta</label>
+                        <div class="form-group">
+                            <select class="bs-select form-control" id="CatId" data-live-search="true">
+
+                                <option selected value="">Seleccione un filtro</option>
+
+
+                            </select>
+                        </div>
+
+                        <div class="dashboard-stat purple">
+                            <div class="visual">
+                                <i class="fa fa-globe"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">
+
+                                    <span id="ticket_promedio">0</span>
+                                </div>
+                                <div class="desc">Minutos </div>
+                            </div>
+                            @*<a class="more" href="javascript:;">
+                    View more
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>*@
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Funcionario</label>
+                        <div class="form-group">
+                            <select class="bs-select form-control" id="FuncionarioId" data-live-search="true">
+
+                                <option disabled selected value="">Seleccione un funcionario</option>
+                                @foreach (var i in Funcionarios)
+                                {
+                                    <option value=@i.nFuncionarioId>@i.sNombre @i.sApellido</option>
+                                }
+
+
+                            </select>
+                        </div>
+
+                        <div class="dashboard-stat blue">
+                            <div class="visual">
+                                <i class="fa fa-globe"></i>
+                            </div>
+                            <div class="details">
+                                <div class="number">
+
+                                    <span id="ticket_funcionario">0</span>
+                                </div>
+                                <div class="desc">Tickets</div>
+                            </div>
+                            @*<a class="more" href="javascript:;">
+                View more
+                <i class="m-icon-swapright m-icon-white"></i>
+            </a>*@
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN CHART PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-bar-chart font-green-haze"></i>
+                    <span class="caption-subject bold uppercase font-green-haze">Estadisticas</span>
+                    <span class="caption-helper">Gráficas Circulares</span>
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                    <a href="javascript:;" class="reload"> </a>
+                    <a href="javascript:;" class="fullscreen"> </a>
+                    <a href="javascript:;" class="remove"> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div id="chart_ciudades"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div id="chart_estados"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div id="chart_tiempos"></div>
+                    </div>
+
+                </div>
+               
+            </div>
+        </div>
+        <!-- END CHART PORTLET-->
+    </div>
+</div>
+@section Scripts
+{
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+       
+    </script>
+    <script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/datatables/datatables.min.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getPromedio();
+            getTotal();
+
+        });
+
+        $('#CiudadId').change(function () {
+            var ciudad = $('#CiudadId').val();
+            getxCiudad(ciudad);
+        })
+
+
+        google.charts.load('current', { 'packages': ['corechart'] });
+
+        google.charts.setOnLoadCallback(drawCiudades);
+        google.charts.setOnLoadCallback(drawEstados);
+        google.charts.setOnLoadCallback(drawTiempos);
+      
+
+        function drawCiudades() {
+             $.ajax({
+                url: "@Url.Action("ListaCiudad", "ReporteEvento")",
+                 cache: false,
+                type: "POST"
+        }).complete(function (data) {
+           // console.log(data)
+                DesbloquearPantalla();
+        }).done(function (data) {
+            //console.log(data);
+
+;            const obj = JSON.parse(data);
+            //alert(obj);
+                var data = new google.visualization.arrayToDataTable(obj);
+
+                var options = {
+                    'title': 'Cantidad de tickets por ciudad',
+                    'width': 250,
+                    'height': 250
+                };
+
+                // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_ciudades'));
+                chart.draw(data, options);
+
+                DesbloquearPantalla();
+        }).error(function (data) {
+
+
+                DesbloquearPantalla();
+            });
+
+
+        }
+
+         function drawEstados() {
+             $.ajax({
+                url: "@Url.Action("ListaEstados", "ReporteEvento")",
+                 cache: false,
+                type: "POST"
+        }).complete(function (data) {
+            //console.log(data)
+                DesbloquearPantalla();
+        }).done(function (data) {
+           // console.log(data);
+
+;            const obj = JSON.parse(data);
+
+                var data = new google.visualization.arrayToDataTable(obj);
+
+                var options = {
+                    'title': 'Cantidad de tickets por estado',
+                    'width': 250,
+                    'height': 250
+                };
+
+                // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_estados'));
+                chart.draw(data, options);
+
+                DesbloquearPantalla();
+        }).error(function (data) {
+
+               console.log("error")
+                DesbloquearPantalla();
+            });
+
+
+        }
+              function drawTiempos() {
+             $.ajax({
+                url: "@Url.Action("ListaTiempos", "ReporteEvento")",
+                 cache: false,
+                type: "POST"
+        }).complete(function (data) {
+            //console.log(data)
+                DesbloquearPantalla();
+        }).done(function (data) {
+           // console.log(data);
+
+;            const obj = JSON.parse(data);
+
+                var data = new google.visualization.arrayToDataTable(obj);
+
+                var options = {
+                    'title': 'Cantidad de tickets por tiempo',
+                    'width': 250,
+                    'height': 250
+                };
+
+                // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_tiempos'));
+                chart.draw(data, options);
+
+                DesbloquearPantalla();
+        }).error(function (data) {
+
+               console.log("error")
+                DesbloquearPantalla();
+            });
+
+
+        }
+
+        function getTotal() {
+        $.ajax({
+                url: "@Url.Action("getTotal", "ReporteEvento")",
+                cache: false,
+
+                type: "GET"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function (response) {
+                $("#ticket_ciudad").html(response);
+                $("#ticket_estado").html(response);
+                $("#ticket_tiempo").html(response);
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+        $('#CiudadId').change(function () {
+            var ciudad = $('#CiudadId').val();
+            getxCiudad(ciudad);
+        })
+
+
+
+        function getxCiudad(id) {
+
+
+            $.ajax({
+                url: "@Url.Action("getxCiudad", "ReporteEvento")",
+                cache: false,
+                data: {
+                    id_ciudad: id
+                },
+                type: "GET"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function (response) {
+                $("#ticket_ciudad").html(response);
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+
+        $('#EstadoId').change(function () {
+            var estado = $('#EstadoId').val();
+            getxEstado(estado);
+        })
+
+
+
+          function getxFuncioanrio(id) {
+
+
+            $.ajax({
+                url: "@Url.Action("getxFuncionario", "ReporteEvento")",
+                cache: false,
+                data: {
+                    id_ciudad: id
+                },
+                type: "GET"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function (response) {
+                $("#ticket_funcionario").html(response);
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+
+        $('#FuncionarioId').change(function () {
+            var estado = $('#FuncionarioId').val();
+            getxFuncioanrio(estado);
+        })
+        function getxEstado(id) {
+
+
+            $.ajax({
+                url: "@Url.Action("getxEstado", "ReporteEvento")",
+                cache: false,
+                data: {
+                    id_estado: id
+                },
+                type: "GET"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function (response) {
+                $("#ticket_estado").html(response);
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+
+             $('#TiempoId').change(function () {
+            var estado = $('#TiempoId').val();
+            getxTiempo(estado);
+        })
+        function getxTiempo(id) {
+
+
+            $.ajax({
+                url: "@Url.Action("getxTiempo", "ReporteEvento")",
+                cache: false,
+                data: {
+                    id_tiempo: id
+                },
+                type: "GET"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function (response) {
+                $("#ticket_tiempo").html(response);
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+        function getPromedio() {
+
+
+            $.ajax({
+                url: "@Url.Action("getPromedio", "ReporteEvento")",
+                cache: false,
+
+                type: "GET"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function (response) {
+                $("#ticket_promedio").html(response);
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+
+
+    </script>
+
+    }

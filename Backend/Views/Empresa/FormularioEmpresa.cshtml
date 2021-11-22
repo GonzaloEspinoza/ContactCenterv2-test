@@ -1,0 +1,261 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model EEmpresa
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string accion = "Nuevo";
+    string imagen64 = "";
+    if (Model != null && Model.Base64Logo != "")
+    {
+        imagen64 = Model.Base64Logo;
+    }
+    try
+    {
+        accion = ViewBag.Accion;
+    }
+    catch
+    {
+        accion = "Nuevo";
+    }
+    string lblBotonGuardar = "Guardar";
+    if (accion.ToUpper().Equals("NUEVO"))
+    {
+        lblBotonGuardar = "Guardar";
+    }
+    else
+    {
+        lblBotonGuardar = "Actualizar";
+    }
+    bool Habilitado = true;
+    Habilitado = Model == null || (Model != null && Model.EmpresaId == 0) ? true : Model.Estado == (int)Estado.Habilitado ? true : false;
+    string check = Habilitado ? "true" : "false";
+}
+@section EtiquetaHead
+{
+
+
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/map-google.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-colorpicker/css/colorpicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/jquery-minicolors/jquery.minicolors.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-modal/css/bootstrap-modal.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/js/bootstrap-select.js")"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/css/multi-select.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/js/jquery.multi-select.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/js/jquery.quicksearch.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/ckeditor/ckeditor.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-modal/js/bootstrap-modal.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-minicolors/jquery.minicolors.min.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/pages/scripts/components-color-pickers.min.js")"></script>
+
+
+    <script type="text/javascript">
+
+
+          function OnLoadImage(src) {
+            var element = $("#contenedorImagen");
+            var preview = element.find('.fileinput-preview');
+
+            var $img = $('<img>')
+            $img[0].src = src;
+            resizedataURL(src, imageW, imageH, function(){
+                imageBase64 = '';
+            });
+            if (preview.css('max-height') != 'none') $img.css('max-height', parseInt(preview.css('max-height'), 10) - parseInt(preview.css('padding-top'), 10) - parseInt(preview.css('padding-bottom'), 10) - parseInt(preview.css('border-top'), 10) - parseInt(preview.css('border-bottom'), 10))
+            preview.html($img)
+            element.addClass('fileinput-exists').removeClass('fileinput-new')
+        }
+        function OnLoadImageInicio(src) {
+            var element = $("#contenedorImagenInicio");
+            var preview = element.find('.fileinput-preview');
+
+            var $img = $('<img>')
+            $img[0].src = src;
+            resizedataURL(src, imageW, imageH, function(){
+                imageBase64Inicio = '';
+            });
+            if (preview.css('max-height') != 'none') $img.css('max-height', parseInt(preview.css('max-height'), 10) - parseInt(preview.css('padding-top'), 10) - parseInt(preview.css('padding-bottom'), 10) - parseInt(preview.css('border-top'), 10) - parseInt(preview.css('border-bottom'), 10))
+            preview.html($img)
+            element.addClass('fileinput-exists').removeClass('fileinput-new')
+        }
+        var imageBase64;
+        var imageW = 700 , imageH = 700;
+        $(document).ready(function () {
+            if ($("#ExisteImagen").val() == 'True') {
+                OnLoadImage('data:image/png;base64,' + '@imagen64');
+            }
+            $('#Habilitado')[0].checked = @check;
+            $('.bs-select').selectpicker({
+                iconBase: 'fa',
+                tickIcon: 'fa-check'
+            });
+
+        });
+        function base64ToDataUri(base64) {
+            return 'data:image/png;base64,' + base64;
+        }
+        function imageToDataUri(img, width, height) {
+            // create an off-screen canvas
+            var canvas = document.createElement('canvas'),
+                ctx = canvas.getContext('2d');
+            // set its dimension to target size
+            canvas.width = width;
+            canvas.height = height;
+            // draw source image into the off-screen canvas:
+            ctx.drawImage(img, 0, 0, width, height);
+            // encode image to data-uri with base64 version of compressed image
+            return canvas.toDataURL();
+        }
+
+        function Procesar() {
+            LimpiarMensaje();
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action(accion, "Empresa")",
+                cache: false,
+                data: {
+                    id: $("#EmpresaId").val(),
+                    nombre: $("#Nombre").val(),
+                    url: $("#Url").val(),
+                    logo: imageBase64,
+
+                    habilitado: $("#Habilitado").is(":checked")
+                },
+                type: "POST",
+                dataType: "script"
+            }).complete(function (response) {
+
+                DesbloquearPantalla();
+            }).done(function () {
+                DesbloquearPantalla();
+            }).error(function () {
+               DesbloquearPantalla();
+            });
+
+        }
+         function volver() {
+            $("#btn_cancelar").click();
+            BloquearPantalla();
+            redireccionar('@Url.Action("Index", "Empresa")');
+        }
+
+    </script>
+}
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Empresa
+            <small>@ViewBag.Title</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", "Inicio")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "Empresa")">Empresas</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">@ViewBag.Title</span>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                @if (imagen64 == "")
+                {
+                    @Html.Hidden("ExisteImagen", false)
+                }
+                else
+                {
+                    @Html.Hidden("ExisteImagen", true)
+                }
+                @Html.HiddenFor(x => x.EmpresaId)
+                <div class="alert alert-danger" style="display:none" role="alert" id="mensajeError"></div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="col-sm-12">
+                            <div class="portlet box green">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-image"></i> Logo
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form-group">
+                                        <div id="contenedorImagen" class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail">
+                                                <img src="@Url.Content("~/Content/Slices/noimages.jpg")" alt="" />
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" id="imagen-servicio"> </div>
+                                            <div>
+                                                <span class="btn default btn-file">
+                                                    <span class="fileinput-new"> Seleccionar Imagen </span>
+                                                    <span class="fileinput-exists"> Cambiar Imagen </span>
+                                                    <input type="file" name="...">
+                                                </span>
+                                                <br />
+                                                <br />
+                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Eliminar Imagen </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="col-md-12">
+                            <div class="form-group form-md-line-input form-md-floating-label">
+                                @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control", @maxlength = "200" })
+                                @Html.LabelFor(x => x.Nombre, "Nombre")
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group form-md-line-input form-md-floating-label">
+                                @Html.TextBoxFor(x => x.Url, new { @class = "form-control", @maxlength = "200" })
+                                @Html.LabelFor(x => x.Url, "Url")
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <br /><br />
+                            <div class="md-checkbox">
+                                <input type="checkbox" id="Habilitado" class="md-check">
+                                <label for="Habilitado" title="">
+                                    <span></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span> Habilitado
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <br />
+                        <button class="btn btn-default" onclick="volver();">Volver</button>
+                        <input type="button" value="@lblBotonGuardar" class="btn btn-success" onclick="Procesar()" />
+                    </div>
+                </div>
+                <br><br>
+            </div>
+        </div>
+    </div>
+</div>
+
+

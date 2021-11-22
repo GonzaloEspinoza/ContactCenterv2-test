@@ -1,0 +1,418 @@
+﻿@using Logica;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model  Permiso
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string accion = "NuevoPermiso";
+
+    try
+    {
+        accion = ViewBag.Accion;
+    }
+    catch
+    {
+        accion = "NuevoPermiso";
+    }
+    string lblBotonGuardar = "Guardar";
+    if (accion.ToUpper().Equals("NUEVOPERMISO"))
+    {
+        lblBotonGuardar = "Guardar";
+    }
+    else
+    {
+        lblBotonGuardar = "Actualizar";
+    }
+    Usuario oUsuario = Util.SessionToUsuario<Usuario>(Session["Usuario"]);
+}
+@section EtiquetaHead
+{
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/js/bootstrap-select.js")"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#icono_selector option[value='" + '@Model.IconoMenu' + "']").prop('selected', true);
+            $("#tipo_selector option[value=" + '@Model.Tipo' + "]").prop('selected', true);
+            $("#accion_selector option[value=" + '@Model.Accion' + "]").prop('selected', true);
+            $('.bs-select').selectpicker({
+                iconBase: 'fa',
+                tickIcon: 'fa-check'
+            });
+            OnMenuChange();
+        });
+
+        function OnMenuChange() {
+            if ($("#Menu").is(":checked")) {
+                $("#acciones").hide();
+                $("#pantallaC").show();
+                $("#iconoC").show();
+            } else {
+                $("#acciones").show();
+                $("#pantallaC").hide();
+                $("#iconoC").hide();
+            }
+
+        }
+
+        function MostrarMensaje(msj) {
+            $("#mensajeError").show();
+            $("#mensajeError").attr('class', 'alert alert-danger');
+            $("#mensajeError").html(msj);
+        }
+
+        function ProcesarPermiso() {
+            $("#mensajeError").hide();
+            $("#mensajeError").html('');
+            if (isEmpty($("#Nombre").val())) {
+                MostrarMensaje('Ingrese un nombre de permiso válido.'); return false;
+            }
+            if (isEmpty($("#Descripcion").val())) {
+                MostrarMensaje('Ingrese una descripción válida.'); return false;
+            }
+            if (isEmpty($("#Pantalla").val())) {
+                $("#Pantalla").val('#')
+            }
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action(accion, "Permiso")",
+                cache: false,
+                data: {
+                    id: $("#PermisoId").val(),
+                    nom: $("#Nombre").val(),
+                    desc: $("#Descripcion").val(),
+                    pantalla: $("#Pantalla").val(),
+                    tipo: $("#tipo_selector").val(),
+                    accion: $("#accion_selector").val(),
+                    icono: $("#icono_selector").val(),
+                    menu: $("#Menu").is(":checked"),
+                    seleccionable: $("#Seleccionable").is(":checked")
+                },
+                type: "POST",
+                dataType: "script"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function () {
+                DesbloquearPantalla();
+            }).error(function () {
+                DesbloquearPantalla();
+            });
+        }
+
+        function volver() {
+            $("#btn_cancelar").click();
+            BloquearPantalla();
+            redireccionar('@Url.Action("Index", "Permiso")');
+        }
+    </script>
+}
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Permisos
+            <small>@ViewBag.Title</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", "Inicio")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "Permiso")">Permisos</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">@ViewBag.Title</span>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                @Html.HiddenFor(x => x.PermisoId)
+                <div class="alert alert-danger" style="display:none" role="alert" id="mensajeError"></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-md-line-input form-md-floating-label">
+                            @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control", @maxlength = "100" })
+                            @Html.LabelFor(x => x.Nombre, "Nombre")
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group form-md-line-input form-md-floating-label">
+                            @Html.TextBoxFor(x => x.Descripcion, new { @class = "form-control js-auto-size", @maxlength = "155" })
+                            @Html.LabelFor(x => x.Descripcion, "Descripción")
+                        </div>
+                    </div>
+                </div>
+                <div id="pantallaC" class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-md-line-input form-md-floating-label">
+                            @Html.TextBoxFor(x => x.Pantalla, new { @class = "form-control", @maxlength = "200" })
+                            @Html.LabelFor(x => x.Pantalla, "Pantalla")
+                        </div>
+                    </div>
+                </div>
+                @{
+                    if (oUsuario.TipoUsuario != (int)TipoUsuario.TipoNormal)
+                    {
+                        <label class="control-label"> Tipo </label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <select id="tipo_selector" class="bs-select form-control">
+                                        @if (oUsuario.TipoUsuario <= (int)TipoUsuario.TipoCC)
+                                        {
+                                            <option value="0">Super Administrador</option>
+                                        }
+                                        @if (oUsuario.TipoUsuario <= (int)TipoUsuario.TipoAdministrador)
+                                        {
+                                            <option value="1">Administrador</option>
+                                        }
+                                        <option value="2">Normal</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                <div id="iconoC">
+                    <label class="control-label"> Icono </label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select id="icono_selector" class="bs-select form-control" data-live-search="true" data-size="8" data-show-subtext="true">
+                                    <option value="" data-icon=""> Ninguno</option>
+                                    <option value="icon-user" data-icon="icon-user"> &nbsp;icon-user</option>
+                                    <option value="icon-user-female" data-icon="icon-user-female"> &nbsp;icon-user-female</option>
+                                    <option value="icon-users" data-icon="icon-users"> &nbsp;icon-users</option>
+                                    <option value="icon-user-follow" data-icon="icon-user-follow"> &nbsp;icon-user-follow</option>
+                                    <option value="icon-user-following" data-icon="icon-user-following"> &nbsp;icon-user-following</option>
+                                    <option value="icon-user-unfollow" data-icon="icon-user-unfollow"> &nbsp;icon-user-unfollow</option>
+                                    <option value="icon-trophy" data-icon="icon-trophy"> &nbsp;icon-trophy</option>
+                                    <option value="icon-speedometer" data-icon="icon-speedometer"> &nbsp;icon-speedometer</option>
+                                    <option value="icon-social-youtube" data-icon="icon-social-youtube"> &nbsp;icon-social-youtube</option>
+                                    <option value="icon-social-twitter" data-icon="icon-social-twitter"> &nbsp;icon-social-twitter</option>
+                                    <option value="icon-social-tumblr" data-icon="icon-social-tumblr"> &nbsp;icon-social-tumblr</option>
+                                    <option value="icon-social-facebook" data-icon="icon-social-facebook"> &nbsp;icon-social-facebook</option>
+                                    <option value="icon-social-dropbox" data-icon="icon-social-dropbox"> &nbsp;icon-social-dropbox</option>
+                                    <option value="icon-social-dribbble" data-icon="icon-social-dribbble"> &nbsp;icon-social-dribbble</option>
+                                    <option value="icon-shield" data-icon="icon-shield"> &nbsp;icon-shield</option>
+                                    <option value="icon-screen-tablet" data-icon="icon-screen-tablet"> &nbsp;icon-screen-tablet</option>
+                                    <option value="icon-screen-smartphone" data-icon="icon-screen-smartphone"> &nbsp;icon-screen-smartphone</option>
+                                    <option value="icon-screen-desktop" data-icon="icon-screen-desktop"> &nbsp;icon-screen-desktop</option>
+                                    <option value="icon-plane" data-icon="icon-plane"> &nbsp;icon-plane</option>
+                                    <option value="icon-notebook" data-icon="icon-notebook"> &nbsp;icon-notebook</option>
+                                    <option value="icon-moustache" data-icon="icon-moustache"> &nbsp;icon-moustache</option>
+                                    <option value="icon-mouse" data-icon="icon-mouse"> &nbsp;icon-mouse</option>
+                                    <option value="icon-magnet" data-icon="icon-magnet"> &nbsp;icon-magnet</option>
+                                    <option value="icon-magic-wand" data-icon="icon-magic-wand"> &nbsp;icon-magic-wand</option>
+                                    <option value="icon-hourglass" data-icon="icon-hourglass"> &nbsp;icon-hourglass</option>
+                                    <option value="icon-graduation" data-icon="icon-graduation"> &nbsp;icon-graduation</option>
+                                    <option value="icon-ghost" data-icon="icon-ghost"> &nbsp;icon-ghost</option>
+                                    <option value="icon-game-controller" data-icon="icon-game-controller"> &nbsp;icon-game-controller</option>
+                                    <option value="icon-fire" data-icon="icon-fire"> &nbsp;icon-fire</option>
+                                    <option value="icon-eyeglasses" data-icon="icon-eyeglasses"> &nbsp;icon-eyeglasses</option>
+                                    <option value="icon-envelope-open" data-icon="icon-envelope-open"> &nbsp;icon-envelope-open</option>
+                                    <option value="icon-envelope-letter" data-icon="icon-envelope-letter"> &nbsp;icon-envelope-letter</option>
+                                    <option value="icon-energy" data-icon="icon-energy"> &nbsp;icon-energy</option>
+                                    <option value="icon-emoticon-smile" data-icon="icon-emoticon-smile"> &nbsp;icon-emoticon-smile</option>
+                                    <option value="icon-disc" data-icon="icon-disc"> &nbsp;icon-disc</option>
+                                    <option value="icon-cursor-move" data-icon="icon-cursor-move"> &nbsp;icon-cursor-move</option>
+                                    <option value="icon-crop" data-icon="icon-crop"> &nbsp;icon-crop</option>
+                                    <option value="icon-credit-card" data-icon="icon-credit-card"> &nbsp;icon-credit-card</option>
+                                    <option value="icon-chemistry" data-icon="icon-chemistry"> &nbsp;icon-chemistry</option>
+                                    <option value="icon-bell" data-icon="icon-bell"> &nbsp;icon-bell</option>
+                                    <option value="icon-badge" data-icon="icon-badge"> &nbsp;icon-badge</option>
+                                    <option value="icon-anchor" data-icon="icon-anchor"> &nbsp;icon-anchor</option>
+                                    <option value="icon-action-redo" data-icon="icon-action-redo"> &nbsp;icon-action-redo</option>
+                                    <option value="icon-action-undo" data-icon="icon-action-undo"> &nbsp;icon-action-undo</option>
+                                    <option value="icon-bag" data-icon="icon-bag"> &nbsp;icon-bag</option>
+                                    <option value="icon-basket" data-icon="icon-basket"> &nbsp;icon-basket</option>
+                                    <option value="icon-basket-loaded" data-icon="icon-basket-loaded"> &nbsp;icon-basket-loaded</option>
+                                    <option value="icon-book-open" data-icon="icon-book-open"> &nbsp;icon-book-open</option>
+                                    <option value="icon-briefcase" data-icon="icon-briefcase"> &nbsp;icon-briefcase</option>
+                                    <option value="icon-bubbles" data-icon="icon-bubbles"> &nbsp;icon-bubbles</option>
+                                    <option value="icon-calculator" data-icon="icon-calculator"> &nbsp;icon-calculator</option>
+                                    <option value="icon-call-end" data-icon="icon-call-end"> &nbsp;icon-call-end</option>
+                                    <option value="icon-call-in" data-icon="icon-call-in"> &nbsp;icon-call-in</option>
+                                    <option value="icon-call-out" data-icon="icon-call-out"> &nbsp;icon-call-out</option>
+                                    <option value="icon-compass" data-icon="icon-compass"> &nbsp;icon-compass</option>
+                                    <option value="icon-cup" data-icon="icon-cup"> &nbsp;icon-cup</option>
+                                    <option value="icon-diamond" data-icon="icon-diamond"> &nbsp;icon-diamond</option>
+                                    <option value="icon-direction" data-icon="icon-direction"> &nbsp;icon-direction</option>
+                                    <option value="icon-directions" data-icon="icon-directions"> &nbsp;icon-directions</option>
+                                    <option value="icon-docs" data-icon="icon-docs"> &nbsp;icon-docs</option>
+                                    <option value="icon-drawer" data-icon="icon-drawer"> &nbsp;icon-drawer</option>
+                                    <option value="icon-drop" data-icon="icon-drop"> &nbsp;icon-drop</option>
+                                    <option value="icon-earphones" data-icon="icon-earphones"> &nbsp;icon-earphones</option>
+                                    <option value="icon-earphones-alt" data-icon="icon-earphones-alt"> &nbsp;icon-earphones-alt</option>
+                                    <option value="icon-feed" data-icon="icon-feed"> &nbsp;icon-feed</option>
+                                    <option value="icon-film" data-icon="icon-film"> &nbsp;icon-film</option>
+                                    <option value="icon-folder-alt" data-icon="icon-folder-alt"> &nbsp;icon-folder-alt</option>
+                                    <option value="icon-frame" data-icon="icon-frame"> &nbsp;icon-frame</option>
+                                    <option value="icon-globe" data-icon="icon-globe"> &nbsp;icon-globe</option>
+                                    <option value="icon-globe-alt" data-icon="icon-globe-alt"> &nbsp;icon-globe-alt</option>
+                                    <option value="icon-handbag" data-icon="icon-handbag"> &nbsp;icon-handbag</option>
+                                    <option value="icon-layers" data-icon="icon-layers"> &nbsp;icon-layers</option>
+                                    <option value="icon-map" data-icon="icon-map"> &nbsp;icon-map</option>
+                                    <option value="icon-picture" data-icon="icon-picture"> &nbsp;icon-picture</option>
+                                    <option value="icon-pin" data-icon="icon-pin"> &nbsp;icon-pin</option>
+                                    <option value="icon-playlist" data-icon="icon-playlist"> &nbsp;icon-playlist</option>
+                                    <option value="icon-present" data-icon="icon-present"> &nbsp;icon-present</option>
+                                    <option value="icon-printer" data-icon="icon-printer"> &nbsp;icon-printer</option>
+                                    <option value="icon-puzzle" data-icon="icon-puzzle"> &nbsp;icon-puzzle</option>
+                                    <option value="icon-speech" data-icon="icon-speech"> &nbsp;icon-speech</option>
+                                    <option value="icon-vector" data-icon="icon-vector"> &nbsp;icon-vector</option>
+                                    <option value="icon-wallet" data-icon="icon-wallet"> &nbsp;icon-wallet</option>
+                                    <option value="icon-arrow-down" data-icon="icon-arrow-down"> &nbsp;icon-arrow-down</option>
+                                    <option value="icon-arrow-left" data-icon="icon-arrow-left"> &nbsp;icon-arrow-left</option>
+                                    <option value="icon-arrow-right" data-icon="icon-arrow-right"> &nbsp;icon-arrow-right</option>
+                                    <option value="icon-arrow-up" data-icon="icon-arrow-up"> &nbsp;icon-arrow-up</option>
+                                    <option value="icon-bar-chart" data-icon="icon-bar-chart"> &nbsp;icon-bar-chart</option>
+                                    <option value="icon-bulb" data-icon="icon-bulb"> &nbsp;icon-bulb</option>
+                                    <option value="icon-calendar" data-icon="icon-calendar"> &nbsp;icon-calendar</option>
+                                    <option value="icon-control-end" data-icon="icon-control-end"> &nbsp;icon-control-end</option>
+                                    <option value="icon-control-forward" data-icon="icon-control-forward"> &nbsp;icon-control-forward</option>
+                                    <option value="icon-control-pause" data-icon="icon-control-pause"> &nbsp;icon-control-pause</option>
+                                    <option value="icon-control-play" data-icon="icon-control-play"> &nbsp;icon-control-play</option>
+                                    <option value="icon-control-rewind" data-icon="icon-control-rewind"> &nbsp;icon-control-rewind</option>
+                                    <option value="icon-control-start" data-icon="icon-control-start"> &nbsp;icon-control-start</option>
+                                    <option value="icon-cursor" data-icon="icon-cursor"> &nbsp;icon-cursor</option>
+                                    <option value="icon-dislike" data-icon="icon-dislike"> &nbsp;icon-dislike</option>
+                                    <option value="icon-equalizer" data-icon="icon-equalizer"> &nbsp;icon-equalizer</option>
+                                    <option value="icon-graph" data-icon="icon-graph"> &nbsp;icon-graph</option>
+                                    <option value="icon-grid" data-icon="icon-grid"> &nbsp;icon-grid</option>
+                                    <option value="icon-Inicio" data-icon="icon-Inicio"> &nbsp;icon-Inicio</option>
+                                    <option value="icon-like" data-icon="icon-like"> &nbsp;icon-like</option>
+                                    <option value="icon-list" data-icon="icon-list"> &nbsp;icon-list</option>
+                                    <option value="icon-login" data-icon="icon-login"> &nbsp;icon-login</option>
+                                    <option value="icon-logout" data-icon="icon-logout"> &nbsp;icon-logout</option>
+                                    <option value="icon-loop" data-icon="icon-loop"> &nbsp;icon-loop</option>
+                                    <option value="icon-microphone" data-icon="icon-microphone"> &nbsp;icon-microphone</option>
+                                    <option value="icon-music-tone" data-icon="icon-music-tone"> &nbsp;icon-music-tone</option>
+                                    <option value="icon-music-tone-alt" data-icon="icon-music-tone-alt"> &nbsp;icon-music-tone-alt</option>
+                                    <option value="icon-note" data-icon="icon-note"> &nbsp;icon-note</option>
+                                    <option value="icon-pencil" data-icon="icon-pencil"> &nbsp;icon-pencil</option>
+                                    <option value="icon-pie-chart" data-icon="icon-pie-chart"> &nbsp;icon-pie-chart</option>
+                                    <option value="icon-question" data-icon="icon-question"> &nbsp;icon-question</option>
+                                    <option value="icon-rocket" data-icon="icon-rocket"> &nbsp;icon-rocket</option>
+                                    <option value="icon-share" data-icon="icon-share"> &nbsp;icon-share</option>
+                                    <option value="icon-share-alt" data-icon="icon-share-alt"> &nbsp;icon-share-alt</option>
+                                    <option value="icon-shuffle" data-icon="icon-shuffle"> &nbsp;icon-shuffle</option>
+                                    <option value="icon-size-actual" data-icon="icon-size-actual"> &nbsp;icon-size-actual</option>
+                                    <option value="icon-size-fullscreen" data-icon="icon-size-fullscreen"> &nbsp;icon-size-fullscreen</option>
+                                    <option value="icon-support" data-icon="icon-support"> &nbsp;icon-support</option>
+                                    <option value="icon-tag" data-icon="icon-tag"> &nbsp;icon-tag</option>
+                                    <option value="icon-trash" data-icon="icon-trash"> &nbsp;icon-trash</option>
+                                    <option value="icon-umbrella" data-icon="icon-umbrella"> &nbsp;icon-umbrella</option>
+                                    <option value="icon-wrench" data-icon="icon-wrench"> &nbsp;icon-wrench</option>
+                                    <option value="icon-ban" data-icon="icon-ban"> &nbsp;icon-ban</option>
+                                    <option value="icon-bubble" data-icon="icon-bubble"> &nbsp;icon-bubble</option>
+                                    <option value="icon-camcorder" data-icon="icon-camcorder"> &nbsp;icon-camcorder</option>
+                                    <option value="icon-camera" data-icon="icon-camera"> &nbsp;icon-camera</option>
+                                    <option value="icon-check" data-icon="icon-check"> &nbsp;icon-check</option>
+                                    <option value="icon-clock" data-icon="icon-clock"> &nbsp;icon-clock</option>
+                                    <option value="icon-close" data-icon="icon-close"> &nbsp;icon-close</option>
+                                    <option value="icon-cloud-download" data-icon="icon-cloud-download"> &nbsp;icon-cloud-download</option>
+                                    <option value="icon-cloud-upload" data-icon="icon-cloud-upload"> &nbsp;icon-cloud-upload</option>
+                                    <option value="icon-doc" data-icon="icon-doc"> &nbsp;icon-doc</option>
+                                    <option value="icon-envelope" data-icon="icon-envelope"> &nbsp;icon-envelope</option>
+                                    <option value="icon-eye" data-icon="icon-eye"> &nbsp;icon-eye</option>
+                                    <option value="icon-flag" data-icon="icon-flag"> &nbsp;icon-flag</option>
+                                    <option value="icon-folder" data-icon="icon-folder"> &nbsp;icon-folder</option>
+                                    <option value="icon-heart" data-icon="icon-heart"> &nbsp;icon-heart</option>
+                                    <option value="icon-info" data-icon="icon-info"> &nbsp;icon-info</option>
+                                    <option value="icon-key" data-icon="icon-key"> &nbsp;icon-key</option>
+                                    <option value="icon-link" data-icon="icon-link"> &nbsp;icon-link</option>
+                                    <option value="icon-lock" data-icon="icon-lock"> &nbsp;icon-lock</option>
+                                    <option value="icon-lock-open" data-icon="icon-lock-open"> &nbsp;icon-lock-open</option>
+                                    <option value="icon-magnifier" data-icon="icon-magnifier"> &nbsp;icon-magnifier</option>
+                                    <option value="icon-magnifier-add" data-icon="icon-magnifier-add"> &nbsp;icon-magnifier-add</option>
+                                    <option value="icon-magnifier-remove" data-icon="icon-magnifier-remove"> &nbsp;icon-magnifier-remove</option>
+                                    <option value="icon-paper-clip" data-icon="icon-paper-clip"> &nbsp;icon-paper-clip</option>
+                                    <option value="icon-paper-plane" data-icon="icon-paper-plane"> &nbsp;icon-paper-plane</option>
+                                    <option value="icon-plus" data-icon="icon-plus"> &nbsp;icon-plus</option>
+                                    <option value="icon-pointer" data-icon="icon-pointer"> &nbsp;icon-pointer</option>
+                                    <option value="icon-power" data-icon="icon-power"> &nbsp;icon-power</option>
+                                    <option value="icon-refresh" data-icon="icon-refresh"> &nbsp;icon-refresh</option>
+                                    <option value="icon-reload" data-icon="icon-reload"> &nbsp;icon-reload</option>
+                                    <option value="icon-settings" data-icon="icon-settings"> &nbsp;icon-settings</option>
+                                    <option value="icon-star" data-icon="icon-star"> &nbsp;icon-star</option>
+                                    <option value="icon-symbol-female" data-icon="icon-symbol-female"> &nbsp;icon-symbol-female</option>
+                                    <option value="icon-symbol-male" data-icon="icon-symbol-male"> &nbsp;icon-symbol-male</option>
+                                    <option value="icon-target" data-icon="icon-target"> &nbsp;icon-target</option>
+                                    <option value="icon-volume-1" data-icon="icon-volume-1"> &nbsp;icon-volume-1</option>
+                                    <option value="icon-volume-2" data-icon="icon-volume-2"> &nbsp;icon-volume-2</option>
+                                    <option value="icon-volume-off" data-icon="icon-volume-off"> &nbsp;icon-volume-off</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md-checkbox">
+                    @Html.CheckBoxFor(x => x.Menu, new { @class = "md-check", @type = "checkbox", @onchange = "OnMenuChange()", @checked = Model.Menu ? "checked" : "" })
+                    <label for="Menu">
+                        <span></span>
+                        <span class="check"></span>
+                        <span class="box"></span> Menu
+                    </label>
+                </div>
+                <div id="acciones" hidden>
+                    <br />
+                    <label class="control-label"> Acción </label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <select id="accion_selector" class="bs-select form-control">
+                                    @{
+                                        List<AccionPermiso> ass = Enum.GetValues(typeof(AccionPermiso)).Cast<AccionPermiso>().ToList();
+                                        foreach (var item in ass)
+                                        {
+                                            <option value="@((int)item)">@item.ToString()</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="md-checkbox">
+                    @Html.CheckBoxFor(x => x.Seleccionable, new { @class = "md-check", @type = "checkbox", @checked = Model.Seleccionable ? "checked" : "" })
+                    <label for="Seleccionable">
+                        <span></span>
+                        <span class="check"></span>
+                        <span class="box"></span> Seleccionable
+                    </label>
+                </div>
+                <br />
+                <button class="btn btn-default" data-toggle="modal" data-target="#defaultModal">Volver</button>
+                <input type="button" value="@lblBotonGuardar" class="btn btn-success" onclick="ProcesarPermiso()" />
+            </div>
+        </div><!--.panel-->
+    </div><!--.col-md-12-->
+</div><!--.row-->
+<!-- Modals -->
+<div class="modal scale fade" id="defaultModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Diálogo de confirmación</h4>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro que desea cancelar la operación y volver a la lista de permisos sin guardar los cambios?
+            </div>
+            <div class="modal-footer">
+                <button id="btn_cancelar" type="button" class="btn btn-flat btn-default" data-dismiss="modal"> Cancelar </button>
+                <button type="button" class="btn btn-flat btn-primary" onclick="volver()"> Aceptar </button>
+            </div>
+        </div><!--.modal-content-->
+    </div><!--.modal-dialog-->
+</div><!--.modal-->

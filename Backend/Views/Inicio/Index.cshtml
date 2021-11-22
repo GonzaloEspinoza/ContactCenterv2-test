@@ -1,0 +1,508 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+
+@{
+    ViewBag.Title = ViewBag.Titulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    DataP.Usuario oUsuario = Util.SessionToUsuario<DataP.Usuario>(Session["Usuario"]);
+
+}
+@section EtiquetaHead
+{
+<link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/metronic/global/plugins/morris/morris.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+
+}
+
+
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <!-- BEGIN PAGE TITLE -->
+        <div class="page-title">
+            <h1>
+                INICIO - BIENVENIDO @oUsuario.Funcionario.sNombre @oUsuario.Funcionario.sApellido
+                
+            </h1>
+            <!--<div id="fecha" class="col-md-3" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                <i class="fa fa-calendar"></i>&nbsp;
+                <span></span> <i class="fa fa-caret-down"></i>
+            </div>-->
+        </div>
+        <!-- END PAGE TITLE -->
+    </div>
+
+@*
+    <!-- END PAGE HEAD-->
+    <!-- BEGIN PAGE BASE CONTENT -->
+    <div class="row widget-row">
+
+        <div class="col-md-3">
+            <!-- BEGIN WIDGET THUMB -->
+            <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+                <h4 class="widget-thumb-heading">Total ventas</h4>
+                <div class="widget-thumb-wrap">
+                    <i class="widget-thumb-icon bg-green icon-bulb"></i>
+                    <div class="widget-thumb-body">
+                        <span class="widget-thumb-subtitle">BOB</span>
+                        <span class="widget-thumb-body-stat" id="totalVentas">0</span>
+                    </div>
+                </div>
+            </div>
+            <!-- END WIDGET THUMB -->
+        </div>
+        <div class="col-md-3">
+            <!-- BEGIN WIDGET THUMB -->
+            <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+                <h4 class="widget-thumb-heading">Total comisión</h4>
+                <div class="widget-thumb-wrap">
+                    <i class="widget-thumb-icon bg-red icon-layers"></i>
+                    <div class="widget-thumb-body">
+                        <span class="widget-thumb-subtitle">BOB</span>
+                        <span class="widget-thumb-body-stat" id="totalComision">0</span>
+                    </div>
+                </div>
+            </div>
+            <!-- END WIDGET THUMB -->
+        </div>
+        <div class="col-md-3">
+            <!-- BEGIN WIDGET THUMB -->
+            <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+                <h4 class="widget-thumb-heading">Clientes nuevos</h4>
+                <div class="widget-thumb-wrap">
+                    <i class="widget-thumb-icon bg-purple icon-screen-desktop"></i>
+                    <div class="widget-thumb-body">
+                        <span class="widget-thumb-subtitle">CLIENTES</span>
+                        <span class="widget-thumb-body-stat" id="totalClientesNuevos" >0</span>
+                    </div>
+                </div>
+            </div>
+            <!-- END WIDGET THUMB -->
+        </div>
+        <div class="col-md-3">
+            <!-- BEGIN WIDGET THUMB -->
+            <div class="widget-thumb widget-bg-color-white text-uppercase margin-bottom-20 bordered">
+                <h4 class="widget-thumb-heading">Numero de ventas</h4>
+                <div class="widget-thumb-wrap">
+                    <i class="widget-thumb-icon bg-blue icon-bar-chart"></i>
+                    <div class="widget-thumb-body">
+                        <span class="widget-thumb-subtitle">VENTAS</span>
+                        <span class="widget-thumb-body-stat" id="numeroVentas">0</span>
+                    </div>
+                </div>
+            </div>
+            <!-- END WIDGET THUMB -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-green">
+                        <span class="caption-subject bold uppercase">Numero de ventas</span>
+                        <span class="caption-helper">cantidad x fecha</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="dashboard_amchart_1" class="CSSAnimationChart"  style="height:300px !important;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <!-- BEGIN PORTLET-->
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-bar-chart font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Total neto ventas</span>
+                        <span class="caption-helper">BOB x fecha</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="dashboard_amchart_2" class="CSSAnimationChart"  style="height:300px !important;"></div>
+                </div>
+            </div>
+            <!-- END PORTLET-->
+        </div>
+        <div class="col-md-6 col-sm-6">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-green">
+                        <span class="caption-subject bold uppercase">Servicios mas pedidos </span>
+                        <span class="caption-helper">Cantidad en ventas</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="dashboard_amchart_3" class="CSSAnimationChart"  style="height:300px !important;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-green">
+                        <span class="caption-subject bold uppercase">Productos mas pedidos </span>
+                        <span class="caption-helper">Cantidad en ventas</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="dashboard_amchart_4" class="CSSAnimationChart"  style="height:300px !important;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE BASE CONTENT -->
+*@
+@section Scripts
+{
+
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/moment.min.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/morris/morris.min.js")"></script>
+
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/morris/raphael-min.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/counterup/jquery.waypoints.min.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/counterup/jquery.counterup.min.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/amcharts.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/serial.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/pie.js")"></script>
+
+
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/radar.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/themes/light.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amcharts/themes/patterns.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/ammap/ammap.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/ammap/maps/js/worldLow.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/amcharts/amstockcharts/amstock.js")"></script>
+
+
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/flot/jquery.flot.min.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/flot/jquery.flot.resize.min.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/flot/jquery.flot.categories.min.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js")"></script>
+<script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery.sparkline.min.js")"></script>
+    @*
+    <script type="text/javascript">
+        var data1 = [];
+        var data2 = [];
+        var data3 = [];
+        var data4 = [];
+        var Dashboard = function () {
+            return {
+                dashboard_amchart_1: function () {
+                    if ("undefined" != typeof AmCharts && 0 !== $("#dashboard_amchart_1").size()) {
+                        AmCharts.makeChart("dashboard_amchart_1", {
+                            type: "serial",
+                            fontSize: 12,
+                            fontFamily: "Open Sans",
+                            dataDateFormat: "YYYY-MM-DD",
+                            dataProvider: data1,
+                            addClassNames: !0,
+                            startDuration: 1,
+                            color: "#6c7b88",
+                            marginLeft: 0,
+                            categoryField: "date",
+                            categoryAxis: {
+                                parseDates: !0,
+                                minPeriod: "DD",
+                                autoGridCount: !1,
+                                gridCount: 50,
+                                gridAlpha: .1,
+                                gridColor: "#FFFFFF",
+                                axisColor: "#555555",
+                                dateFormats: [{
+                                    period: "DD",
+                                    format: "DD"
+                                }, {
+                                    period: "WW",
+                                    format: "MMM DD"
+                                }, {
+                                    period: "MM",
+                                    format: "MMM"
+                                }, {
+                                    period: "YYYY",
+                                    format: "YYYY"
+                                }]
+                            },
+                            valueAxes: [{
+                                id: "a1",
+                                title: "cantidad",
+                                gridAlpha: 0,
+                                axisAlpha: 0
+                            }, {
+                                id: "a2",
+                                position: "right",
+                                gridAlpha: 0,
+                                axisAlpha: 0,
+                                labelsEnabled: !1
+                            }],
+                            graphs: [{
+                                id: "g1",
+                                valueField: "cantidad",
+                                title: "cantidad",
+                                type: "column",
+                                fillAlphas: .7,
+                                valueAxis: "a1",
+                                balloonText: "[[value]]",
+                                legendValueText: "[[value]]",
+                                legendPeriodValueText: "total: [[value.sum]]",
+                                lineColor: "#08a3cc",
+                                alphaField: "alpha"
+                            }],
+                            chartCursor: {
+                                zoomable: !1,
+                                categoryBalloonDateFormat: "DD",
+                                cursorAlpha: 0,
+                                categoryBalloonColor: "#e26a6a",
+                                categoryBalloonAlpha: .8,
+                                valueBalloonsEnabled: !1
+                            },
+                            legend: {
+                                bulletType: "round",
+                                equalWidths: !1,
+                                valueWidth: 120,
+                                useGraphSettings: !0,
+                                color: "#6c7b88"
+                            }
+                        })
+                    }
+                },
+                dashboard_amchart_2: function () {
+                    if ("undefined" != typeof AmCharts && 0 !== $("#dashboard_amchart_2").size()) {
+                        AmCharts.makeChart("dashboard_amchart_2", {
+                            type: "serial",
+                            fontSize: 12,
+                            fontFamily: "Open Sans",
+                            dataDateFormat: "YYYY-MM-DD",
+                            dataProvider: data2,
+                            addClassNames: !0,
+                            startDuration: 1,
+                            color: "#6c7b88",
+                            marginLeft: 0,
+                            categoryField: "date",
+                            categoryAxis: {
+                                parseDates: !0,
+                                minPeriod: "DD",
+                                autoGridCount: !1,
+                                gridCount: 50,
+                                gridAlpha: .1,
+                                gridColor: "#FFFFFF",
+                                axisColor: "#555555",
+                                dateFormats: [{
+                                    period: "DD",
+                                    format: "DD"
+                                }, {
+                                    period: "WW",
+                                    format: "MMM DD"
+                                }, {
+                                    period: "MM",
+                                    format: "MMM"
+                                }, {
+                                    period: "YYYY",
+                                    format: "YYYY"
+                                }]
+                            },
+                            valueAxes: [{
+                                id: "a1",
+                                title: "cantidad",
+                                gridAlpha: 0,
+                                axisAlpha: 0
+                            }, {
+                                id: "a2",
+                                position: "right",
+                                gridAlpha: 0,
+                                axisAlpha: 0,
+                                labelsEnabled: !1
+                            }],
+                            graphs: [{
+                                id: "g1",
+                                valueField: "cantidad",
+                                title: "cantidad",
+                                type: "column",
+                                fillAlphas: .7,
+                                valueAxis: "a1",
+                                balloonText: "[[value]]",
+                                legendValueText: "[[value]]",
+                                legendPeriodValueText: "total: [[value.sum]]",
+                                lineColor: "#08a3cc",
+                                alphaField: "alpha"
+                            }],
+                            chartCursor: {
+                                zoomable: !1,
+                                categoryBalloonDateFormat: "DD",
+                                cursorAlpha: 0,
+                                categoryBalloonColor: "#e26a6a",
+                                categoryBalloonAlpha: .8,
+                                valueBalloonsEnabled: !1
+                            },
+                            legend: {
+                                bulletType: "round",
+                                equalWidths: !1,
+                                valueWidth: 120,
+                                useGraphSettings: !0,
+                                color: "#6c7b88"
+                            }
+                        })
+                    }
+                },
+                dashboard_amchart_3: function () {
+                    if ("undefined" != typeof AmCharts && 0 !== $("#dashboard_amchart_3").size()) {
+                        var e = AmCharts.makeChart("dashboard_amchart_3", {
+                            type: "pie",
+                            theme: "light",
+                            path: "../assets/global/plugins/amcharts/ammap/images/",
+                            dataProvider: data3,
+                            valueField: "value",
+                            titleField: "service",
+                            outlineAlpha: .4,
+                            depth3D: 15,
+                            balloonText: "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+                            angle: 30,
+                            "export": {
+                                enabled: !0
+                            }
+                        });
+                        jQuery(".chart-input").off().on("input change", function () {
+                            var t = jQuery(this).data("property"),
+                                a = e,
+                                i = Number(this.value);
+                            e.startDuration = 0, "innerRadius" == t && (i += "%"), a[t] = i, e.validateNow()
+                        })
+                    }
+                },
+                dashboard_amchart_4: function () {
+                    if ("undefined" != typeof AmCharts && 0 !== $("#dashboard_amchart_4").size()) {
+                        var e = AmCharts.makeChart("dashboard_amchart_4", {
+                            type: "pie",
+                            theme: "light",
+                            path: "../assets/global/plugins/amcharts/ammap/images/",
+                            dataProvider: data4,
+                            valueField: "value",
+                            titleField: "service",
+                            outlineAlpha: .4,
+                            depth3D: 15,
+                            balloonText: "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+                            angle: 30,
+                            "export": {
+                                enabled: !0
+                            }
+                        });
+                        jQuery(".chart-input").off().on("input change", function () {
+                            var t = jQuery(this).data("property"),
+                                a = e,
+                                i = Number(this.value);
+                            e.startDuration = 0, "innerRadius" == t && (i += "%"), a[t] = i, e.validateNow()
+                        })
+                    }
+                },
+                init: function () {
+                    this.dashboard_amchart_1();
+                    this.dashboard_amchart_2();
+                    this.dashboard_amchart_3();
+                    this.dashboard_amchart_4();
+                }
+            }
+        }();
+
+
+        App.isAngularJsApp() === !1 && jQuery(document).ready(function () {
+                var start = moment().startOf('month');
+                var end = moment().endOf('month');
+                $('#fecha').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    locale: {
+                        "customRangeLabel": "Personalizado",
+                    },
+                    ranges: {
+                        'Hoy': [moment(), moment()],
+                        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Los últimos 7 días': [moment().subtract(6, 'days'), moment()],
+                        'Los últimos 30 días': [moment().subtract(29, 'days'), moment()],
+                        'Este mes': [moment().startOf('month'), moment().endOf('month')],
+                        'Anterior mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, FormatearFecha);
+
+                FormatearFecha(start, end);
+
+                function FormatearFecha(start, end) {
+                    $('#fecha span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                };
+
+                $('#fecha').on('apply.daterangepicker', function(ev, picker) {
+                    console.log(picker.startDate.format('DD/MM/YYYY'));
+                    console.log(picker.endDate.format('DD/MM/YYYY'));
+                    cargarDatos(picker.startDate.format('DD/MM/YYYY'), picker.endDate.format('DD/MM/YYYY'));
+                });
+
+                cargarDatos($('#fecha').data('daterangepicker').startDate.format('DD/MM/YYYY'), $('#fecha').data('daterangepicker').endDate.format('DD/MM/YYYY'));
+
+
+                function cargarDatos(fechaInicio, fechaFin) {
+                    LimpiarMensaje();
+                    BloquearPantalla();
+                    $.ajax({
+                        url: "@Url.Action("Estadistica", "Inicio")",
+                        cache: false,
+                    data: {
+                        fechaInicio: fechaInicio,
+                        fechaFin: fechaFin
+                        },
+                    type: "POST",
+                    dataType: "script"
+                    }).complete(function (response) {
+                        var data = JSON.parse(response.responseText);
+                        $('#totalVentas').html(`<strong>` + data.totalVentas.toString() + `</strong>`);
+                        $('#totalComision').html(`<strong>` + data.totalComision.toString() + `</strong>`);
+                        $('#totalClientesNuevos').html(`<strong>` + data.totalClientesNuevos.toString() + `</strong>`);
+                        $('#numeroVentas').html(`<strong>` + data.numeroVentas.toString() + `</h1strong`);
+
+                        data1 = [];
+                        for (i = 0; i < data.data1.length ; i++) {
+                            data1.push({
+                                date: data.data1[i].Fecha,
+                                cantidad: data.data1[i].Cantidad
+                            });
+                        }
+                        data2 = [];
+                        for (i = 0; i < data.data2.length ; i++) {
+                            data2.push({
+                                date: data.data2[i].Fecha,
+                                cantidad: data.data2[i].Valor
+                            });
+                        }
+
+                        data3 = [];
+                        for (i = 0; i < data.data3.length ; i++) {
+                            data3.push({
+                                service: data.data3[i].Titulo,
+                                value: data.data3[i].Cantidad
+                            });
+                        }
+                        data4 = [];
+                        for (i = 0; i < data.data4.length ; i++) {
+                            data4.push({
+                                service: data.data4[i].Titulo,
+                                value: data.data4[i].Cantidad
+                            });
+                        }
+                        Dashboard.init();
+
+                        DesbloquearPantalla();
+                    }).done(function (response) {
+                        DesbloquearPantalla();
+                        console.log(response);
+                    }).error(function () {
+                        DesbloquearPantalla();
+                    });
+                };
+
+            Dashboard.init();
+        });
+    </script>
+    *@
+}

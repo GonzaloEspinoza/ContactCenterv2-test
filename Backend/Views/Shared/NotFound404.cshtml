@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var accion = ViewBag.Accion;
+    if (accion == null)
+    {
+        accion = "Index";
+    }
+    var parametros = ViewBag.Parametros;
+    if (parametros == null)
+    {
+        parametros = "";
+    }
+    else
+    {
+        parametros = "/" + parametros;
+    }
+}
+<!-- BEGIN CONTENT -->
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <div class="row">
+            <div class="col-md-12 page-500">
+                <div class="number font-blue"> 404 </div>
+                <div class="details">
+                    <h3>Contenido no existente.</h3>
+                    <p>
+                        @ViewBag.Mensaje
+                        <br />
+                    </p>
+                    <p>
+                        <a href="@Url.Action(accion, ViewBag.Controlador)@parametros" class="btn red btn-outline"> Volver a @ViewBag.Titulo </a>
+                        <br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+<!-- END CONTENT -->
+

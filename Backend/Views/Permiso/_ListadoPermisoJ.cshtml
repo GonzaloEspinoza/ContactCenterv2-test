@@ -1,0 +1,19 @@
+﻿@using DataP;
+@model Permiso
+<li class="dd-item" data-id="@Model.PermisoId">
+    <div class="dd-handle"> @Model.Nombre - @Model.Descripcion </div>
+    @{
+        if (Model.Hijos != null && Model.Hijos.Count > 0)
+        {
+            <ol class="dd-list">
+                @{
+                    List<Permiso> Permisos = Model.Hijos.OrderBy(x => x.Orden).ToList();
+                    foreach (var item in Permisos)
+                    {
+                        @Html.Partial("_ListadoPermisoJ", item)
+                    }
+                }
+            </ol>
+                    }
+    }
+</li>

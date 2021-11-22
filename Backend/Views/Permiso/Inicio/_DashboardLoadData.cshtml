@@ -1,0 +1,46 @@
+﻿@using Entidad;
+@model EDashBoardOficial
+
+@{
+    <script>
+        dataDashboardVenta = [];
+        dataDashboardEmpresaParticipante = [];
+        dataDashboardUsuario = [];
+
+        document.getElementById('txtEmpresa').setAttribute('data-value', '@Model.EdicionGeneral.NroEmpresa');
+        document.getElementById('txtVenta').setAttribute('data-value', '@Model.EdicionGeneral.TotalVenta');
+        document.getElementById('txtUsuario').setAttribute('data-value', '@Model.EdicionGeneral.UsuarioRegistrado');
+
+        $('#txtEmpresa').counterUp();
+        $('#txtVenta').counterUp();
+        $('#txtUsuario').counterUp();
+
+
+        @foreach (EDashBoardVenta x in Model.VentaRealizadas.Reverse<EDashBoardVenta>())
+        {
+
+            @:dataDashboardVenta.push(["@x.Descripcion", @(x.TotalVenta)]);
+        }
+
+          @foreach (EDashBoardUsuarios x in Model.UsuariosRegistrados.Reverse<EDashBoardUsuarios>())
+          {
+            @:dataDashboardUsuario.push(["@x.Descripcion", @((int)x.CantidadUsuario)]);
+            }
+
+         @foreach (EDashBoardEmpresa x in Model.EmpresasParticipantes.Reverse<EDashBoardEmpresa>())
+         {
+            @:dataDashboardEmpresaParticipante.push(["@x.Descripcion", @((int)x.CantidadEmpresa)]);
+        }
+
+        $(document).ready(function () {
+            pintarBarChart($('#site_activities'), dataDashboardVenta, $('#site_activities_content'), $('#site_activities_loading'));
+            pintarBarChart($('#site_activities_2'), dataDashboardEmpresaParticipante, $('#site_activities_content_2'), $('#site_activities_loading_2'));
+            pintarBarChart($('#site_activities_3'), dataDashboardUsuario, $('#site_activities_content_3'), $('#site_activities_loading_3'));
+        });
+
+
+    </script>
+
+
+}
+

@@ -1,0 +1,69 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model List<EHilo>
+
+@{
+    foreach (var item in Model)
+    {
+        <li class="messaging-member messaging-member--new messaging-member--online">
+            <div class="messaging-member__wrapper" onclick="abrirChat('@item.EventoHilo.nEventoHiloId','@item.EventoHilo.nEventoId');">
+                <div class="messaging-member__avatar">
+                    <img src="~/Content/img/user.png" alt="@item.Cliente.sNombres @item.Cliente.sApellidos" loading="lazy">
+                    <div class="user-status"></div>
+                </div>
+                <span class="messaging-member__name"> @item.Cliente.sNombres @item.Cliente.sApellidos</span>
+
+                @if (item.Mensaje == null)
+                {
+                    <span class="messaging-member__message">
+                        Nuevo evento asignado <strong style="font-size: 10px;font-weight: 200;">@item.FechaCreacion.ToString("dd/MM/yyyy hh:mm")</strong>
+                    </span>
+
+                }
+                else if (item.Mensaje.sTexto == "")
+                {
+                    <span class="messaging-member__message">
+                        Imagen <strong style="font-size: 10px;font-weight: 200;">@item.Mensaje.dFechaCreacion.ToString("dd/MM/yyyy hh:mm")</strong>
+                    </span>
+                }
+                else
+                {
+                    <span class="messaging-member__message">
+
+                        @if (item.Mensaje.sTexto.Length >= 30)
+                        {
+                            @item.Mensaje.sTexto.Substring(0, 30)
+                        }
+                        else
+                        {
+                            @item.Mensaje.sTexto.Substring(0, @item.Mensaje.sTexto.Length - 1)
+                        }
+                        <strong style="font-size: 10px;font-weight: 200;">.... @item.Mensaje.dFechaCreacion.ToString("dd/MM/yyyy hh:mm")</strong>
+                    </span>
+                }
+                @if (item.EstadoEvento.nEstadoEventoId == (int)EstadoDeEvento.SinAsignacion)
+                {
+                    <span class="messaging-member__message label label-sm label-danger">
+                        @item.EstadoEvento.sNombre
+                    </span>
+                }
+                else if (item.EstadoEvento.nEstadoEventoId == (int)EstadoDeEvento.Asignado)
+                {
+                    <span class="messaging-member__message label label-sm label-success">
+                       @item.EstadoEvento.sNombre
+                    </span>
+                }
+                else if (item.EstadoEvento.nEstadoEventoId == (int)EstadoDeEvento.Reasignado)
+                {
+                    <span class="messaging-member__message label label-sm label-warning">
+                        @item.EstadoEvento.sNombre
+                    </span>
+                }
+            </div>
+        </li>
+    }
+}
+

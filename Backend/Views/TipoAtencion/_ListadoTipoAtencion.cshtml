@@ -1,0 +1,97 @@
+﻿
+@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model List<ETipoAtencion>
+@{
+    LPermiso LPermiso = LPermiso.Instancia.LPermiso;
+    List<Permiso> HijosMenu = ViewBag.PermisosH;
+    bool PermisoModificar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Modificar);
+    bool PermisoEliminar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Eliminar);
+    bool PermisoListar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar);
+    bool PermisoVer = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Ver);
+
+}
+@{
+
+    <table class="table table-striped table-bordered table-hover" id="sample_2">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOMBRE</th>
+                <th>COLOR</th>
+                <th>AREA</th>
+                <th>ESTADO</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+               
+                    foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.TipoAtencionID</td>
+                            <td>@p.Nombre</td>
+                            <td style="background-color: @p.Color; color:  @p.Color ">@p.Color</td>
+                            <td>@p.Area.sNombre</td>
+                            <td>
+                                @{
+                                    if (p.Estado == (int)Estado.Habilitado)
+                                    {
+                                            <span class="label label-sm label-success"> Habilitado </span>
+                                    }
+                                    else
+                                    {
+                                            <span class="label label-sm label-danger"> Deshabilitado </span>
+                                    }
+                                }
+
+                            </td>
+
+
+                            <td>
+                                @{
+
+                                    if (PermisoVer)
+                                    {
+                                        <a class="btn btn-outline btn-circle dark btn-sm black green-haze" href="@Url.Action("detalle", "TipoAtencion", new { id = p.TipoAtencionID})">
+                                            <i class="fa fa-eye"></i> Ver
+                                        </a>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{
+
+                                    if (PermisoModificar)
+                                    {
+                                    <a href="@Url.Action("TipoAtencion", "TipoAtencion", new { id = p.TipoAtencionID })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple">
+                                        <i class="fa fa-edit"></i> Editar
+                                    </a>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{
+
+                                    if (PermisoEliminar)
+                                    {
+                                        <a onclick="changeestate('@p.Nombre','eliminar','eliminado','2','@p.TipoAtencionID' ,'@Url.Action("CambiarEstado", "TipoAtencion")')" class="btn btn-outline btn-circle dark btn-sm black">
+                                            <i class="fa fa-trash-o"></i> Eliminar
+                                        </a>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+            }
+        </tbody>
+    </table>
+
+
+}

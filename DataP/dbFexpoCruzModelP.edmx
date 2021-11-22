@@ -1,0 +1,2229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dbFexpoCruzModel.Store" Provider="Npgsql" ProviderManifestToken="13.3" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="nAreaId" />
+          </Key>
+          <Property Name="nAreaId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sNombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="nEmpresaId" Type="int8" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="int8" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="int8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bitacora">
+          <Key>
+            <PropertyRef Name="BitacoraId" />
+          </Key>
+          <Property Name="BitacoraId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Accion" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="FechaHora" Type="timestamp" Nullable="false" />
+          <Property Name="UsuarioId" Type="int8" />
+          <Property Name="Transaccion" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Detalle" Type="varchar" MaxLength="1000" />
+          <Property Name="Tipo" Type="int4" Nullable="false" />
+          <Property Name="IdImplicado" Type="int8" />
+        </EntityType>
+        <EntityType Name="CalificacionColaborador">
+          <Key>
+            <PropertyRef Name="nCalificacionColaboradorId" />
+          </Key>
+          <Property Name="nCalificacionColaboradorId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sComentario" Type="text" Nullable="false" />
+          <Property Name="nPuntuacion" Type="int4" Nullable="false" />
+          <Property Name="nFuncionarioId" Type="int8" Nullable="false" />
+          <Property Name="nClienteId" Type="int8" Nullable="false" />
+          <Property Name="nEventoId" Type="int8" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="nCalificado" Type="int4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CategoriaPreguntaFrecuente">
+          <Key>
+            <PropertyRef Name="nCategoriaPreguntaFrecuenteId" />
+          </Key>
+          <Property Name="nCategoriaPreguntaFrecuenteId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sNombre" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="nEmpresaId" Type="int8" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="int8" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="int8" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="nCiudadId" />
+          </Key>
+          <Property Name="nCiudadId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sNombre" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sBandera" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="nPaisId" Type="int8" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="int8" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="int8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="nClienteId" />
+          </Key>
+          <Property Name="nClienteId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sCodigoCliente" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sNombres" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sApellidos" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sUrlFoto" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sTokenNotificacionFirebase" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sTipoSistemaOperativo" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="nEmpresaId" Type="int8" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="sCodigoPais" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sNumeroCelular" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sCorreo" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dia">
+          <Key>
+            <PropertyRef Name="nDiaId" />
+          </Key>
+          <Property Name="nDiaId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sNombre" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="nEmpresaId" />
+          </Key>
+          <Property Name="nEmpresaId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sNombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="sUrl" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="sLogo" Type="varchar" MaxLength="255" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="int8" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="int8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EstadoEvento">
+          <Key>
+            <PropertyRef Name="nEstadoEventoId" />
+          </Key>
+          <Property Name="nEstadoEventoId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sDescripcion" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sNombre" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Evento">
+          <Key>
+            <PropertyRef Name="nEventoId" />
+          </Key>
+          <Property Name="nEventoId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nEstadoEventoId" Type="int8" Nullable="false" />
+          <Property Name="nClienteId" Type="int8" Nullable="false" />
+          <Property Name="nTipoAtencionId" Type="int8" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventoHilo">
+          <Key>
+            <PropertyRef Name="nEventoHiloId" />
+          </Key>
+          <Property Name="nEventoHiloId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nHiloId" Type="int8" Nullable="false" />
+          <Property Name="nEventoId" Type="int8" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Funcionario">
+          <Key>
+            <PropertyRef Name="nFuncionarioId" />
+          </Key>
+          <Property Name="nFuncionarioId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sNombre" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="sApellido" Type="varchar" MaxLength="35" />
+          <Property Name="sCi" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="nEstado" Type="int4" />
+          <Property Name="nSexo" Type="int4" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="int8" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="int8" Nullable="false" />
+          <Property Name="dtFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dtFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="sFotoPefil" Type="varchar" MaxLength="255" />
+          <Property Name="nTipo" Type="int4" />
+          <Property Name="nAreaId" Type="int8" />
+          <Property Name="nCiudadId" Type="int8" />
+          <Property Name="nPuntaje" Type="numeric" Precision="25" Scale="2" />
+        </EntityType>
+        <EntityType Name="Hilo">
+          <Key>
+            <PropertyRef Name="nHiloId" />
+          </Key>
+          <Property Name="nHiloId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sCodigo" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="nFuncionarioId" Type="int8" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="nActual" Type="int4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HistorialEstadoEvento">
+          <Key>
+            <PropertyRef Name="nHistorialEstadoEventoId" />
+          </Key>
+          <Property Name="nHistorialEstadoEventoId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nEstadoEventoId" Type="int8" Nullable="false" />
+          <Property Name="nEventoId" Type="int8" Nullable="false" />
+          <Property Name="sDescripcion" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HorarioColaborador">
+          <Key>
+            <PropertyRef Name="nHorarioFuncionarioId" />
+          </Key>
+          <Property Name="nHorarioFuncionarioId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tHoraInicio" Type="time" Precision="5" Nullable="false" />
+          <Property Name="tHoraFin" Type="time" Precision="5" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="nFuncionarioId" Type="int8" Nullable="false" />
+          <Property Name="nDiaId" Type="int8" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="int8" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="int8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Mensaje">
+          <Key>
+            <PropertyRef Name="nMensajeId" />
+          </Key>
+          <Property Name="nMensajeId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sTexto" Type="text" Nullable="false" />
+          <Property Name="sArchivo" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="nEventoHiloId" Type="int8" Nullable="false" />
+          <Property Name="nClienteId" Type="int8" />
+          <Property Name="nFuncionarioId" Type="int8" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotificacionFuncionario">
+          <Key>
+            <PropertyRef Name="nNotificacionFuncionarioId" />
+          </Key>
+          <Property Name="nNotificacionFuncionarioId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nFuncionarioId" Type="int8" Nullable="false" />
+          <Property Name="sTitulo" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sDescripcion" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="sUrl" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="nLeido" Type="int4" Nullable="false" />
+          <Property Name="nTipoNotificacion" Type="int4" Nullable="false" />
+          <Property Name="nIdImplicado" Type="int8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pais">
+          <Key>
+            <PropertyRef Name="nPaisId" />
+          </Key>
+          <Property Name="nPaisId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sNombre" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sCodigo" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sBandera" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="int8" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="int8" Nullable="false" />
+          <Property Name="sSiglaMoneda" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sMoneda" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sSiglaPais" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="nDiferenciaHorario" Type="int4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Perfil">
+          <Key>
+            <PropertyRef Name="PerfilId" />
+          </Key>
+          <Property Name="PerfilId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tipo" Type="int4" Nullable="false" />
+          <Property Name="Estado" Type="int4" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="120" Nullable="false" />
+          <Property Name="Decripcion" Type="varchar" MaxLength="510" Nullable="false" />
+          <Property Name="Editable" Type="bool" Nullable="false" />
+          <Property Name="Seleccionable" Type="bool" Nullable="false" />
+          <Property Name="FechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="FechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="UsuarioCreadorId" Type="int8" />
+          <Property Name="UsuarioModificadorId" Type="int8" />
+        </EntityType>
+        <EntityType Name="PerfilPermiso">
+          <Key>
+            <PropertyRef Name="PermisoId" />
+            <PropertyRef Name="PerfilId" />
+          </Key>
+          <Property Name="PermisoId" Type="int8" Nullable="false" />
+          <Property Name="PerfilId" Type="int8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permiso">
+          <Key>
+            <PropertyRef Name="PermisoId" />
+          </Key>
+          <Property Name="PermisoId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Tipo" Type="int4" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="155" />
+          <Property Name="PermisoPadreId" Type="int8" />
+          <Property Name="Pantalla" Type="varchar" MaxLength="400" Nullable="false" />
+          <Property Name="Orden" Type="int4" Nullable="false" />
+          <Property Name="Menu" Type="bool" Nullable="false" />
+          <Property Name="Seleccionable" Type="bool" Nullable="false" />
+          <Property Name="IconoMenu" Type="varchar" MaxLength="40" />
+          <Property Name="Accion" Type="int4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PreguntaFrecuente">
+          <Key>
+            <PropertyRef Name="nPreguntaFrecuenteId" />
+          </Key>
+          <Property Name="nPreguntaFrecuenteId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sPregunta" Type="text" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="nTipoAtencionId" Type="int8" Nullable="false" />
+          <Property Name="nCategoriaPreguntaFrecuenteId" Type="int8" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoAtencion">
+          <Key>
+            <PropertyRef Name="nTipoAtencionId" />
+          </Key>
+          <Property Name="nTipoAtencionId" Type="int8" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sNombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nEstado" Type="int4" Nullable="false" />
+          <Property Name="nAreaId" Type="int8" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="int8" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="int8" Nullable="false" />
+          <Property Name="sColor" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="UsuarioId" />
+          </Key>
+          <Property Name="UsuarioId" Type="int8" Nullable="false" />
+          <Property Name="Estado" Type="int4" Nullable="false" />
+          <Property Name="TipoUsuario" Type="int4" Nullable="false" />
+          <Property Name="NickName" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="PrimeraVez" Type="bool" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="PasswordTransitoria" Type="varchar" MaxLength="200" />
+          <Property Name="AccesoAplicacion" Type="bool" Nullable="false" />
+          <Property Name="FechaCreacion" Type="timestamp" Nullable="false" />
+          <Property Name="FechaModificacion" Type="timestamp" Nullable="false" />
+          <Property Name="UsuarioCreadorId" Type="int8" />
+          <Property Name="UsuarioModificadorId" Type="int8" />
+          <Property Name="sLastPushIdWeb" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="UsuarioPerfil">
+          <Key>
+            <PropertyRef Name="UsuarioId" />
+            <PropertyRef Name="PerfilId" />
+          </Key>
+          <Property Name="UsuarioId" Type="int8" Nullable="false" />
+          <Property Name="PerfilId" Type="int8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UsuarioPermiso">
+          <Key>
+            <PropertyRef Name="PermisoId" />
+            <PropertyRef Name="UsuarioId" />
+          </Key>
+          <Property Name="PermisoId" Type="int8" Nullable="false" />
+          <Property Name="UsuarioId" Type="int8" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__AdmFuncio__nArea__5BAD9CC8_Funcionario">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="nAreaId" />
+            </Principal>
+            <Dependent Role="Funcionario">
+              <PropertyRef Name="nAreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AdmFuncio__nCiud__5CA1C101_Funcionario">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="nCiudadId" />
+            </Principal>
+            <Dependent Role="Funcionario">
+              <PropertyRef Name="nCiudadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__dFech__67DE6983_CalificacionColaborador">
+          <End Role="Evento" Type="Self.Evento" Multiplicity="1" />
+          <End Role="CalificacionColaborador" Type="Self.CalificacionColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Evento">
+              <PropertyRef Name="nEventoId" />
+            </Principal>
+            <Dependent Role="CalificacionColaborador">
+              <PropertyRef Name="nEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__nClie__68D28DBC_CalificacionColaborador">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="CalificacionColaborador" Type="Self.CalificacionColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="nClienteId" />
+            </Principal>
+            <Dependent Role="CalificacionColaborador">
+              <PropertyRef Name="nClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__nFunc__69C6B1F5_CalificacionColaborador">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="CalificacionColaborador" Type="Self.CalificacionColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="CalificacionColaborador">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Categoria__dFech__54CB950F_CategoriaPreguntaFrecuente">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="CategoriaPreguntaFrecuente" Type="Self.CategoriaPreguntaFrecuente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="nEmpresaId" />
+            </Principal>
+            <Dependent Role="CategoriaPreguntaFrecuente">
+              <PropertyRef Name="nEmpresaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ciudad__nUsuario__42E1EEFE_Ciudad">
+          <End Role="Pais" Type="Self.Pais" Multiplicity="1" />
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pais">
+              <PropertyRef Name="nPaisId" />
+            </Principal>
+            <Dependent Role="Ciudad">
+              <PropertyRef Name="nPaisId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cliente__dFechaM__7849DB76_Cliente">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="nEmpresaId" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="nEmpresaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evento__nCliente__1209AD79_Evento">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Evento" Type="Self.Evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="nClienteId" />
+            </Principal>
+            <Dependent Role="Evento">
+              <PropertyRef Name="nClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evento__nEstadoE__13F1F5EB_Evento">
+          <End Role="EstadoEvento" Type="Self.EstadoEvento" Multiplicity="1" />
+          <End Role="Evento" Type="Self.Evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoEvento">
+              <PropertyRef Name="nEstadoEventoId" />
+            </Principal>
+            <Dependent Role="Evento">
+              <PropertyRef Name="nEstadoEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evento__nTipoAte__12FDD1B2_Evento">
+          <End Role="TipoAtencion" Type="Self.TipoAtencion" Multiplicity="1" />
+          <End Role="Evento" Type="Self.Evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoAtencion">
+              <PropertyRef Name="nTipoAtencionId" />
+            </Principal>
+            <Dependent Role="Evento">
+              <PropertyRef Name="nTipoAtencionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EventoHil__nEven__214BF109_EventoHilo">
+          <End Role="Evento" Type="Self.Evento" Multiplicity="1" />
+          <End Role="EventoHilo" Type="Self.EventoHilo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Evento">
+              <PropertyRef Name="nEventoId" />
+            </Principal>
+            <Dependent Role="EventoHilo">
+              <PropertyRef Name="nEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EventoHil__nHilo__2057CCD0_EventoHilo">
+          <End Role="Hilo" Type="Self.Hilo" Multiplicity="1" />
+          <End Role="EventoHilo" Type="Self.EventoHilo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hilo">
+              <PropertyRef Name="nHiloId" />
+            </Principal>
+            <Dependent Role="EventoHilo">
+              <PropertyRef Name="nHiloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hilo__nFuncionar__1D7B6025_Hilo">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="0..1" />
+          <End Role="Hilo" Type="Self.Hilo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="Hilo">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__nEsta__16CE6296_HistorialEstadoEvento">
+          <End Role="EstadoEvento" Type="Self.EstadoEvento" Multiplicity="1" />
+          <End Role="HistorialEstadoEvento" Type="Self.HistorialEstadoEvento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoEvento">
+              <PropertyRef Name="nEstadoEventoId" />
+            </Principal>
+            <Dependent Role="HistorialEstadoEvento">
+              <PropertyRef Name="nEstadoEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__nEven__17C286CF_HistorialEstadoEvento">
+          <End Role="Evento" Type="Self.Evento" Multiplicity="1" />
+          <End Role="HistorialEstadoEvento" Type="Self.HistorialEstadoEvento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Evento">
+              <PropertyRef Name="nEventoId" />
+            </Principal>
+            <Dependent Role="HistorialEstadoEvento">
+              <PropertyRef Name="nEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HorarioFu__nFunc__625A9A57_HorarioColaborador">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="HorarioColaborador" Type="Self.HorarioColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="HorarioColaborador">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HorarioFu__nUsua__6166761E_HorarioColaborador">
+          <End Role="Dia" Type="Self.Dia" Multiplicity="1" />
+          <End Role="HorarioColaborador" Type="Self.HorarioColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dia">
+              <PropertyRef Name="nDiaId" />
+            </Principal>
+            <Dependent Role="HorarioColaborador">
+              <PropertyRef Name="nDiaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mensaje__nClient__2DB1C7EE_Mensaje">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="nClienteId" />
+            </Principal>
+            <Dependent Role="Mensaje">
+              <PropertyRef Name="nClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mensaje__nEvento__2CBDA3B5_Mensaje">
+          <End Role="EventoHilo" Type="Self.EventoHilo" Multiplicity="1" />
+          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventoHilo">
+              <PropertyRef Name="nEventoHiloId" />
+            </Principal>
+            <Dependent Role="Mensaje">
+              <PropertyRef Name="nEventoHiloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mensaje__nFuncio__2EA5EC27_Mensaje">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="0..1" />
+          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="Mensaje">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificac__nFunc__4589517F_NotificacionFuncionario">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="NotificacionFuncionario" Type="Self.NotificacionFuncionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="NotificacionFuncionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PreguntaF__dFech__57A801BA_PreguntaFrecuente">
+          <End Role="TipoAtencion" Type="Self.TipoAtencion" Multiplicity="1" />
+          <End Role="PreguntaFrecuente" Type="Self.PreguntaFrecuente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoAtencion">
+              <PropertyRef Name="nTipoAtencionId" />
+            </Principal>
+            <Dependent Role="PreguntaFrecuente">
+              <PropertyRef Name="nTipoAtencionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PreguntaF__nCate__589C25F3_PreguntaFrecuente">
+          <End Role="CategoriaPreguntaFrecuente" Type="Self.CategoriaPreguntaFrecuente" Multiplicity="1" />
+          <End Role="PreguntaFrecuente" Type="Self.PreguntaFrecuente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoriaPreguntaFrecuente">
+              <PropertyRef Name="nCategoriaPreguntaFrecuenteId" />
+            </Principal>
+            <Dependent Role="PreguntaFrecuente">
+              <PropertyRef Name="nCategoriaPreguntaFrecuenteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bitacora_Usuario_Bitacora">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Bitacora" Type="Self.Bitacora" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="Bitacora">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_empid_Area">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Area" Type="Self.Area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="nEmpresaId" />
+            </Principal>
+            <Dependent Role="Area">
+              <PropertyRef Name="nEmpresaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_id_TipoAtencion">
+          <End Role="Area" Type="Self.Area" Multiplicity="1" />
+          <End Role="TipoAtencion" Type="Self.TipoAtencion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="nAreaId" />
+            </Principal>
+            <Dependent Role="TipoAtencion">
+              <PropertyRef Name="nAreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerfilPermiso_Perfil_PerfilPermiso">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
+          <End Role="PerfilPermiso" Type="Self.PerfilPermiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil">
+              <PropertyRef Name="PerfilId" />
+            </Principal>
+            <Dependent Role="PerfilPermiso">
+              <PropertyRef Name="PerfilId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerfilPermiso_Permiso_PerfilPermiso">
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="1" />
+          <End Role="PerfilPermiso" Type="Self.PerfilPermiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permiso">
+              <PropertyRef Name="PermisoId" />
+            </Principal>
+            <Dependent Role="PerfilPermiso">
+              <PropertyRef Name="PermisoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permiso_Permiso_Permiso">
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="0..1" />
+          <End Role="Permiso1" Type="Self.Permiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permiso">
+              <PropertyRef Name="PermisoId" />
+            </Principal>
+            <Dependent Role="Permiso1">
+              <PropertyRef Name="PermisoPadreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_AdmFuncionario_Usuario">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioPerfil_Perfil_UsuarioPerfil">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
+          <End Role="UsuarioPerfil" Type="Self.UsuarioPerfil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Perfil">
+              <PropertyRef Name="PerfilId" />
+            </Principal>
+            <Dependent Role="UsuarioPerfil">
+              <PropertyRef Name="PerfilId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioPerfil_Usuario_UsuarioPerfil">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="UsuarioPerfil" Type="Self.UsuarioPerfil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="UsuarioPerfil">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioPermiso_Permiso_UsuarioPermiso">
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="1" />
+          <End Role="UsuarioPermiso" Type="Self.UsuarioPermiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permiso">
+              <PropertyRef Name="PermisoId" />
+            </Principal>
+            <Dependent Role="UsuarioPermiso">
+              <PropertyRef Name="PermisoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioPermiso_Usuario_UsuarioPermiso">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="UsuarioPermiso" Type="Self.UsuarioPermiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="UsuarioPermiso">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbFexpoCruzModelStoreContainer">
+          <EntitySet Name="Area" EntityType="Self.Area" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Bitacora" EntityType="Self.Bitacora" Schema="public" store:Type="Tables" />
+          <EntitySet Name="CalificacionColaborador" EntityType="Self.CalificacionColaborador" Schema="public" store:Type="Tables" />
+          <EntitySet Name="CategoriaPreguntaFrecuente" EntityType="Self.CategoriaPreguntaFrecuente" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Dia" EntityType="Self.Dia" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="public" store:Type="Tables" />
+          <EntitySet Name="EstadoEvento" EntityType="Self.EstadoEvento" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Evento" EntityType="Self.Evento" Schema="public" store:Type="Tables" />
+          <EntitySet Name="EventoHilo" EntityType="Self.EventoHilo" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Funcionario" EntityType="Self.Funcionario" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Hilo" EntityType="Self.Hilo" Schema="public" store:Type="Tables" />
+          <EntitySet Name="HistorialEstadoEvento" EntityType="Self.HistorialEstadoEvento" Schema="public" store:Type="Tables" />
+          <EntitySet Name="HorarioColaborador" EntityType="Self.HorarioColaborador" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Mensaje" EntityType="Self.Mensaje" Schema="public" store:Type="Tables" />
+          <EntitySet Name="NotificacionFuncionario" EntityType="Self.NotificacionFuncionario" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Pais" EntityType="Self.Pais" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="public" store:Type="Tables" />
+          <EntitySet Name="PerfilPermiso" EntityType="Self.PerfilPermiso" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Permiso" EntityType="Self.Permiso" Schema="public" store:Type="Tables" />
+          <EntitySet Name="PreguntaFrecuente" EntityType="Self.PreguntaFrecuente" Schema="public" store:Type="Tables" />
+          <EntitySet Name="TipoAtencion" EntityType="Self.TipoAtencion" Schema="public" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="public" store:Type="Tables" />
+          <EntitySet Name="UsuarioPerfil" EntityType="Self.UsuarioPerfil" Schema="public" store:Type="Tables" />
+          <EntitySet Name="UsuarioPermiso" EntityType="Self.UsuarioPermiso" Schema="public" store:Type="Tables" />
+          <AssociationSet Name="FK__AdmFuncio__nArea__5BAD9CC8_Funcionario" Association="Self.FK__AdmFuncio__nArea__5BAD9CC8_Funcionario">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="Funcionario" EntitySet="Funcionario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AdmFuncio__nCiud__5CA1C101_Funcionario" Association="Self.FK__AdmFuncio__nCiud__5CA1C101_Funcionario">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Funcionario" EntitySet="Funcionario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__dFech__67DE6983_CalificacionColaborador" Association="Self.FK__Calificac__dFech__67DE6983_CalificacionColaborador">
+            <End Role="Evento" EntitySet="Evento" />
+            <End Role="CalificacionColaborador" EntitySet="CalificacionColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__nClie__68D28DBC_CalificacionColaborador" Association="Self.FK__Calificac__nClie__68D28DBC_CalificacionColaborador">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="CalificacionColaborador" EntitySet="CalificacionColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__nFunc__69C6B1F5_CalificacionColaborador" Association="Self.FK__Calificac__nFunc__69C6B1F5_CalificacionColaborador">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="CalificacionColaborador" EntitySet="CalificacionColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Categoria__dFech__54CB950F_CategoriaPreguntaFrecuente" Association="Self.FK__Categoria__dFech__54CB950F_CategoriaPreguntaFrecuente">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="CategoriaPreguntaFrecuente" EntitySet="CategoriaPreguntaFrecuente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ciudad__nUsuario__42E1EEFE_Ciudad" Association="Self.FK__Ciudad__nUsuario__42E1EEFE_Ciudad">
+            <End Role="Pais" EntitySet="Pais" />
+            <End Role="Ciudad" EntitySet="Ciudad" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cliente__dFechaM__7849DB76_Cliente" Association="Self.FK__Cliente__dFechaM__7849DB76_Cliente">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evento__nCliente__1209AD79_Evento" Association="Self.FK__Evento__nCliente__1209AD79_Evento">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Evento" EntitySet="Evento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evento__nEstadoE__13F1F5EB_Evento" Association="Self.FK__Evento__nEstadoE__13F1F5EB_Evento">
+            <End Role="EstadoEvento" EntitySet="EstadoEvento" />
+            <End Role="Evento" EntitySet="Evento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evento__nTipoAte__12FDD1B2_Evento" Association="Self.FK__Evento__nTipoAte__12FDD1B2_Evento">
+            <End Role="TipoAtencion" EntitySet="TipoAtencion" />
+            <End Role="Evento" EntitySet="Evento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EventoHil__nEven__214BF109_EventoHilo" Association="Self.FK__EventoHil__nEven__214BF109_EventoHilo">
+            <End Role="Evento" EntitySet="Evento" />
+            <End Role="EventoHilo" EntitySet="EventoHilo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EventoHil__nHilo__2057CCD0_EventoHilo" Association="Self.FK__EventoHil__nHilo__2057CCD0_EventoHilo">
+            <End Role="Hilo" EntitySet="Hilo" />
+            <End Role="EventoHilo" EntitySet="EventoHilo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hilo__nFuncionar__1D7B6025_Hilo" Association="Self.FK__Hilo__nFuncionar__1D7B6025_Hilo">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="Hilo" EntitySet="Hilo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__nEsta__16CE6296_HistorialEstadoEvento" Association="Self.FK__Historial__nEsta__16CE6296_HistorialEstadoEvento">
+            <End Role="EstadoEvento" EntitySet="EstadoEvento" />
+            <End Role="HistorialEstadoEvento" EntitySet="HistorialEstadoEvento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__nEven__17C286CF_HistorialEstadoEvento" Association="Self.FK__Historial__nEven__17C286CF_HistorialEstadoEvento">
+            <End Role="Evento" EntitySet="Evento" />
+            <End Role="HistorialEstadoEvento" EntitySet="HistorialEstadoEvento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HorarioFu__nFunc__625A9A57_HorarioColaborador" Association="Self.FK__HorarioFu__nFunc__625A9A57_HorarioColaborador">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="HorarioColaborador" EntitySet="HorarioColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HorarioFu__nUsua__6166761E_HorarioColaborador" Association="Self.FK__HorarioFu__nUsua__6166761E_HorarioColaborador">
+            <End Role="Dia" EntitySet="Dia" />
+            <End Role="HorarioColaborador" EntitySet="HorarioColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mensaje__nClient__2DB1C7EE_Mensaje" Association="Self.FK__Mensaje__nClient__2DB1C7EE_Mensaje">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Mensaje" EntitySet="Mensaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mensaje__nEvento__2CBDA3B5_Mensaje" Association="Self.FK__Mensaje__nEvento__2CBDA3B5_Mensaje">
+            <End Role="EventoHilo" EntitySet="EventoHilo" />
+            <End Role="Mensaje" EntitySet="Mensaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mensaje__nFuncio__2EA5EC27_Mensaje" Association="Self.FK__Mensaje__nFuncio__2EA5EC27_Mensaje">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="Mensaje" EntitySet="Mensaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificac__nFunc__4589517F_NotificacionFuncionario" Association="Self.FK__Notificac__nFunc__4589517F_NotificacionFuncionario">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="NotificacionFuncionario" EntitySet="NotificacionFuncionario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PreguntaF__dFech__57A801BA_PreguntaFrecuente" Association="Self.FK__PreguntaF__dFech__57A801BA_PreguntaFrecuente">
+            <End Role="TipoAtencion" EntitySet="TipoAtencion" />
+            <End Role="PreguntaFrecuente" EntitySet="PreguntaFrecuente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PreguntaF__nCate__589C25F3_PreguntaFrecuente" Association="Self.FK__PreguntaF__nCate__589C25F3_PreguntaFrecuente">
+            <End Role="CategoriaPreguntaFrecuente" EntitySet="CategoriaPreguntaFrecuente" />
+            <End Role="PreguntaFrecuente" EntitySet="PreguntaFrecuente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bitacora_Usuario_Bitacora" Association="Self.FK_Bitacora_Usuario_Bitacora">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Bitacora" EntitySet="Bitacora" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_empid_Area" Association="Self.Fk_empid_Area">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="Area" EntitySet="Area" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_id_TipoAtencion" Association="Self.Fk_id_TipoAtencion">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="TipoAtencion" EntitySet="TipoAtencion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerfilPermiso_Perfil_PerfilPermiso" Association="Self.FK_PerfilPermiso_Perfil_PerfilPermiso">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="PerfilPermiso" EntitySet="PerfilPermiso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerfilPermiso_Permiso_PerfilPermiso" Association="Self.FK_PerfilPermiso_Permiso_PerfilPermiso">
+            <End Role="Permiso" EntitySet="Permiso" />
+            <End Role="PerfilPermiso" EntitySet="PerfilPermiso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permiso_Permiso_Permiso" Association="Self.FK_Permiso_Permiso_Permiso">
+            <End Role="Permiso" EntitySet="Permiso" />
+            <End Role="Permiso1" EntitySet="Permiso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_AdmFuncionario_Usuario" Association="Self.FK_Usuario_AdmFuncionario_Usuario">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioPerfil_Perfil_UsuarioPerfil" Association="Self.FK_UsuarioPerfil_Perfil_UsuarioPerfil">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="UsuarioPerfil" EntitySet="UsuarioPerfil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioPerfil_Usuario_UsuarioPerfil" Association="Self.FK_UsuarioPerfil_Usuario_UsuarioPerfil">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="UsuarioPerfil" EntitySet="UsuarioPerfil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioPermiso_Permiso_UsuarioPermiso" Association="Self.FK_UsuarioPermiso_Permiso_UsuarioPermiso">
+            <End Role="Permiso" EntitySet="Permiso" />
+            <End Role="UsuarioPermiso" EntitySet="UsuarioPermiso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioPermiso_Usuario_UsuarioPermiso" Association="Self.FK_UsuarioPermiso_Usuario_UsuarioPermiso">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="UsuarioPermiso" EntitySet="UsuarioPermiso" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbFexpoCruzModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Area">
+          <Key>
+            <PropertyRef Name="nAreaId" />
+          </Key>
+          <Property Name="nAreaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sNombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEmpresaId" Type="Int64" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="Int64" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK__AdmFuncio__nArea__5BAD9CC8_Funcionario" FromRole="Area" ToRole="Funcionario" />
+          <NavigationProperty Name="Empresa" Relationship="Self.Fk_empid_Area" FromRole="Area" ToRole="Empresa" />
+          <NavigationProperty Name="TipoAtencion" Relationship="Self.Fk_id_TipoAtencion" FromRole="Area" ToRole="TipoAtencion" />
+        </EntityType>
+        <EntityType Name="Bitacora">
+          <Key>
+            <PropertyRef Name="BitacoraId" />
+          </Key>
+          <Property Name="BitacoraId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Accion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaHora" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="UsuarioId" Type="Int64" />
+          <Property Name="Transaccion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Detalle" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo" Type="Int32" Nullable="false" />
+          <Property Name="IdImplicado" Type="Int64" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Bitacora_Usuario_Bitacora" FromRole="Bitacora" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="CalificacionColaborador">
+          <Key>
+            <PropertyRef Name="nCalificacionColaboradorId" />
+          </Key>
+          <Property Name="nCalificacionColaboradorId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sComentario" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nPuntuacion" Type="Int32" Nullable="false" />
+          <Property Name="nFuncionarioId" Type="Int64" Nullable="false" />
+          <Property Name="nClienteId" Type="Int64" Nullable="false" />
+          <Property Name="nEventoId" Type="Int64" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nCalificado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Evento" Relationship="Self.FK__Calificac__dFech__67DE6983_CalificacionColaborador" FromRole="CalificacionColaborador" ToRole="Evento" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Calificac__nClie__68D28DBC_CalificacionColaborador" FromRole="CalificacionColaborador" ToRole="Cliente" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK__Calificac__nFunc__69C6B1F5_CalificacionColaborador" FromRole="CalificacionColaborador" ToRole="Funcionario" />
+        </EntityType>
+        <EntityType Name="CategoriaPreguntaFrecuente">
+          <Key>
+            <PropertyRef Name="nCategoriaPreguntaFrecuenteId" />
+          </Key>
+          <Property Name="nCategoriaPreguntaFrecuenteId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sNombre" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEmpresaId" Type="Int64" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="Int64" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="Int64" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Empresa" Relationship="Self.FK__Categoria__dFech__54CB950F_CategoriaPreguntaFrecuente" FromRole="CategoriaPreguntaFrecuente" ToRole="Empresa" />
+          <NavigationProperty Name="PreguntaFrecuente" Relationship="Self.FK__PreguntaF__nCate__589C25F3_PreguntaFrecuente" FromRole="CategoriaPreguntaFrecuente" ToRole="PreguntaFrecuente" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="nCiudadId" />
+          </Key>
+          <Property Name="nCiudadId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="None" />
+          <Property Name="sNombre" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sBandera" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="nPaisId" Type="Int64" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="Int64" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK__AdmFuncio__nCiud__5CA1C101_Funcionario" FromRole="Ciudad" ToRole="Funcionario" />
+          <NavigationProperty Name="Pais" Relationship="Self.FK__Ciudad__nUsuario__42E1EEFE_Ciudad" FromRole="Ciudad" ToRole="Pais" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="nClienteId" />
+          </Key>
+          <Property Name="nClienteId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sCodigoCliente" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sNombres" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sApellidos" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sUrlFoto" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sTokenNotificacionFirebase" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sTipoSistemaOperativo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="nEmpresaId" Type="Int64" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="sCodigoPais" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sNumeroCelular" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sCorreo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="CalificacionColaborador" Relationship="Self.FK__Calificac__nClie__68D28DBC_CalificacionColaborador" FromRole="Cliente" ToRole="CalificacionColaborador" />
+          <NavigationProperty Name="Empresa" Relationship="Self.FK__Cliente__dFechaM__7849DB76_Cliente" FromRole="Cliente" ToRole="Empresa" />
+          <NavigationProperty Name="Evento" Relationship="Self.FK__Evento__nCliente__1209AD79_Evento" FromRole="Cliente" ToRole="Evento" />
+          <NavigationProperty Name="Mensaje" Relationship="Self.FK__Mensaje__nClient__2DB1C7EE_Mensaje" FromRole="Cliente" ToRole="Mensaje" />
+        </EntityType>
+        <EntityType Name="Dia">
+          <Key>
+            <PropertyRef Name="nDiaId" />
+          </Key>
+          <Property Name="nDiaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sNombre" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="HorarioColaborador" Relationship="Self.FK__HorarioFu__nUsua__6166761E_HorarioColaborador" FromRole="Dia" ToRole="HorarioColaborador" />
+        </EntityType>
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="nEmpresaId" />
+          </Key>
+          <Property Name="nEmpresaId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sNombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sLogo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="Int64" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Area" Relationship="Self.Fk_empid_Area" FromRole="Empresa" ToRole="Area" />
+          <NavigationProperty Name="CategoriaPreguntaFrecuente" Relationship="Self.FK__Categoria__dFech__54CB950F_CategoriaPreguntaFrecuente" FromRole="Empresa" ToRole="CategoriaPreguntaFrecuente" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Cliente__dFechaM__7849DB76_Cliente" FromRole="Empresa" ToRole="Cliente" />
+        </EntityType>
+        <EntityType Name="EstadoEvento">
+          <Key>
+            <PropertyRef Name="nEstadoEventoId" />
+          </Key>
+          <Property Name="nEstadoEventoId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sDescripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sNombre" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Evento" Relationship="Self.FK__Evento__nEstadoE__13F1F5EB_Evento" FromRole="EstadoEvento" ToRole="Evento" />
+          <NavigationProperty Name="HistorialEstadoEvento" Relationship="Self.FK__Historial__nEsta__16CE6296_HistorialEstadoEvento" FromRole="EstadoEvento" ToRole="HistorialEstadoEvento" />
+        </EntityType>
+        <EntityType Name="Evento">
+          <Key>
+            <PropertyRef Name="nEventoId" />
+          </Key>
+          <Property Name="nEventoId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nEstadoEventoId" Type="Int64" Nullable="false" />
+          <Property Name="nClienteId" Type="Int64" Nullable="false" />
+          <Property Name="nTipoAtencionId" Type="Int64" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <NavigationProperty Name="CalificacionColaborador" Relationship="Self.FK__Calificac__dFech__67DE6983_CalificacionColaborador" FromRole="Evento" ToRole="CalificacionColaborador" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Evento__nCliente__1209AD79_Evento" FromRole="Evento" ToRole="Cliente" />
+          <NavigationProperty Name="EstadoEvento" Relationship="Self.FK__Evento__nEstadoE__13F1F5EB_Evento" FromRole="Evento" ToRole="EstadoEvento" />
+          <NavigationProperty Name="TipoAtencion" Relationship="Self.FK__Evento__nTipoAte__12FDD1B2_Evento" FromRole="Evento" ToRole="TipoAtencion" />
+          <NavigationProperty Name="EventoHilo" Relationship="Self.FK__EventoHil__nEven__214BF109_EventoHilo" FromRole="Evento" ToRole="EventoHilo" />
+          <NavigationProperty Name="HistorialEstadoEvento" Relationship="Self.FK__Historial__nEven__17C286CF_HistorialEstadoEvento" FromRole="Evento" ToRole="HistorialEstadoEvento" />
+        </EntityType>
+        <EntityType Name="EventoHilo">
+          <Key>
+            <PropertyRef Name="nEventoHiloId" />
+          </Key>
+          <Property Name="nEventoHiloId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nHiloId" Type="Int64" Nullable="false" />
+          <Property Name="nEventoId" Type="Int64" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <NavigationProperty Name="Evento" Relationship="Self.FK__EventoHil__nEven__214BF109_EventoHilo" FromRole="EventoHilo" ToRole="Evento" />
+          <NavigationProperty Name="Hilo" Relationship="Self.FK__EventoHil__nHilo__2057CCD0_EventoHilo" FromRole="EventoHilo" ToRole="Hilo" />
+          <NavigationProperty Name="Mensaje" Relationship="Self.FK__Mensaje__nEvento__2CBDA3B5_Mensaje" FromRole="EventoHilo" ToRole="Mensaje" />
+        </EntityType>
+        <EntityType Name="Funcionario">
+          <Key>
+            <PropertyRef Name="nFuncionarioId" />
+          </Key>
+          <Property Name="nFuncionarioId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sNombre" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sApellido" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="sCi" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" />
+          <Property Name="nSexo" Type="Int32" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="Int64" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="Int64" Nullable="false" />
+          <Property Name="dtFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dtFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="sFotoPefil" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="nTipo" Type="Int32" />
+          <Property Name="nAreaId" Type="Int64" />
+          <Property Name="nCiudadId" Type="Int64" />
+          <Property Name="nPuntaje" Type="Decimal" Precision="25" Scale="2" />
+          <NavigationProperty Name="Area" Relationship="Self.FK__AdmFuncio__nArea__5BAD9CC8_Funcionario" FromRole="Funcionario" ToRole="Area" />
+          <NavigationProperty Name="CalificacionColaborador" Relationship="Self.FK__Calificac__nFunc__69C6B1F5_CalificacionColaborador" FromRole="Funcionario" ToRole="CalificacionColaborador" />
+          <NavigationProperty Name="Ciudad" Relationship="Self.FK__AdmFuncio__nCiud__5CA1C101_Funcionario" FromRole="Funcionario" ToRole="Ciudad" />
+          <NavigationProperty Name="Hilo" Relationship="Self.FK__Hilo__nFuncionar__1D7B6025_Hilo" FromRole="Funcionario" ToRole="Hilo" />
+          <NavigationProperty Name="HorarioColaborador" Relationship="Self.FK__HorarioFu__nFunc__625A9A57_HorarioColaborador" FromRole="Funcionario" ToRole="HorarioColaborador" />
+          <NavigationProperty Name="Mensaje" Relationship="Self.FK__Mensaje__nFuncio__2EA5EC27_Mensaje" FromRole="Funcionario" ToRole="Mensaje" />
+          <NavigationProperty Name="NotificacionFuncionario" Relationship="Self.FK__Notificac__nFunc__4589517F_NotificacionFuncionario" FromRole="Funcionario" ToRole="NotificacionFuncionario" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Usuario_AdmFuncionario_Usuario" FromRole="Funcionario" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Hilo">
+          <Key>
+            <PropertyRef Name="nHiloId" />
+          </Key>
+          <Property Name="nHiloId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sCodigo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nFuncionarioId" Type="Int64" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="nActual" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EventoHilo" Relationship="Self.FK__EventoHil__nHilo__2057CCD0_EventoHilo" FromRole="Hilo" ToRole="EventoHilo" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK__Hilo__nFuncionar__1D7B6025_Hilo" FromRole="Hilo" ToRole="Funcionario" />
+        </EntityType>
+        <EntityType Name="HistorialEstadoEvento">
+          <Key>
+            <PropertyRef Name="nHistorialEstadoEventoId" />
+          </Key>
+          <Property Name="nHistorialEstadoEventoId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nEstadoEventoId" Type="Int64" Nullable="false" />
+          <Property Name="nEventoId" Type="Int64" Nullable="false" />
+          <Property Name="sDescripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <NavigationProperty Name="EstadoEvento" Relationship="Self.FK__Historial__nEsta__16CE6296_HistorialEstadoEvento" FromRole="HistorialEstadoEvento" ToRole="EstadoEvento" />
+          <NavigationProperty Name="Evento" Relationship="Self.FK__Historial__nEven__17C286CF_HistorialEstadoEvento" FromRole="HistorialEstadoEvento" ToRole="Evento" />
+        </EntityType>
+        <EntityType Name="HorarioColaborador">
+          <Key>
+            <PropertyRef Name="nHorarioFuncionarioId" />
+          </Key>
+          <Property Name="nHorarioFuncionarioId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tHoraInicio" Type="Time" Precision="5" Nullable="false" />
+          <Property Name="tHoraFin" Type="Time" Precision="5" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="nFuncionarioId" Type="Int64" Nullable="false" />
+          <Property Name="nDiaId" Type="Int64" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="Int64" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Dia" Relationship="Self.FK__HorarioFu__nUsua__6166761E_HorarioColaborador" FromRole="HorarioColaborador" ToRole="Dia" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK__HorarioFu__nFunc__625A9A57_HorarioColaborador" FromRole="HorarioColaborador" ToRole="Funcionario" />
+        </EntityType>
+        <EntityType Name="Mensaje">
+          <Key>
+            <PropertyRef Name="nMensajeId" />
+          </Key>
+          <Property Name="nMensajeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sTexto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sArchivo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="nEventoHiloId" Type="Int64" Nullable="false" />
+          <Property Name="nClienteId" Type="Int64" />
+          <Property Name="nFuncionarioId" Type="Int64" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Mensaje__nClient__2DB1C7EE_Mensaje" FromRole="Mensaje" ToRole="Cliente" />
+          <NavigationProperty Name="EventoHilo" Relationship="Self.FK__Mensaje__nEvento__2CBDA3B5_Mensaje" FromRole="Mensaje" ToRole="EventoHilo" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK__Mensaje__nFuncio__2EA5EC27_Mensaje" FromRole="Mensaje" ToRole="Funcionario" />
+        </EntityType>
+        <EntityType Name="NotificacionFuncionario">
+          <Key>
+            <PropertyRef Name="nNotificacionFuncionarioId" />
+          </Key>
+          <Property Name="nNotificacionFuncionarioId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nFuncionarioId" Type="Int64" Nullable="false" />
+          <Property Name="sTitulo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sDescripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nLeido" Type="Int32" Nullable="false" />
+          <Property Name="nTipoNotificacion" Type="Int32" Nullable="false" />
+          <Property Name="nIdImplicado" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK__Notificac__nFunc__4589517F_NotificacionFuncionario" FromRole="NotificacionFuncionario" ToRole="Funcionario" />
+        </EntityType>
+        <EntityType Name="Pais">
+          <Key>
+            <PropertyRef Name="nPaisId" />
+          </Key>
+          <Property Name="nPaisId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sNombre" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sCodigo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sBandera" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="Int64" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="Int64" Nullable="false" />
+          <Property Name="sSiglaMoneda" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sMoneda" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sSiglaPais" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nDiferenciaHorario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ciudad" Relationship="Self.FK__Ciudad__nUsuario__42E1EEFE_Ciudad" FromRole="Pais" ToRole="Ciudad" />
+        </EntityType>
+        <EntityType Name="Perfil">
+          <Key>
+            <PropertyRef Name="PerfilId" />
+          </Key>
+          <Property Name="PerfilId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tipo" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="120" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Decripcion" Type="String" MaxLength="510" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Editable" Type="Boolean" Nullable="false" />
+          <Property Name="Seleccionable" Type="Boolean" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="UsuarioCreadorId" Type="Int64" />
+          <Property Name="UsuarioModificadorId" Type="Int64" />
+          <NavigationProperty Name="Permiso" Relationship="Self.PerfilPermiso" FromRole="Perfil" ToRole="Permiso" />
+          <NavigationProperty Name="Usuario" Relationship="Self.UsuarioPerfil" FromRole="Perfil" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Permiso">
+          <Key>
+            <PropertyRef Name="PermisoId" />
+          </Key>
+          <Property Name="PermisoId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Tipo" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="155" FixedLength="false" Unicode="true" />
+          <Property Name="PermisoPadreId" Type="Int64" />
+          <Property Name="Pantalla" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Orden" Type="Int32" Nullable="false" />
+          <Property Name="Menu" Type="Boolean" Nullable="false" />
+          <Property Name="Seleccionable" Type="Boolean" Nullable="false" />
+          <Property Name="IconoMenu" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Accion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Hijos" Relationship="Self.FK_Permiso_Permiso_Permiso" FromRole="Permiso" ToRole="Permiso1" />
+          <NavigationProperty Name="Padre" Relationship="Self.FK_Permiso_Permiso_Permiso" FromRole="Permiso1" ToRole="Permiso" />
+          <NavigationProperty Name="Perfil" Relationship="Self.PerfilPermiso" FromRole="Permiso" ToRole="Perfil" />
+          <NavigationProperty Name="Usuario" Relationship="Self.UsuarioPermiso" FromRole="Permiso" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="PreguntaFrecuente">
+          <Key>
+            <PropertyRef Name="nPreguntaFrecuenteId" />
+          </Key>
+          <Property Name="nPreguntaFrecuenteId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sPregunta" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="nTipoAtencionId" Type="Int64" Nullable="false" />
+          <Property Name="nCategoriaPreguntaFrecuenteId" Type="Int64" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <NavigationProperty Name="CategoriaPreguntaFrecuente" Relationship="Self.FK__PreguntaF__nCate__589C25F3_PreguntaFrecuente" FromRole="PreguntaFrecuente" ToRole="CategoriaPreguntaFrecuente" />
+          <NavigationProperty Name="TipoAtencion" Relationship="Self.FK__PreguntaF__dFech__57A801BA_PreguntaFrecuente" FromRole="PreguntaFrecuente" ToRole="TipoAtencion" />
+        </EntityType>
+        <EntityType Name="TipoAtencion">
+          <Key>
+            <PropertyRef Name="nTipoAtencionId" />
+          </Key>
+          <Property Name="nTipoAtencionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sNombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nEstado" Type="Int32" Nullable="false" />
+          <Property Name="nAreaId" Type="Int64" Nullable="false" />
+          <Property Name="dFechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="dFechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="nUsuarioCreador" Type="Int64" Nullable="false" />
+          <Property Name="nUsuarioModificador" Type="Int64" Nullable="false" />
+          <Property Name="sColor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Area" Relationship="Self.Fk_id_TipoAtencion" FromRole="TipoAtencion" ToRole="Area" />
+          <NavigationProperty Name="Evento" Relationship="Self.FK__Evento__nTipoAte__12FDD1B2_Evento" FromRole="TipoAtencion" ToRole="Evento" />
+          <NavigationProperty Name="PreguntaFrecuente" Relationship="Self.FK__PreguntaF__dFech__57A801BA_PreguntaFrecuente" FromRole="TipoAtencion" ToRole="PreguntaFrecuente" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="UsuarioId" />
+          </Key>
+          <Property Name="UsuarioId" Type="Int64" Nullable="false" />
+          <Property Name="Estado" Type="Int32" Nullable="false" />
+          <Property Name="TipoUsuario" Type="Int32" Nullable="false" />
+          <Property Name="NickName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PrimeraVez" Type="Boolean" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordTransitoria" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AccesoAplicacion" Type="Boolean" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="6" Nullable="false" />
+          <Property Name="UsuarioCreadorId" Type="Int64" />
+          <Property Name="UsuarioModificadorId" Type="Int64" />
+          <Property Name="sLastPushIdWeb" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bitacora" Relationship="Self.FK_Bitacora_Usuario_Bitacora" FromRole="Usuario" ToRole="Bitacora" />
+          <NavigationProperty Name="Funcionario" Relationship="Self.FK_Usuario_AdmFuncionario_Usuario" FromRole="Usuario" ToRole="Funcionario" />
+          <NavigationProperty Name="Perfil" Relationship="Self.UsuarioPerfil" FromRole="Usuario" ToRole="Perfil" />
+          <NavigationProperty Name="Permiso" Relationship="Self.UsuarioPermiso" FromRole="Usuario" ToRole="Permiso" />
+        </EntityType>
+        <Association Name="FK__AdmFuncio__nArea__5BAD9CC8_Funcionario">
+          <End Role="Area" Type="Self.Area" Multiplicity="0..1" />
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="nAreaId" />
+            </Principal>
+            <Dependent Role="Funcionario">
+              <PropertyRef Name="nAreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_empid_Area">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Area" Type="Self.Area" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="nEmpresaId" />
+            </Principal>
+            <Dependent Role="Area">
+              <PropertyRef Name="nEmpresaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_id_TipoAtencion">
+          <End Role="Area" Type="Self.Area" Multiplicity="1" />
+          <End Role="TipoAtencion" Type="Self.TipoAtencion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Area">
+              <PropertyRef Name="nAreaId" />
+            </Principal>
+            <Dependent Role="TipoAtencion">
+              <PropertyRef Name="nAreaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bitacora_Usuario_Bitacora">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Bitacora" Type="Self.Bitacora" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Principal>
+            <Dependent Role="Bitacora">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__dFech__67DE6983_CalificacionColaborador">
+          <End Role="Evento" Type="Self.Evento" Multiplicity="1" />
+          <End Role="CalificacionColaborador" Type="Self.CalificacionColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Evento">
+              <PropertyRef Name="nEventoId" />
+            </Principal>
+            <Dependent Role="CalificacionColaborador">
+              <PropertyRef Name="nEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__nClie__68D28DBC_CalificacionColaborador">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="CalificacionColaborador" Type="Self.CalificacionColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="nClienteId" />
+            </Principal>
+            <Dependent Role="CalificacionColaborador">
+              <PropertyRef Name="nClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Calificac__nFunc__69C6B1F5_CalificacionColaborador">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="CalificacionColaborador" Type="Self.CalificacionColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="CalificacionColaborador">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Categoria__dFech__54CB950F_CategoriaPreguntaFrecuente">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="CategoriaPreguntaFrecuente" Type="Self.CategoriaPreguntaFrecuente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="nEmpresaId" />
+            </Principal>
+            <Dependent Role="CategoriaPreguntaFrecuente">
+              <PropertyRef Name="nEmpresaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PreguntaF__nCate__589C25F3_PreguntaFrecuente">
+          <End Role="CategoriaPreguntaFrecuente" Type="Self.CategoriaPreguntaFrecuente" Multiplicity="1" />
+          <End Role="PreguntaFrecuente" Type="Self.PreguntaFrecuente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CategoriaPreguntaFrecuente">
+              <PropertyRef Name="nCategoriaPreguntaFrecuenteId" />
+            </Principal>
+            <Dependent Role="PreguntaFrecuente">
+              <PropertyRef Name="nCategoriaPreguntaFrecuenteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AdmFuncio__nCiud__5CA1C101_Funcionario">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="nCiudadId" />
+            </Principal>
+            <Dependent Role="Funcionario">
+              <PropertyRef Name="nCiudadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Ciudad__nUsuario__42E1EEFE_Ciudad">
+          <End Role="Pais" Type="Self.Pais" Multiplicity="1" />
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pais">
+              <PropertyRef Name="nPaisId" />
+            </Principal>
+            <Dependent Role="Ciudad">
+              <PropertyRef Name="nPaisId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cliente__dFechaM__7849DB76_Cliente">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="nEmpresaId" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="nEmpresaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evento__nCliente__1209AD79_Evento">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Evento" Type="Self.Evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="nClienteId" />
+            </Principal>
+            <Dependent Role="Evento">
+              <PropertyRef Name="nClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mensaje__nClient__2DB1C7EE_Mensaje">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="nClienteId" />
+            </Principal>
+            <Dependent Role="Mensaje">
+              <PropertyRef Name="nClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HorarioFu__nUsua__6166761E_HorarioColaborador">
+          <End Role="Dia" Type="Self.Dia" Multiplicity="1" />
+          <End Role="HorarioColaborador" Type="Self.HorarioColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dia">
+              <PropertyRef Name="nDiaId" />
+            </Principal>
+            <Dependent Role="HorarioColaborador">
+              <PropertyRef Name="nDiaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evento__nEstadoE__13F1F5EB_Evento">
+          <End Role="EstadoEvento" Type="Self.EstadoEvento" Multiplicity="1" />
+          <End Role="Evento" Type="Self.Evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoEvento">
+              <PropertyRef Name="nEstadoEventoId" />
+            </Principal>
+            <Dependent Role="Evento">
+              <PropertyRef Name="nEstadoEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__nEsta__16CE6296_HistorialEstadoEvento">
+          <End Role="EstadoEvento" Type="Self.EstadoEvento" Multiplicity="1" />
+          <End Role="HistorialEstadoEvento" Type="Self.HistorialEstadoEvento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstadoEvento">
+              <PropertyRef Name="nEstadoEventoId" />
+            </Principal>
+            <Dependent Role="HistorialEstadoEvento">
+              <PropertyRef Name="nEstadoEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evento__nTipoAte__12FDD1B2_Evento">
+          <End Role="TipoAtencion" Type="Self.TipoAtencion" Multiplicity="1" />
+          <End Role="Evento" Type="Self.Evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoAtencion">
+              <PropertyRef Name="nTipoAtencionId" />
+            </Principal>
+            <Dependent Role="Evento">
+              <PropertyRef Name="nTipoAtencionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EventoHil__nEven__214BF109_EventoHilo">
+          <End Role="Evento" Type="Self.Evento" Multiplicity="1" />
+          <End Role="EventoHilo" Type="Self.EventoHilo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Evento">
+              <PropertyRef Name="nEventoId" />
+            </Principal>
+            <Dependent Role="EventoHilo">
+              <PropertyRef Name="nEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Historial__nEven__17C286CF_HistorialEstadoEvento">
+          <End Role="Evento" Type="Self.Evento" Multiplicity="1" />
+          <End Role="HistorialEstadoEvento" Type="Self.HistorialEstadoEvento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Evento">
+              <PropertyRef Name="nEventoId" />
+            </Principal>
+            <Dependent Role="HistorialEstadoEvento">
+              <PropertyRef Name="nEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EventoHil__nHilo__2057CCD0_EventoHilo">
+          <End Role="Hilo" Type="Self.Hilo" Multiplicity="1" />
+          <End Role="EventoHilo" Type="Self.EventoHilo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hilo">
+              <PropertyRef Name="nHiloId" />
+            </Principal>
+            <Dependent Role="EventoHilo">
+              <PropertyRef Name="nHiloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mensaje__nEvento__2CBDA3B5_Mensaje">
+          <End Role="EventoHilo" Type="Self.EventoHilo" Multiplicity="1" />
+          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventoHilo">
+              <PropertyRef Name="nEventoHiloId" />
+            </Principal>
+            <Dependent Role="Mensaje">
+              <PropertyRef Name="nEventoHiloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hilo__nFuncionar__1D7B6025_Hilo">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="0..1" />
+          <End Role="Hilo" Type="Self.Hilo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="Hilo">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HorarioFu__nFunc__625A9A57_HorarioColaborador">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="HorarioColaborador" Type="Self.HorarioColaborador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="HorarioColaborador">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Mensaje__nFuncio__2EA5EC27_Mensaje">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="0..1" />
+          <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="Mensaje">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Notificac__nFunc__4589517F_NotificacionFuncionario">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="NotificacionFuncionario" Type="Self.NotificacionFuncionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="NotificacionFuncionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_AdmFuncionario_Usuario">
+          <End Role="Funcionario" Type="Self.Funcionario" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="nFuncionarioId" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permiso_Permiso_Permiso">
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="0..1" />
+          <End Role="Permiso1" Type="Self.Permiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permiso">
+              <PropertyRef Name="PermisoId" />
+            </Principal>
+            <Dependent Role="Permiso1">
+              <PropertyRef Name="PermisoPadreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PreguntaF__dFech__57A801BA_PreguntaFrecuente">
+          <End Role="TipoAtencion" Type="Self.TipoAtencion" Multiplicity="1" />
+          <End Role="PreguntaFrecuente" Type="Self.PreguntaFrecuente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoAtencion">
+              <PropertyRef Name="nTipoAtencionId" />
+            </Principal>
+            <Dependent Role="PreguntaFrecuente">
+              <PropertyRef Name="nTipoAtencionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PerfilPermiso">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="*" />
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="*" />
+        </Association>
+        <Association Name="UsuarioPerfil">
+          <End Role="Perfil" Type="Self.Perfil" Multiplicity="*" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+        </Association>
+        <Association Name="UsuarioPermiso">
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="*" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="dbFexpoCruzEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Area" EntityType="Self.Area" />
+          <EntitySet Name="Bitacora" EntityType="Self.Bitacora" />
+          <EntitySet Name="CalificacionColaborador" EntityType="Self.CalificacionColaborador" />
+          <EntitySet Name="CategoriaPreguntaFrecuente" EntityType="Self.CategoriaPreguntaFrecuente" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="Dia" EntityType="Self.Dia" />
+          <EntitySet Name="Empresa" EntityType="Self.Empresa" />
+          <EntitySet Name="EstadoEvento" EntityType="Self.EstadoEvento" />
+          <EntitySet Name="Evento" EntityType="Self.Evento" />
+          <EntitySet Name="EventoHilo" EntityType="Self.EventoHilo" />
+          <EntitySet Name="Funcionario" EntityType="Self.Funcionario" />
+          <EntitySet Name="Hilo" EntityType="Self.Hilo" />
+          <EntitySet Name="HistorialEstadoEvento" EntityType="Self.HistorialEstadoEvento" />
+          <EntitySet Name="HorarioColaborador" EntityType="Self.HorarioColaborador" />
+          <EntitySet Name="Mensaje" EntityType="Self.Mensaje" />
+          <EntitySet Name="NotificacionFuncionario" EntityType="Self.NotificacionFuncionario" />
+          <EntitySet Name="Pais" EntityType="Self.Pais" />
+          <EntitySet Name="Perfil" EntityType="Self.Perfil" />
+          <EntitySet Name="Permiso" EntityType="Self.Permiso" />
+          <EntitySet Name="PreguntaFrecuente" EntityType="Self.PreguntaFrecuente" />
+          <EntitySet Name="TipoAtencion" EntityType="Self.TipoAtencion" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK__AdmFuncio__nArea__5BAD9CC8_Funcionario" Association="Self.FK__AdmFuncio__nArea__5BAD9CC8_Funcionario">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="Funcionario" EntitySet="Funcionario" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_empid_Area" Association="Self.Fk_empid_Area">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="Area" EntitySet="Area" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_id_TipoAtencion" Association="Self.Fk_id_TipoAtencion">
+            <End Role="Area" EntitySet="Area" />
+            <End Role="TipoAtencion" EntitySet="TipoAtencion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bitacora_Usuario_Bitacora" Association="Self.FK_Bitacora_Usuario_Bitacora">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Bitacora" EntitySet="Bitacora" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__dFech__67DE6983_CalificacionColaborador" Association="Self.FK__Calificac__dFech__67DE6983_CalificacionColaborador">
+            <End Role="Evento" EntitySet="Evento" />
+            <End Role="CalificacionColaborador" EntitySet="CalificacionColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__nClie__68D28DBC_CalificacionColaborador" Association="Self.FK__Calificac__nClie__68D28DBC_CalificacionColaborador">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="CalificacionColaborador" EntitySet="CalificacionColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Calificac__nFunc__69C6B1F5_CalificacionColaborador" Association="Self.FK__Calificac__nFunc__69C6B1F5_CalificacionColaborador">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="CalificacionColaborador" EntitySet="CalificacionColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Categoria__dFech__54CB950F_CategoriaPreguntaFrecuente" Association="Self.FK__Categoria__dFech__54CB950F_CategoriaPreguntaFrecuente">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="CategoriaPreguntaFrecuente" EntitySet="CategoriaPreguntaFrecuente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PreguntaF__nCate__589C25F3_PreguntaFrecuente" Association="Self.FK__PreguntaF__nCate__589C25F3_PreguntaFrecuente">
+            <End Role="CategoriaPreguntaFrecuente" EntitySet="CategoriaPreguntaFrecuente" />
+            <End Role="PreguntaFrecuente" EntitySet="PreguntaFrecuente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AdmFuncio__nCiud__5CA1C101_Funcionario" Association="Self.FK__AdmFuncio__nCiud__5CA1C101_Funcionario">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Funcionario" EntitySet="Funcionario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ciudad__nUsuario__42E1EEFE_Ciudad" Association="Self.FK__Ciudad__nUsuario__42E1EEFE_Ciudad">
+            <End Role="Pais" EntitySet="Pais" />
+            <End Role="Ciudad" EntitySet="Ciudad" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cliente__dFechaM__7849DB76_Cliente" Association="Self.FK__Cliente__dFechaM__7849DB76_Cliente">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evento__nCliente__1209AD79_Evento" Association="Self.FK__Evento__nCliente__1209AD79_Evento">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Evento" EntitySet="Evento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mensaje__nClient__2DB1C7EE_Mensaje" Association="Self.FK__Mensaje__nClient__2DB1C7EE_Mensaje">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Mensaje" EntitySet="Mensaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HorarioFu__nUsua__6166761E_HorarioColaborador" Association="Self.FK__HorarioFu__nUsua__6166761E_HorarioColaborador">
+            <End Role="Dia" EntitySet="Dia" />
+            <End Role="HorarioColaborador" EntitySet="HorarioColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evento__nEstadoE__13F1F5EB_Evento" Association="Self.FK__Evento__nEstadoE__13F1F5EB_Evento">
+            <End Role="EstadoEvento" EntitySet="EstadoEvento" />
+            <End Role="Evento" EntitySet="Evento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__nEsta__16CE6296_HistorialEstadoEvento" Association="Self.FK__Historial__nEsta__16CE6296_HistorialEstadoEvento">
+            <End Role="EstadoEvento" EntitySet="EstadoEvento" />
+            <End Role="HistorialEstadoEvento" EntitySet="HistorialEstadoEvento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evento__nTipoAte__12FDD1B2_Evento" Association="Self.FK__Evento__nTipoAte__12FDD1B2_Evento">
+            <End Role="TipoAtencion" EntitySet="TipoAtencion" />
+            <End Role="Evento" EntitySet="Evento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EventoHil__nEven__214BF109_EventoHilo" Association="Self.FK__EventoHil__nEven__214BF109_EventoHilo">
+            <End Role="Evento" EntitySet="Evento" />
+            <End Role="EventoHilo" EntitySet="EventoHilo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Historial__nEven__17C286CF_HistorialEstadoEvento" Association="Self.FK__Historial__nEven__17C286CF_HistorialEstadoEvento">
+            <End Role="Evento" EntitySet="Evento" />
+            <End Role="HistorialEstadoEvento" EntitySet="HistorialEstadoEvento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EventoHil__nHilo__2057CCD0_EventoHilo" Association="Self.FK__EventoHil__nHilo__2057CCD0_EventoHilo">
+            <End Role="Hilo" EntitySet="Hilo" />
+            <End Role="EventoHilo" EntitySet="EventoHilo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mensaje__nEvento__2CBDA3B5_Mensaje" Association="Self.FK__Mensaje__nEvento__2CBDA3B5_Mensaje">
+            <End Role="EventoHilo" EntitySet="EventoHilo" />
+            <End Role="Mensaje" EntitySet="Mensaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hilo__nFuncionar__1D7B6025_Hilo" Association="Self.FK__Hilo__nFuncionar__1D7B6025_Hilo">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="Hilo" EntitySet="Hilo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HorarioFu__nFunc__625A9A57_HorarioColaborador" Association="Self.FK__HorarioFu__nFunc__625A9A57_HorarioColaborador">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="HorarioColaborador" EntitySet="HorarioColaborador" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Mensaje__nFuncio__2EA5EC27_Mensaje" Association="Self.FK__Mensaje__nFuncio__2EA5EC27_Mensaje">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="Mensaje" EntitySet="Mensaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificac__nFunc__4589517F_NotificacionFuncionario" Association="Self.FK__Notificac__nFunc__4589517F_NotificacionFuncionario">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="NotificacionFuncionario" EntitySet="NotificacionFuncionario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_AdmFuncionario_Usuario" Association="Self.FK_Usuario_AdmFuncionario_Usuario">
+            <End Role="Funcionario" EntitySet="Funcionario" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permiso_Permiso_Permiso" Association="Self.FK_Permiso_Permiso_Permiso">
+            <End Role="Permiso" EntitySet="Permiso" />
+            <End Role="Permiso1" EntitySet="Permiso" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PreguntaF__dFech__57A801BA_PreguntaFrecuente" Association="Self.FK__PreguntaF__dFech__57A801BA_PreguntaFrecuente">
+            <End Role="TipoAtencion" EntitySet="TipoAtencion" />
+            <End Role="PreguntaFrecuente" EntitySet="PreguntaFrecuente" />
+          </AssociationSet>
+          <AssociationSet Name="PerfilPermiso" Association="Self.PerfilPermiso">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Permiso" EntitySet="Permiso" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioPerfil" Association="Self.UsuarioPerfil">
+            <End Role="Perfil" EntitySet="Perfil" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="UsuarioPermiso" Association="Self.UsuarioPermiso">
+            <End Role="Permiso" EntitySet="Permiso" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbFexpoCruzModelStoreContainer" CdmEntityContainer="dbFexpoCruzEntities">
+          <EntitySetMapping Name="Area">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Area">
+              <MappingFragment StoreEntitySet="Area">
+                <ScalarProperty Name="nAreaId" ColumnName="nAreaId" />
+                <ScalarProperty Name="sNombre" ColumnName="sNombre" />
+                <ScalarProperty Name="nEmpresaId" ColumnName="nEmpresaId" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="nUsuarioCreador" ColumnName="nUsuarioCreador" />
+                <ScalarProperty Name="nUsuarioModificador" ColumnName="nUsuarioModificador" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bitacora">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Bitacora">
+              <MappingFragment StoreEntitySet="Bitacora">
+                <ScalarProperty Name="BitacoraId" ColumnName="BitacoraId" />
+                <ScalarProperty Name="Accion" ColumnName="Accion" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="Transaccion" ColumnName="Transaccion" />
+                <ScalarProperty Name="Detalle" ColumnName="Detalle" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="IdImplicado" ColumnName="IdImplicado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CalificacionColaborador">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.CalificacionColaborador">
+              <MappingFragment StoreEntitySet="CalificacionColaborador">
+                <ScalarProperty Name="nCalificacionColaboradorId" ColumnName="nCalificacionColaboradorId" />
+                <ScalarProperty Name="sComentario" ColumnName="sComentario" />
+                <ScalarProperty Name="nPuntuacion" ColumnName="nPuntuacion" />
+                <ScalarProperty Name="nFuncionarioId" ColumnName="nFuncionarioId" />
+                <ScalarProperty Name="nClienteId" ColumnName="nClienteId" />
+                <ScalarProperty Name="nEventoId" ColumnName="nEventoId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="nCalificado" ColumnName="nCalificado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CategoriaPreguntaFrecuente">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.CategoriaPreguntaFrecuente">
+              <MappingFragment StoreEntitySet="CategoriaPreguntaFrecuente">
+                <ScalarProperty Name="nCategoriaPreguntaFrecuenteId" ColumnName="nCategoriaPreguntaFrecuenteId" />
+                <ScalarProperty Name="sNombre" ColumnName="sNombre" />
+                <ScalarProperty Name="nEmpresaId" ColumnName="nEmpresaId" />
+                <ScalarProperty Name="nUsuarioCreador" ColumnName="nUsuarioCreador" />
+                <ScalarProperty Name="nUsuarioModificador" ColumnName="nUsuarioModificador" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ciudad">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Ciudad">
+              <MappingFragment StoreEntitySet="Ciudad">
+                <ScalarProperty Name="nCiudadId" ColumnName="nCiudadId" />
+                <ScalarProperty Name="sNombre" ColumnName="sNombre" />
+                <ScalarProperty Name="sBandera" ColumnName="sBandera" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="nPaisId" ColumnName="nPaisId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="nUsuarioCreador" ColumnName="nUsuarioCreador" />
+                <ScalarProperty Name="nUsuarioModificador" ColumnName="nUsuarioModificador" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="nClienteId" ColumnName="nClienteId" />
+                <ScalarProperty Name="sCodigoCliente" ColumnName="sCodigoCliente" />
+                <ScalarProperty Name="sNombres" ColumnName="sNombres" />
+                <ScalarProperty Name="sApellidos" ColumnName="sApellidos" />
+                <ScalarProperty Name="sUrlFoto" ColumnName="sUrlFoto" />
+                <ScalarProperty Name="sTokenNotificacionFirebase" ColumnName="sTokenNotificacionFirebase" />
+                <ScalarProperty Name="sTipoSistemaOperativo" ColumnName="sTipoSistemaOperativo" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="nEmpresaId" ColumnName="nEmpresaId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="sCodigoPais" ColumnName="sCodigoPais" />
+                <ScalarProperty Name="sNumeroCelular" ColumnName="sNumeroCelular" />
+                <ScalarProperty Name="sCorreo" ColumnName="sCorreo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dia">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Dia">
+              <MappingFragment StoreEntitySet="Dia">
+                <ScalarProperty Name="nDiaId" ColumnName="nDiaId" />
+                <ScalarProperty Name="sNombre" ColumnName="sNombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empresa">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Empresa">
+              <MappingFragment StoreEntitySet="Empresa">
+                <ScalarProperty Name="nEmpresaId" ColumnName="nEmpresaId" />
+                <ScalarProperty Name="sNombre" ColumnName="sNombre" />
+                <ScalarProperty Name="sUrl" ColumnName="sUrl" />
+                <ScalarProperty Name="sLogo" ColumnName="sLogo" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="nUsuarioCreador" ColumnName="nUsuarioCreador" />
+                <ScalarProperty Name="nUsuarioModificador" ColumnName="nUsuarioModificador" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstadoEvento">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.EstadoEvento">
+              <MappingFragment StoreEntitySet="EstadoEvento">
+                <ScalarProperty Name="nEstadoEventoId" ColumnName="nEstadoEventoId" />
+                <ScalarProperty Name="sDescripcion" ColumnName="sDescripcion" />
+                <ScalarProperty Name="sNombre" ColumnName="sNombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Evento">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Evento">
+              <MappingFragment StoreEntitySet="Evento">
+                <ScalarProperty Name="nEventoId" ColumnName="nEventoId" />
+                <ScalarProperty Name="nEstadoEventoId" ColumnName="nEstadoEventoId" />
+                <ScalarProperty Name="nClienteId" ColumnName="nClienteId" />
+                <ScalarProperty Name="nTipoAtencionId" ColumnName="nTipoAtencionId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventoHilo">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.EventoHilo">
+              <MappingFragment StoreEntitySet="EventoHilo">
+                <ScalarProperty Name="nEventoHiloId" ColumnName="nEventoHiloId" />
+                <ScalarProperty Name="nHiloId" ColumnName="nHiloId" />
+                <ScalarProperty Name="nEventoId" ColumnName="nEventoId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Funcionario">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Funcionario">
+              <MappingFragment StoreEntitySet="Funcionario">
+                <ScalarProperty Name="nFuncionarioId" ColumnName="nFuncionarioId" />
+                <ScalarProperty Name="sNombre" ColumnName="sNombre" />
+                <ScalarProperty Name="sApellido" ColumnName="sApellido" />
+                <ScalarProperty Name="sCi" ColumnName="sCi" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="nSexo" ColumnName="nSexo" />
+                <ScalarProperty Name="nUsuarioCreador" ColumnName="nUsuarioCreador" />
+                <ScalarProperty Name="nUsuarioModificador" ColumnName="nUsuarioModificador" />
+                <ScalarProperty Name="dtFechaCreacion" ColumnName="dtFechaCreacion" />
+                <ScalarProperty Name="dtFechaModificacion" ColumnName="dtFechaModificacion" />
+                <ScalarProperty Name="sFotoPefil" ColumnName="sFotoPefil" />
+                <ScalarProperty Name="nTipo" ColumnName="nTipo" />
+                <ScalarProperty Name="nAreaId" ColumnName="nAreaId" />
+                <ScalarProperty Name="nCiudadId" ColumnName="nCiudadId" />
+                <ScalarProperty Name="nPuntaje" ColumnName="nPuntaje" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hilo">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Hilo">
+              <MappingFragment StoreEntitySet="Hilo">
+                <ScalarProperty Name="nHiloId" ColumnName="nHiloId" />
+                <ScalarProperty Name="sCodigo" ColumnName="sCodigo" />
+                <ScalarProperty Name="nFuncionarioId" ColumnName="nFuncionarioId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="nActual" ColumnName="nActual" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistorialEstadoEvento">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.HistorialEstadoEvento">
+              <MappingFragment StoreEntitySet="HistorialEstadoEvento">
+                <ScalarProperty Name="nHistorialEstadoEventoId" ColumnName="nHistorialEstadoEventoId" />
+                <ScalarProperty Name="nEstadoEventoId" ColumnName="nEstadoEventoId" />
+                <ScalarProperty Name="nEventoId" ColumnName="nEventoId" />
+                <ScalarProperty Name="sDescripcion" ColumnName="sDescripcion" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HorarioColaborador">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.HorarioColaborador">
+              <MappingFragment StoreEntitySet="HorarioColaborador">
+                <ScalarProperty Name="nHorarioFuncionarioId" ColumnName="nHorarioFuncionarioId" />
+                <ScalarProperty Name="tHoraInicio" ColumnName="tHoraInicio" />
+                <ScalarProperty Name="tHoraFin" ColumnName="tHoraFin" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="nFuncionarioId" ColumnName="nFuncionarioId" />
+                <ScalarProperty Name="nDiaId" ColumnName="nDiaId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="nUsuarioCreador" ColumnName="nUsuarioCreador" />
+                <ScalarProperty Name="nUsuarioModificador" ColumnName="nUsuarioModificador" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mensaje">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Mensaje">
+              <MappingFragment StoreEntitySet="Mensaje">
+                <ScalarProperty Name="nMensajeId" ColumnName="nMensajeId" />
+                <ScalarProperty Name="sTexto" ColumnName="sTexto" />
+                <ScalarProperty Name="sArchivo" ColumnName="sArchivo" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="nEventoHiloId" ColumnName="nEventoHiloId" />
+                <ScalarProperty Name="nClienteId" ColumnName="nClienteId" />
+                <ScalarProperty Name="nFuncionarioId" ColumnName="nFuncionarioId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificacionFuncionario">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.NotificacionFuncionario">
+              <MappingFragment StoreEntitySet="NotificacionFuncionario">
+                <ScalarProperty Name="nNotificacionFuncionarioId" ColumnName="nNotificacionFuncionarioId" />
+                <ScalarProperty Name="nFuncionarioId" ColumnName="nFuncionarioId" />
+                <ScalarProperty Name="sTitulo" ColumnName="sTitulo" />
+                <ScalarProperty Name="sDescripcion" ColumnName="sDescripcion" />
+                <ScalarProperty Name="sUrl" ColumnName="sUrl" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="nLeido" ColumnName="nLeido" />
+                <ScalarProperty Name="nTipoNotificacion" ColumnName="nTipoNotificacion" />
+                <ScalarProperty Name="nIdImplicado" ColumnName="nIdImplicado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pais">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Pais">
+              <MappingFragment StoreEntitySet="Pais">
+                <ScalarProperty Name="nPaisId" ColumnName="nPaisId" />
+                <ScalarProperty Name="sNombre" ColumnName="sNombre" />
+                <ScalarProperty Name="sCodigo" ColumnName="sCodigo" />
+                <ScalarProperty Name="sBandera" ColumnName="sBandera" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="nUsuarioCreador" ColumnName="nUsuarioCreador" />
+                <ScalarProperty Name="nUsuarioModificador" ColumnName="nUsuarioModificador" />
+                <ScalarProperty Name="sSiglaMoneda" ColumnName="sSiglaMoneda" />
+                <ScalarProperty Name="sMoneda" ColumnName="sMoneda" />
+                <ScalarProperty Name="sSiglaPais" ColumnName="sSiglaPais" />
+                <ScalarProperty Name="nDiferenciaHorario" ColumnName="nDiferenciaHorario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Perfil">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Perfil">
+              <MappingFragment StoreEntitySet="Perfil">
+                <ScalarProperty Name="PerfilId" ColumnName="PerfilId" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Decripcion" ColumnName="Decripcion" />
+                <ScalarProperty Name="Editable" ColumnName="Editable" />
+                <ScalarProperty Name="Seleccionable" ColumnName="Seleccionable" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioCreadorId" ColumnName="UsuarioCreadorId" />
+                <ScalarProperty Name="UsuarioModificadorId" ColumnName="UsuarioModificadorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permiso">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Permiso">
+              <MappingFragment StoreEntitySet="Permiso">
+                <ScalarProperty Name="PermisoId" ColumnName="PermisoId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="PermisoPadreId" ColumnName="PermisoPadreId" />
+                <ScalarProperty Name="Pantalla" ColumnName="Pantalla" />
+                <ScalarProperty Name="Orden" ColumnName="Orden" />
+                <ScalarProperty Name="Menu" ColumnName="Menu" />
+                <ScalarProperty Name="Seleccionable" ColumnName="Seleccionable" />
+                <ScalarProperty Name="IconoMenu" ColumnName="IconoMenu" />
+                <ScalarProperty Name="Accion" ColumnName="Accion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PreguntaFrecuente">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.PreguntaFrecuente">
+              <MappingFragment StoreEntitySet="PreguntaFrecuente">
+                <ScalarProperty Name="nPreguntaFrecuenteId" ColumnName="nPreguntaFrecuenteId" />
+                <ScalarProperty Name="sPregunta" ColumnName="sPregunta" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="nTipoAtencionId" ColumnName="nTipoAtencionId" />
+                <ScalarProperty Name="nCategoriaPreguntaFrecuenteId" ColumnName="nCategoriaPreguntaFrecuenteId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoAtencion">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.TipoAtencion">
+              <MappingFragment StoreEntitySet="TipoAtencion">
+                <ScalarProperty Name="nTipoAtencionId" ColumnName="nTipoAtencionId" />
+                <ScalarProperty Name="sNombre" ColumnName="sNombre" />
+                <ScalarProperty Name="nEstado" ColumnName="nEstado" />
+                <ScalarProperty Name="nAreaId" ColumnName="nAreaId" />
+                <ScalarProperty Name="dFechaCreacion" ColumnName="dFechaCreacion" />
+                <ScalarProperty Name="dFechaModificacion" ColumnName="dFechaModificacion" />
+                <ScalarProperty Name="nUsuarioCreador" ColumnName="nUsuarioCreador" />
+                <ScalarProperty Name="nUsuarioModificador" ColumnName="nUsuarioModificador" />
+                <ScalarProperty Name="sColor" ColumnName="sColor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="dbFexpoCruzModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="TipoUsuario" ColumnName="TipoUsuario" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="PrimeraVez" ColumnName="PrimeraVez" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PasswordTransitoria" ColumnName="PasswordTransitoria" />
+                <ScalarProperty Name="AccesoAplicacion" ColumnName="AccesoAplicacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="UsuarioCreadorId" ColumnName="UsuarioCreadorId" />
+                <ScalarProperty Name="UsuarioModificadorId" ColumnName="UsuarioModificadorId" />
+                <ScalarProperty Name="sLastPushIdWeb" ColumnName="sLastPushIdWeb" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PerfilPermiso" TypeName="dbFexpoCruzModel.PerfilPermiso" StoreEntitySet="PerfilPermiso">
+            <EndProperty Name="Perfil">
+              <ScalarProperty Name="PerfilId" ColumnName="PerfilId" />
+            </EndProperty>
+            <EndProperty Name="Permiso">
+              <ScalarProperty Name="PermisoId" ColumnName="PermisoId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UsuarioPerfil" TypeName="dbFexpoCruzModel.UsuarioPerfil" StoreEntitySet="UsuarioPerfil">
+            <EndProperty Name="Perfil">
+              <ScalarProperty Name="PerfilId" ColumnName="PerfilId" />
+            </EndProperty>
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UsuarioPermiso" TypeName="dbFexpoCruzModel.UsuarioPermiso" StoreEntitySet="UsuarioPermiso">
+            <EndProperty Name="Permiso">
+              <ScalarProperty Name="PermisoId" ColumnName="PermisoId" />
+            </EndProperty>
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

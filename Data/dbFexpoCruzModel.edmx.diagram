@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fdb517df730742d99030c9af791dfa22" Name="Diagram1" ZoomLevel="63" ShowGrid="true">
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Bitacora" Width="1.5" PointX="7.5" PointY="13.25" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Permiso" Width="1.5" PointX="11.625" PointY="33.875" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK_Permiso_Permiso" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Usuario" Width="1.5" PointX="20.5" PointY="29" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK_Bitacora_Usuario" />
+        <AssociationConnector Association="dbFexpoCruzModel.UsuarioPermiso" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Ciudad" Width="1.5" PointX="21.625" PointY="1.375" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Pais" Width="1.5" PointX="19.375" PointY="1" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Ciudad__nUsuario__42E1EEFE" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Empresa" Width="1.5" PointX="24.375" PointY="1" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.TipoAtencion" Width="1.5" PointX="28.875" PointY="1" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Dia" Width="1.5" PointX="31.875" PointY="6.25" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.HorarioColaborador" Width="1.5" PointX="34.125" PointY="2.625" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__HorarioFu__nUsua__6166761E" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Area" Width="1.5" PointX="26.625" PointY="0.875" />
+        <AssociationConnector Association="dbFexpoCruzModel.Fk_empid" />
+        <AssociationConnector Association="dbFexpoCruzModel.Fk_id" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Perfil" Width="1.5" PointX="9.375" PointY="31.625" />
+        <AssociationConnector Association="dbFexpoCruzModel.PerfilPermiso" />
+        <AssociationConnector Association="dbFexpoCruzModel.UsuarioPerfil" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Cliente" Width="1.5" PointX="26.625" PointY="6.625" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Cliente__dFechaM__7849DB76" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.EstadoEvento" Width="1.5" PointX="31.875" PointY="10.875" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.HistorialEstadoEvento" Width="1.5" PointX="36.375" PointY="9.5" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Historial__nEsta__16CE6296" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Evento" Width="1.5" PointX="34.125" PointY="9.25" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.EventoHilo" Width="1.5" PointX="36.375" PointY="5.25" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Evento__nCliente__1209AD79" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Evento__nEstadoE__13F1F5EB" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Evento__nTipoAte__12FDD1B2" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__EventoHil__nEven__214BF109" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Historial__nEven__17C286CF" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Mensaje" Width="1.5" PointX="39.75" PointY="19.375" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Mensaje__nClient__2DB1C7EE" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Mensaje__nEvento__2CBDA3B5" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.NotificacionFuncionario" Width="1.5" PointX="34.125" PointY="13.75" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Hilo" Width="1.5" PointX="34.125" PointY="0.75" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__EventoHil__nHilo__2057CCD0" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.PreguntaFrecuente" Width="1.5" PointX="37.125" PointY="0.75" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__PreguntaF__dFech__57A801BA" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.CategoriaPreguntaFrecuente" Width="1.5" PointX="26.625" PointY="12.25" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Categoria__dFech__54CB950F" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__PreguntaF__nCate__589C25F3" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.Funcionario" Width="1.5" PointX="31.875" PointY="0.75" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__AdmFuncio__nArea__5BAD9CC8" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__AdmFuncio__nCiud__5CA1C101" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Hilo__nFuncionar__1D7B6025" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__HorarioFu__nFunc__625A9A57" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Mensaje__nFuncio__2EA5EC27" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Notificac__nFunc__4589517F" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK_Usuario_AdmFuncionario" />
+        <EntityTypeShape EntityType="dbFexpoCruzModel.CalificacionColaborador" Width="1.5" PointX="39.375" PointY="5" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Calificac__dFech__67DE6983" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Calificac__nClie__68D28DBC" />
+        <AssociationConnector Association="dbFexpoCruzModel.FK__Calificac__nFunc__69C6B1F5" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

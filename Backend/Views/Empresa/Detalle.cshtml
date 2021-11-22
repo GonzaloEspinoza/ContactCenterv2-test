@@ -1,0 +1,127 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model EEmpresa
+@{
+    ViewBag.Title = "Detalle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+    List<Permiso> HijosMenu = ViewBag.PermisosH;
+    string imagen64 = "";
+    if (Model != null && Model.Base64Logo != "")
+    {
+        imagen64 = Model.Base64Logo;
+    }
+}
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Empresa
+            <small>@ViewBag.Title</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", "Inicio")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "Empresa")">Empresas</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">@ViewBag.Title</span>
+    </li>
+</ul>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">
+                        Empresa # @Model.EmpresaId
+                        <span class="hidden-xs">| @Model.Nombre</span>
+                    </span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger" id="mensajeError" hidden>
+                            @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+                            {
+                                <text>@ViewBag.Mensaje</text>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="tabbable-line">
+                    <ul class="nav nav-tabs nav-tabs-lg">
+                        <li class="active">
+                            <a href="#tab_1" data-toggle="tab"> Detalle </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_1">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="portlet yellow-crusta box">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <i class="fa fa-info-circle"></i>Datos de la Empresa
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body">
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> ID Empresa: </div>
+                                                <div class="col-md-7 value"> @Model.EmpresaId </div>
+                                            </div>
+                                          
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Nombre: </div>
+                                                <div class="col-md-7 value"> @Model.Nombre </div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Logo: </div>
+                                                <div class="col-md-7 value"><img src="data:image/png;base64,@Model.Base64Logo" alt="logo" style="width:50%;height: 50%;border-radius: 10px !important;"></div>
+                                            </div>
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Url: </div>
+                                                <div class="col-md-7 value"><a href="@Model.Url">@Model.Url</a></div>
+                                            </div>
+
+
+                                            <div class="row static-info">
+                                                <div class="col-md-5 name"> Estado: </div>
+                                                <div class="col-md-7 value">
+                                                    @if (Model.Estado == (int)Estado.Habilitado)
+                                                    {
+                                                        <span class="label label-sm label-success"> Habilitado </span>
+                                                    }
+                                                    else if (Model.Estado == (int)Estado.Desabilitado)
+                                                    {
+                                                        <span class="label label-sm label-danger"> Deshabilitado </span>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                     
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

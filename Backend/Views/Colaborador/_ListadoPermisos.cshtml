@@ -1,0 +1,24 @@
+﻿@using Entidad;
+@model EPermiso
+@{
+    if (Model != null)
+    {
+        <li data-idperm="@Model.PermisoId" data-checked="@Model.Activado" data-inPerf="@Model.InPerfil">
+            @Model.Nombre
+            @{if (Model.PermisosHijos.Count > 0)
+                {
+                    <ul>
+                        @{
+                            foreach (var hijo in Model.PermisosHijos)
+                            {
+                                @Html.Partial("_ListadoPermisos", hijo)
+                            }
+                        }
+                    </ul>
+                            }
+            }
+        </li>
+
+                            }
+
+}

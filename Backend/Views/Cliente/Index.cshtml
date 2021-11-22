@@ -1,0 +1,252 @@
+﻿@using Logica;
+@using Entidad;
+@using Entidad.Enums;
+@using DataP;
+@using Backend.Models;
+@model List<ECliente>
+@{
+    ViewBag.Title = ViewBag.Titulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+    List<Permiso> HijosMenu = ViewBag.PermisosH;
+}
+@section EtiquetaHead
+{
+    <link href="@Url.Content("~/Content/card-item.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/datatables/datatables.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+}
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Clientes
+            <small>Clientes</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index","Inicio")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">Ciudades</span>
+    </li>
+</ul>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                @Html.Hidden("ToastT")
+                @Html.Hidden("ToastM")
+                @Html.Hidden("Habilitar")
+                @Html.Hidden("Id")
+                @Html.Hidden("Estate")
+                <span class="labelsAzul">Estado</span>
+                <div class="md-radio-inline">
+                    <div class="md-radio">
+                        <input onchange="Listar()" type="radio" id="rdnHabilitados" name="radioStatus" value="1" class="md-radiobtn">
+                        <label for="rdnHabilitados">
+                            <span></span>
+                            <span class="check"></span>
+                            <span class="box"></span> Habilitados
+                        </label>
+                    </div>
+                    <div class="md-radio">
+                        <input onchange="Listar()" type="radio" id="rdnInhabilitados" name="radioStatus" value="0" class="md-radiobtn">
+                        <label for="rdnInhabilitados">
+                            <span></span>
+                            <span class="check"></span>
+                            <span class="box"></span> Deshabilitados
+                        </label>
+                    </div>
+                    <div class="md-radio">
+                        <input onchange="Listar()" type="radio" id="rdnTodos" name="radioStatus" value="2" class="md-radiobtn" checked="checked">
+                        <label for="rdnTodos">
+                            <span></span>
+                            <span class="check"></span>
+                            <span class="box"></span> Todos
+                        </label>
+                    </div>
+                </div>
+                @{
+                    if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
+                    {
+                        @Html.ActionLink("Nuevo cliente", "cliente", "cliente", new { id = 0 }, new { @class = "btn btn-primary pull-left", @onclick = "BloquearPantalla();" })
+                    }
+                }
+                <div class="portlet light">
+                    <div id="ContenedorLista" class="portlet-body">
+                        @{
+                            if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar))
+                            {
+                                @Html.Partial("_ListadoCliente", Model)
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal scale fade" id="dialogoHabilitar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Diálogo de confirmación</h4>
+            </div>
+            <div class="modal-body">
+                <span id="dialogoHabilitarMensaje"></span>
+            </div>
+            <div class="modal-footer">
+                <button id="btn_cancelar" type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-flat btn-primary" onclick="HabilitaroDeshabilitar()">Aceptar</button>
+            </div>
+        </div><!--.modal-content-->
+    </div><!--.modal-dialog-->
+</div><!--.modal-->
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/datatables/datatables.min.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            Listar();
+        });
+
+
+        function Listar() {
+            LimpiarMensaje();
+            BloquearPantalla();
+            $('#sample_2').DataTable().destroy();
+            $("#sample_2").DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "@Url.Action("ListarDatatable", "Cliente")",
+                    "data": { 'estado': $('input:radio[name=radioStatus]:checked').val() },
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                dom: 'Bfrtip',
+                lengthMenu: [
+                    [10, 25, 50, 100],
+                    ['10 rows', '25 rows', '50 rows', '100 rows']
+                ],
+                buttons: [
+                    'pageLength'
+                ],
+                "filter": true,
+                "responsivePriority": 1,
+                "data": null,
+                "columns": [
+                    { "data": "ClienteId", "autoWidth": true },
+                        { "data": "Nombres", "autoWidth": true },
+                        { "data": "Apellidos", "autoWidth": true },
+                        { "data": "EmpresaNombre", "autoWidth": true },
+                        {
+                            "mRender": function (data, type, row) {
+                                var estado = "";
+                                if (row.Estado == 1)
+                                {
+                                    estado = `<span class="label label-sm label-success"> Habilitado </span>`;
+                                }
+                                else if (row.Estado == 0)
+                                {
+                                    estado = ` <span class="label label-sm label-danger"> Deshabilitado </span>`;
+                                } 
+                                return estado;
+                            }
+                        },
+                        {
+                            "mRender": function (data, type, row) {
+                                var url = "@Url.Action("detalle", "Cliente")";
+                                var detalle = "";
+                                detalle = `<a href="` + url +'/' + row.ClienteId + `" onclick="BloquearPantalla();" class="btn btn-outline btn-circle dark btn-sm black"> <i class="fa fa-eye"></i> Ver</a>`
+                                return detalle;
+
+                            }
+                        },
+                        {
+                            "mRender": function (data, type, row) {
+                                var url = "@Url.Action("cliente", "Cliente")";
+                                var editar = "";
+                                editar = `<a href="` + url +'/' + row.ClienteId + `" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple"><i class="fa fa-edit"></i> Editar</a>`
+                                return editar;
+                            }
+                        },
+                        {
+                            "mRender": function (data, type, row) {
+                                var url = "@Url.Action("CambiarEstado", "Cliente")";
+                                var eliminar = "";
+                                eliminar = `<a onclick="changeestate('` + row.Nombres + ' ' + row.Apellidos + `','eliminar','eliminado','2','` + row.ClienteId + `' ,'` + url + `')" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-trash-o"></i> Eliminar</a>`
+                                return eliminar;
+                            }
+                        }
+
+
+
+                ],
+                buttons: [
+                    //{ extend: 'print', className: 'btn dark btn-outline', exportOptions: { columns: [0, 1, 2, 3] } },
+                    {
+                        extend: 'copy', className: 'btn purple btn-outline ', orientation: 'landscape',
+                        pageSize: 'LEGAL', exportOptions: { columns: [0, 1, 2, 3, 4] }
+                    },
+                    { extend: 'pdf', className: 'btn green btn-outline', exportOptions: { columns: [0, 1, 2, 3, 4 ] } },
+                    { extend: 'csv', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3, 4] } },
+                    { extend: 'excel', className: 'btn purple btn-outline ', exportOptions: { columns: [0, 1, 2, 3, 4] } }
+                ],
+                "dom": "<'row' <'col-md-12'B>><'row'<'col-md-6 col-sm-12'l><'col-md-6 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
+
+            });
+            DesbloquearPantalla();
+        }
+
+
+
+        function MostrarMensaje(msj) {
+            $("#mensajeError").show();
+            $("#mensajeError").attr('class', 'alert alert-danger');
+            $("#mensajeError").html(msj);
+        }
+        function LimpiarMensaje() {
+            $("#mensajeError").hide();
+            $("#mensajeError").html('');
+        }
+        function changeestate(nombre, accion, accionado, estado, id, url) {
+            LimpiarMensaje();
+            $("#dialogoHabilitarMensaje").html('¿Está seguro que desea ' + accion + ' el cliente "' + nombre + '" ?');
+            $("#ToastT").val(accion.charAt(0).toUpperCase() + accion.slice(1) + ' ciudad');
+            $("#ToastM").val('Se ha ' + accionado + ' el cliente "' + nombre + '" correctamente.');
+            $("#Habilitar").val(url);
+            $("#Id").val(id);
+            $("#Estate").val(estado);
+            $('#dialogoHabilitar').modal('show');
+        }
+        function HabilitaroDeshabilitar() {
+            LimpiarMensaje();
+            $("#btn_cancelar").click();
+            BloquearPantalla();
+            $.ajax({
+                url: $("#Habilitar").val(),
+                cache: false,
+                data: { id: $("#Id").val(), estado: $("#Estate").val() },
+                type: "POST"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function (html) {
+                showToast($("#ToastT").val(), $("#ToastM").val());
+                Listar();
+                DesbloquearPantalla();
+            }).error(function (er) {
+                MostrarMensaje(procesarErrorGenerico(er));
+                DesbloquearPantalla();
+            });
+        }
+    </script>
+}

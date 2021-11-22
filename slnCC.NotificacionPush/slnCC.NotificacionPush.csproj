@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.13.2\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.2\build\NUnit.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E3E998DE-64EA-4532-963F-60EB14633077}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>slnCC.NotificacionPush</RootNamespace>
+    <AssemblyName>slnCC.NotificacionPush</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.13.2.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.13.2\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Amazon, Version=4.0.10.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <HintPath>..\packages\PushSharp.4.0.10\lib\net45\PushSharp.Amazon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Apple, Version=4.0.10.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <HintPath>..\packages\PushSharp.4.0.10\lib\net45\PushSharp.Apple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Blackberry, Version=4.0.10.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <HintPath>..\packages\PushSharp.4.0.10\lib\net45\PushSharp.Blackberry.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Core, Version=4.0.10.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <HintPath>..\packages\PushSharp.4.0.10\lib\net45\PushSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Firefox, Version=4.0.10.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <HintPath>..\packages\PushSharp.4.0.10\lib\net45\PushSharp.Firefox.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Google, Version=4.0.10.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <HintPath>..\packages\PushSharp.4.0.10\lib\net45\PushSharp.Google.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Windows, Version=4.0.10.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <HintPath>..\packages\PushSharp.4.0.10\lib\net45\PushSharp.Windows.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AGConnectAdmin\AGConnectApp.cs" />
+    <Compile Include="AGConnectAdmin\AGConnectException.cs" />
+    <Compile Include="AGConnectAdmin\AppOptions.cs" />
+    <Compile Include="AGConnectAdmin\Auth\TokenResponse.cs" />
+    <Compile Include="AGConnectAdmin\IAGConnectService.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\AGConnectMessaging.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\AGConnectMessagingClient.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\AndroidConfig.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\AndroidNotification.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\ApnsConfig.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\ApnsHmsOptions.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\Aps.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\ApsAlert.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\BadgeNotification.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\ClickAction.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\Convertors\TimeSpanJsonConverter.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\CriticalSound.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\Direction.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\LightColor.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\LightSettings.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\Message.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\MessagePart.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\Notification.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\NotificationImportance.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\NotificationStyle.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\NotificationVisibility.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\SendRequest.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\SingleMessageResponse.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\TopicEntity.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\TopicListRequest.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\TopicListResponse.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\TopicManagementRequest.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\TopicManagementResponse.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\WebpushAction.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\WebpushConfig.cs" />
+    <Compile Include="AGConnectAdmin\Messaging\WebpushNotification.cs" />
+    <Compile Include="AGConnectAdmin\Utils\Extensions.cs" />
+    <Compile Include="AGConnectAdmin\Utils\NewtonsoftJsonSerializer.cs" />
+    <Compile Include="AGConnectAdmin\Utils\Validator.cs" />
+    <Compile Include="Entidades\Alerta.cs" />
+    <Compile Include="Entidades\Aplicacion.cs" />
+    <Compile Include="Entidades\Dispositivo.cs" />
+    <Compile Include="Entidades\Notificacion.cs" />
+    <Compile Include="Entidades\Token.cs" />
+    <Compile Include="Enviador.cs" />
+    <Compile Include="NotificacionEnviador.cs" />
+    <Compile Include="NotificacionPsh.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AGConnectAdmin\AGConnectAdmin.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NUnit.3.13.2\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.13.2\build\NUnit.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

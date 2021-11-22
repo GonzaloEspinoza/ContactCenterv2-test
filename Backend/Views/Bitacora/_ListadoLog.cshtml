@@ -1,0 +1,76 @@
+﻿
+@using Entidad.Enums;
+@model List<DataP.Bitacora>
+
+<table class="table table-striped table-bordered table-hover" id="sample_1">
+    <thead>
+        <tr>
+            <th>FECHA</th>
+            <th>HORA</th>
+            <th>NOMBRE USUARIO</th>
+            <th>TRANSACCION</th>
+            <th>TIPO</th>
+            <th>ACCION</th>
+            <th>ID ACCION</th>
+            <th>DETALLE</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            try
+            {
+                foreach (var p in Model)
+                {
+                    string Fecha = p.FechaHora.ToString("dd/MM/yyyy");
+                    string Hora = p.FechaHora.ToString("HH:mm:ss");
+                    <tr>
+                        <td>@Fecha</td>
+                        <td>@Hora</td>
+                        @{
+                            if (p.UsuarioId != null)
+                            {
+                                <td>@p.Usuario.NickName</td>
+                            }
+                            else
+                            {
+                                <td>S/N</td>
+                            }
+                        }
+                        <td>@p.Transaccion</td>
+                        <td>
+                            @{
+                                switch (p.Tipo)
+                                {
+                                    case (int)TipoBitacora.Exito:
+                                        <span class="label label-sm label-success"> Exitoso </span>
+                                        break;
+                                    case (int)TipoBitacora.Error:
+                                        <span class="label label-sm label-danger"> Falló </span>
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        </td>
+                        <td>@p.Accion</td>
+                        @{
+                            if (p.IdImplicado != null)
+                            {
+                                <td>@p.IdImplicado</td>
+                            }
+                            else
+                            {
+                                <td>S/N</td>
+                            }
+                        }
+                        <td>@p.Detalle</td>
+                    </tr>
+                                }
+                            }
+                            catch
+                            {
+                            }
+
+        }
+    </tbody>
+</table>

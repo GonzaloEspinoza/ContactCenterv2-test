@@ -1,0 +1,98 @@
+﻿
+@model Entidad.EMenu
+@using Newtonsoft.Json;
+@{
+    string ActualController = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+    string Action = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+
+}
+
+@{
+    if (Model != null)
+    {
+        bool isMenuActive = Model.Pantalla != null && ActualController.ToUpper().Equals(Model.Pantalla.Split('/')[0].ToUpper());
+        bool isPadre = Model.HijosMenu.Count > 0;
+        string classPadre = "nav-link nav-toggle";
+        string classLI = "nav-item";
+        if (!isPadre)
+        {
+            classPadre = "nav-link";
+        }
+        if (Model.Selected(ActualController.ToUpper()) || isMenuActive)
+        {
+            classLI = "nav-item active open";
+        }
+        if (isMenuActive && Model.PermisoPadreId.HasValue)
+        {
+            <script type="text/javascript">
+                var id = '#' + @Model.PermisoPadreId;
+                $(id).addClass('start active open');
+            </script>
+        }
+
+        if (Model.Pantalla != null && Model.Pantalla == "#")
+        {
+            <li class="@classLI">
+                <a id="@Model.PermisoId" href="javascript:;" class="@classPadre">
+                    <i class="@Model.IconoMenu"></i>
+                    <span class="title">@Model.Nombre</span>
+                    @if (Model.Selected(ActualController.ToUpper()))
+                    {
+                        <span class="selected"></span>
+                        if (isPadre)
+                        {
+                            <span class="arrow open"></span>
+                        }
+                    }
+                    else
+                    {
+                        if (isPadre)
+                        {
+                            <span class="arrow"></span>
+                        }
+                    }
+                </a>
+                @if (Model.HijosMenu != null && Model.HijosMenu.Count > 0)
+                {
+                    <ul class="sub-menu">
+                        @foreach (var menuHijo in Model.HijosMenu)
+                        {
+                            @Html.Partial("_Menu_item", menuHijo)
+                        }
+                    </ul>
+                }
+            </li>
+        }
+        else if (Model.Pantalla != null)
+        {
+            if (Action.Equals(Model.Pantalla.Split('/')[1]) || Action.Equals("Index"))
+            {
+                
+                <li class="@classLI">
+                    <a class="nav-link" id="@Model.PermisoId" href="@Url.Action(Model.Pantalla.Split('/')[1], Model.Pantalla.Split('/')[0])" onclick="BloquearPantalla();">
+                        <i class="@Model.IconoMenu"></i>
+                        <span class="title">@Model.Nombre</span>
+                        @if (isMenuActive)
+                    {
+                            <span class="selected"></span>
+                        }
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link" id="@Model.PermisoId" href="@Url.Action(Model.Pantalla.Split('/')[1], Model.Pantalla.Split('/')[0])" onclick="BloquearPantalla();">
+                        <i class="@Model.IconoMenu"></i>
+                        <span class="title">@Model.Nombre</span>
+                        @if (isMenuActive)
+                        {
+                            <span class="selected"></span>
+                        }
+                    </a>
+                </li>
+            }
+
+        }
+    }
+}

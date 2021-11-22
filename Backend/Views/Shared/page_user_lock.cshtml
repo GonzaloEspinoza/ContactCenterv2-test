@@ -1,0 +1,163 @@
+﻿@using Backend.Models;
+@using Logica;
+@using DataP;
+@{
+    Layout = null;
+    Usuario oUsuario = Util.SessionToUsuario<Usuario>(Session["Usuario"]);
+    LUsuarioBackEnd NUsuarioAdministrativo = LBaseCC<Usuario>.Instancia.LUsuarioBackEnd;
+    string imageUsuario = (string)Session["ImagenU"];
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/font-awesome/css/font-awesome.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/simple-line-icons/simple-line-icons.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/uniform/css/uniform.default.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css")" rel="stylesheet" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="@Url.Content("~/Content/metronic/global/css/components-md.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/css/plugins-md.min.css")" rel="stylesheet" />
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="@Url.Content("~/Content/metronic/pages/css/lock.min.css")" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <title>Página de bloqueo</title>
+</head>
+
+<body class="">
+    <div id="blockui_sample_3_2_element" class="page-lock">
+        <div class="page-body">
+            <div class="lock-head"> Bloqueado </div>
+            <div class="lock-body">
+                <div class="pull-left lock-avatar-block">
+                    @if (imageUsuario == null)
+                    {
+                        <img src="@Url.Content("~/Content/Slices/profile.png")" class="lock-avatar">
+                    }
+                    else
+                    {
+                        <img src="data:image/png;base64,@imageUsuario" class="lock-avatar">
+                    }
+                   
+                </div>
+                <div class="lock-form pull-left">
+                    <h4>@oUsuario.Funcionario.sNombre</h4>
+                    <h4>@oUsuario.Funcionario.sApellido</h4>
+
+                    <div class="form-group">
+                        <input id="password" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Contraseña" name="password" onkeypress="return onEnter(event,'IniciarSesion();');" maxlength="15" />
+                    </div>
+                    <div class="form-actions">
+                        <button onclick="IniciarSesion();" class="btn red uppercase">Ingresar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-danger" id="mensajeError" hidden>
+                @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+                {
+                    <text>@ViewBag.Mensaje</text>
+                }
+            </div>
+
+            <div class="lock-bottom">
+                <a href="@Url.Action("Index", "Login")">No eres @oUsuario.Funcionario.sNombre @oUsuario.Funcionario.sApellido?</a>
+            </div>
+        </div>
+        <div class="page-footer-custom"> Copyright &copy; Yaigo 2021 </div>
+    </div>
+
+    <!-- BEGIN CORE PLUGINS -->
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/bootstrap/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/js.cookie.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery.blockui.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/uniform/jquery.uniform.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js")"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+    <script src="@Url.Content("~/Scripts/metronic/global/scripts/app.min.js")"></script>
+    <!-- END THEME GLOBAL SCRIPTS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="@Url.Content("~/Scripts/metronic/pages/scripts/lock.min.js")"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+
+    <script type="text/javascript">
+        history.pushState(null, null, location.href);
+        window.onpopstate = function (event) {
+            history.go(1);
+        };
+
+        function BloquearPantalla() {
+            App.blockUI({
+                target: '#blockui_sample_3_2_element',
+                animate: true
+            });
+        }
+        function DesbloquearPantalla() {
+            App.unblockUI('#blockui_sample_3_2_element');
+        }
+
+        function BloquearDiv(div) {
+            App.blockUI({
+                target: div,
+                animate: true
+            });
+        }
+
+        function DesbloquearDiv(div) {
+            App.unblockUI(div);
+        }
+
+        function IniciarSesion() {
+            $("#mensajeError").html('');
+            $("#mensajeError").hide();
+            BloquearPantalla();
+            if ($("#password").val() != 0) {
+                $.ajax({
+                    url: "@Url.Action("IniciarSesion", "Login")",
+                    cache: false,
+                    data: {
+                        usr: '@oUsuario.NickName',
+                        pass: $("#password").val()
+                    },
+                    type: "POST",
+                    dataType: "script"
+                });
+            } else {
+                return MostrarMensaje('Nombre de <b>Usuario</b> o <b>Contraseña</b> incorrectos');
+            }
+        }
+
+        function MostrarMensaje(msj) {
+            $("#mensajeError").show();
+            $("#mensajeError").html(msj);
+            DesbloquearPantalla();
+        }
+
+        function redireccionar(url) {
+            window.location = url;
+        }
+
+        function onEnter(e, funcion) {
+            if (e.keyCode == 13) {
+                eval(funcion);
+            }
+        }
+    </script>
+</body>
+</html>
+

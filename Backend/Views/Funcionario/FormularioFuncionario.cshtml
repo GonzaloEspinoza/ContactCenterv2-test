@@ -1,0 +1,777 @@
+﻿@using Backend.Models;
+@using DataP;
+@using Entidad;
+@using Logica;
+@using Entidad.Enums;
+@model Funcionario
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var hoy = EUtils.Now.ToString("dd/MM/yyyy");
+
+    string imagen64 = "";
+    if (Model != null && Model.sFotoPefil != null && Model.sFotoPefil !="" )
+    {
+        imagen64 = LFuncionario.Instancia.LFuncionario.ObtenerImagenBase64Empleado(Model.nFuncionarioId);
+    }
+
+    string accion = "Nuevo";
+    try
+    {
+        accion = ViewBag.Accion;
+    }
+    catch
+    {
+        accion = "Nuevo";
+    }
+    string lblBotonGuardar = "Guardar";
+    if (accion.ToUpper().Equals("NUEVO"))
+    {
+        lblBotonGuardar = "Guardar";
+    }
+    else
+    {
+        lblBotonGuardar = "Actualizar";
+    }
+    //-----------------------------------PERFILES-------------------------------------
+    List<EPerfil> PerfilesDisponibles = new List<EPerfil>();
+    try
+    {
+        PerfilesDisponibles = ViewBag.PerfilesDisponibles;
+    }
+    catch
+    {
+        PerfilesDisponibles = new List<EPerfil>();
+    }
+    List<EPerfil> Perfiles = PerfilesDisponibles;
+    if (Model.Usuario != null)
+    {
+        foreach (var p in PerfilesDisponibles)
+        {
+            if (Model.Usuario.Perfil.Any(x => x.PerfilId == p.PerfilId))
+            {
+                p.Selected = true;
+            }
+        }
+    }
+    //--------------------------------------------------------------------------------
+    //---------------------------PERMISOS--------------------------------------------
+    List<EPermiso> Permisos = new List<EPermiso>();
+    try
+    {
+        Permisos = ViewBag.Permisos;
+    }
+    catch
+    {
+        Permisos = new List<EPermiso>();
+    }
+
+    Usuario oUsuario = Util.SessionToUsuario<Usuario>(Session["Usuario"]);
+
+    //bool Habilitado = true;
+    //Habilitado = Model == null || (Model != null && Model.FuncionarioId == 0) ? false : Model.Usuario.AccesoAplicacion ;
+    //string check = Habilitado ? "true" : "false";
+
+
+}
+@section EtiquetaHead
+{
+    <link href="@Url.Content("~/Content/jstree.min.css")" rel="stylesheet" />
+    @*<link href="@Url.Content("~/Scripts/metronic/global/plugins/jstree/dist/themes/default/style.min.css")" rel="stylesheet" />*@
+    @*<script src="@Url.Content("~/Scripts/jstree.min.js")" type="text/javascript"></script>*@
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/jstree/dist/jstree.min.js")" type="text/javascript"></script>
+
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/css/multi-select.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/select2/css/select2.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/select2/css/select2-bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css")" rel="stylesheet" />
+
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/js/bootstrap-select.min.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/js/jquery.multi-select.js")"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-multi-select/js/jquery.quicksearch.js")"></script>
+    <script src="@Url.Content("~/Scripts/metronic/global/plugins/select2/js/select2.full.min.js")"></script>
+    <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js")" type="text/javascript"></script>
+
+    <style>
+        .lbjs {
+            height: 385px !important;
+        }
+    </style>
+    <script type="text/javascript">
+
+        function SeleccinarTodos(tag) {
+            $(tag).multiSelect('select_all');
+            return false;
+        }
+
+        function DeseleccinarTodos(tag) {
+            $(tag).multiSelect('deselect_all');
+            return false;
+        }
+
+        function inicializarFecha() {
+            if (jQuery().datepicker) {
+                $('.date-picker').datepicker({
+                    rtl: App.isRTL(),
+                    orientation: "left",
+                    autoclose: true
+                });
+            }
+        }
+
+        function inicializarMultiselect(tag) {
+            $(tag).multiSelect({
+                selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='Criterio...'>",
+                selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='Criterio...'>",
+                afterInit: function (ms) {
+                    var that = this,
+                        $selectableSearch = that.$selectableUl.prev(),
+                        $selectionSearch = that.$selectionUl.prev(),
+                        selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                        selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                        .on('keydown', function (e) {
+                            if (e.which === 40) {
+                                that.$selectableUl.focus();
+                                return false;
+                            }
+                        });
+
+                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                        .on('keydown', function (e) {
+                            if (e.which == 40) {
+                                that.$selectionUl.focus();
+                                return false;
+                            }
+                        });
+                },
+                afterSelect: function () {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                },
+                afterDeselect: function () {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                }
+            });
+        }
+
+        function OnLoadImage(src) {
+            var element = $("#contenedorImagen");
+            var preview = element.find('.fileinput-preview');
+
+            var $img = $('<img>')
+            $img[0].src = src;
+            resizedataURL(src, imageW, imageH, function(){
+                imageBase64 = '';
+            });
+            if (preview.css('max-height') != 'none') $img.css('max-height', parseInt(preview.css('max-height'), 10) - parseInt(preview.css('padding-top'), 10) - parseInt(preview.css('padding-bottom'), 10) - parseInt(preview.css('border-top'), 10) - parseInt(preview.css('border-bottom'), 10))
+
+            preview.html($img)
+            element.addClass('fileinput-exists').removeClass('fileinput-new')
+        }
+        var imageBase64;
+        var imageW = 700 , imageH = 700;
+        var PasswordInicial = '';
+        $(document).ready(function () {
+
+            @*$('#Habilitado')[0].checked = @check;*@
+
+            $("#Usuario_NickName").on('change keydown paste input', function () {
+                ActualizarPasswordInicial();
+            });
+            $("#sNombre").on('change keydown paste input', function () {
+                ActualizarLabelUsuario();
+            });
+            $("#sApellido").on('change keydown paste input', function () {
+                ActualizarLabelUsuario();
+            });
+            if ($("#ExisteImagen").val() == 'True') {
+                OnLoadImage('data:image/png;base64,' + '@imagen64');
+            }
+            inicializarMultiselect('#my_multi_select3');
+
+            $('#my_multi_select3').change(function () {
+                recargarArbol($(this).val());
+            });
+            bindTree();
+
+            $('#tipo_selector').val("@Model.Usuario.TipoUsuario").change();
+           // $("#tipo_selector option[value=" + '@Model.Usuario.TipoUsuario' + "]").prop('selected', true);
+
+            if(@Model.nFuncionarioId == 0){
+                $("#sexo_selector option[value=-1]").prop('selected', true);
+            }else{
+                //$("#sexo_selector option[value=" + '@Model.nSexo' + "]").prop('selected', true);
+                $('#sexo_selector').val("@Model.nSexo").change();
+            }
+
+            $('.bs-select').selectpicker({
+                iconBase: 'fa',
+                tickIcon: 'fa-check'
+            });
+        });
+
+        function base64ToDataUri(base64) {
+            return 'data:image/png;base64,' + base64;
+        }
+
+        function imageToDataUri(img, width, height) {
+
+            // create an off-screen canvas
+            var canvas = document.createElement('canvas'),
+                ctx = canvas.getContext('2d');
+
+            // set its dimension to target size
+            canvas.width = width;
+            canvas.height = height;
+
+            // draw source image into the off-screen canvas:
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // encode image to data-uri with base64 version of compressed image
+            return canvas.toDataURL();
+        }
+
+        function volverUsuario() {
+            $("#btn_cancelar_v").click();
+            redireccionar('@Url.Action("Index", "Funcionario")');
+        }
+
+        //-------------------PERMISOS----------------------------------------------------------
+        function bindTree() {
+            $.blockUI.defaults.overlayCSS.cursor = 'default';
+            $.jstree.defaults.core.themes.icons = false;
+            $.jstree.defaults.core.themes.dots = false;
+            $.jstree.defaults.core.animation = 50;
+            var loaded = false;
+            $('#usuariosPermisos')
+               .bind("loaded.jstree", function (e, data) {
+                   //console.log("loaded");
+                   data.instance.open_all();
+                   var context = data.instance;
+                   var lstNodes = context.get_children_dom($(this));
+                   $(lstNodes).each(function (i) {
+                       if ($(this).data("checked").toString() == "True") {
+                           context.select_node($(this));
+                       } else {
+                           context.deselect_node($(this));
+                       }
+                       context.refresh();
+                       var childNodes = context.get_children_dom($(this));
+                       checkPermisoRecursivo(childNodes, context);
+                   });
+                   setTimeout(function () { setDisabledTree(); }, 300);
+               })
+               .bind("after_open.jstree", function (e, data) {
+                   setDisabledTree();
+                   setTimeout(function () { setDisabledTree(); }, 100);
+               })
+               .bind("after_close.jstree", function (e, data) {
+                   setDisabledTree();
+                   setTimeout(function () { setDisabledTree(); }, 100);
+               })
+                .bind("changed.jstree", function (e, data) {
+                    data.instance.close_all();
+                    data.instance.open_all();
+                    setDisabledTree();
+                    setTimeout(function () { setDisabledTree(); }, 100);
+                })
+                .delegate("a", "click", function (ev, data) {
+                    if ($(this).parent().data("inperf") == "True") {
+                        throw new Error("No es permitido cambiar este permiso.");
+                    }
+                    ev.preventDefault();
+                })
+               .jstree({
+                   "plugins": ["themes", "checkbox", "types"]
+               });
+        }
+
+        function checkPermisoRecursivo(nodos, context) {
+            $(nodos).each(function (i) {
+                if ($(this).data("checked").toString() == "True") {
+                    context.select_node($(this));
+                } else {
+                    context.deselect_node($(this));
+                }
+                context.refresh();
+                var childNodes = context.get_children_dom($(this));
+                checkPermisoRecursivo(childNodes, context);
+            });
+        }
+
+        function setDisabledTree() {
+            $(".jstree-undetermined").each(function () {
+                if ($(this).parent().parent().data("inperf") == "True") {
+                    $(this).removeClass('jstree-undetermined').addClass('jstree-undetermined-disabled');
+                }
+            });
+
+            $("a.jstree-clicked > .jstree-checkbox").each(function () {
+                if ($(this).parent().parent().data("inperf") == "True") {
+                    $(this).removeClass('jstree-checkbox').addClass('jstree-checkbox-disabled');
+                }
+            });
+        }
+
+        function getPermisos() {
+            var concat = '';
+            $('.jstree-clicked').each(function () {
+                if ($(this).parent().data("inperf").toLowerCase() == "false") {
+                    concat = concat.length == 0 ? $(this).parent().data("idperm") : concat + ',' + $(this).parent().data("idperm");
+                }
+            });
+            $('.jstree-undetermined').each(function () {
+                if ($(this).parent().parent().data("inperf").toLowerCase() == "false") {
+                    concat = concat.length == 0 ? $(this).parent().parent().data("idperm") : concat + ',' + $(this).parent().parent().data("idperm");
+                }
+            });
+            $("#PermisosUsuario").val(concat);
+        }
+        //----------------PERFILES-----------------------------
+
+        function MostrarMensaje(msj) {
+            //$("#mensajeError").show();
+            //$("#mensajeError").html(msj);
+            showAlertError(msj);
+        }
+
+        function LimpiarMensaje() {
+            limpiarAlerta();
+        }
+
+        function recargarArbol(perfiles) {
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action("MarcarPantallas", "funcionario")",
+                cache: false,
+                data: {
+                    id: $("#nFuncionarioId").val(),
+                    PerfilesUsuario: perfiles
+                },
+                type: "POST"
+            }).done(function (html) {
+                $("#contenedorPermisoArbol").html(html);
+                bindTree();
+                DesbloquearPantalla();
+            });
+        }
+
+        function ProcesarUsuario() {
+            LimpiarMensaje();
+            getPermisos();
+
+            //if (isEmpty($("#Nombres").val())) {
+            //    MostrarMensaje('Ingrese un nombre válido.'); return false;
+            //}
+
+            //if (isEmpty($("#Apellidos").val())) {
+            //    MostrarMensaje('Ingrese un apellido válido.'); return false;
+            //}
+
+            //if (isEmpty($("#CI").val())) {
+            //    MostrarMensaje('Ingrese un documento de identidad válido.'); return false;
+            //}
+
+            //if (isEmpty($("#sexo_selector").val())) {
+            //    MostrarMensaje('Seleccione un género válido.'); return false;
+            //}
+
+            if (!ValidarCaracteresEspecialesSinEspacios($("#Usuario_NickName").val())) {
+                MostrarMensaje('Ingrese un usuario válido.'); return false;
+            }
+
+            if ($("#my_multi_select3").val() == null || $("#my_multi_select3").val() == undefined) {
+                MostrarMensaje('Debe asignar al menos un perfil al funcionario.'); return false;
+            }
+
+            var tipoUsuario = @oUsuario.TipoUsuario;
+            var tipoNormal = @((int)TipoUsuario.TipoNormal);
+            var tipo = 0;
+            if(tipoUsuario == tipoNormal)
+            {
+                tipo = tipoNormal;
+            }else{
+                tipo = $("#tipo_selector").val()
+            }
+
+
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action(accion, "funcionario")",
+                cache: false,
+                data: {
+                    id: $("#nFuncionarioId").val().trim(),
+                    usuario: $("#Usuario_NickName").val().trim(),
+                    sexo : $("#sexo_selector").val().trim(),
+                    nombres: $("#sNombre").val().trim(),
+                    apellidos: $("#sApellido").val().trim(),
+                    nroCI: $("#sCi").val().trim(),
+                    cargo: "Demo",
+                    perfiles: $("#my_multi_select3").val(),
+                    permisos: $("#PermisosUsuario").val().trim(),
+                    imagen: imageBase64,
+                    tipo: tipo,
+                    password: PasswordInicial
+                    //aplicacion: $("#Habilitado").is(":checked")
+                },
+                type: "POST",
+                dataType: "script"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function () {
+                DesbloquearPantalla();
+            }).error(function (er) {
+                MostrarMensaje(procesarErrorGenerico(er));
+                DesbloquearPantalla();
+            });
+        }
+
+        function resetear() {
+            $("#btn_cancelar").click();
+            BloquearPantalla();
+            $.ajax({
+                url: "@Url.Action("ResetearPassword", "funcionario")",
+                cache: false,
+                data: {
+                    idFuncionario: $("#nFuncionarioId").val()
+                },
+                type: "POST",
+                dataType: "script"
+            }).complete(function () {
+                DesbloquearPantalla();
+            }).done(function () {
+                DesbloquearPantalla();
+            }).error(function (er) {
+                MostrarMensaje(procesarErrorGenerico(er));
+                DesbloquearPantalla();
+            });
+        }
+        //-----------------------------------------------------------------------------
+
+        var inputQuantity = [];
+        $(function () {
+            $(".quantity").each(function (i) {
+                inputQuantity[i] = this.defaultValue;
+                $(this).data("idx", i); // save this field's index to access later
+            });
+            $(".quantity").on("keyup", function (e) {
+                var $field = $(this),
+                    val = this.value,
+                    $thisIndex = parseInt($field.data("idx"), 10); // retrieve the index
+                //        window.console && console.log($field.is(":invalid"));
+                //  $field.is(":invalid") is for Safari, it must be the last to not error in IE8
+                if (this.validity && this.validity.badInput || isNaN(val) || $field.is(":invalid")) {
+                    this.value = inputQuantity[$thisIndex];
+                    return;
+                }
+                if (val.length > Number($field.attr("maxlength"))) {
+                    val = val.slice(0, 5);
+                    $field.val(val);
+                }
+                inputQuantity[$thisIndex] = val;
+            });
+        });
+
+        function ActualizarLabelUsuario() {
+            var nombres = $("#sNombre").val().trim();
+            var splitNames = nombres.split(" ");
+            var primerNombre = '';
+            if (splitNames.length > 0) {
+                primerNombre = splitNames[0].trim().toLowerCase();
+            }
+
+            var apellidoP = $("#sApellido").val().trim();
+            var splitApellidoP = apellidoP.split(" ");
+            if (splitApellidoP.length > 0) {
+                apellidoP = splitApellidoP[0].trim().toLowerCase();
+            }
+            var usuario = primerNombre + apellidoP;
+            $("#Usuario_NickName").val(usuario);
+            ActualizarPasswordInicial();
+        }
+
+        function ActualizarPasswordInicial() {
+            PasswordInicial = $("#Usuario_NickName").val().trim();
+            if (PasswordInicial.length > 1) {
+                PasswordInicial = PasswordInicial.substring(0, 1).toUpperCase() + PasswordInicial.substring(1, PasswordInicial.length);
+            }
+            $("#labelPassAsignada").html('<b>' + PasswordInicial + '</b>');
+        }
+
+        function onClickRPass() {
+            var nombres = $("#sNombre").val().trim();
+            var splitNames = nombres.split(" ");
+            var primerNombre = '';
+            if (splitNames.length > 0) {
+                primerNombre = splitNames[0].trim().toLowerCase();
+            }
+
+            var apellidoP = $("#sApellido").val().trim();
+            var splitApellidoP = apellidoP.split(" ");
+            if (splitApellidoP.length > 0) {
+                apellidoP = splitApellidoP[0].trim().toLowerCase();
+            }
+            var usuario = primerNombre + apellidoP;
+            var pass = usuario;
+            if (pass.length > 1) {
+                pass = pass.substring(0, 1).toUpperCase() + pass.substring(1, pass.length);
+            }
+            //  $("#nueva_pass").html("<b>" + pass + "</b>.");
+        }
+    </script>
+}
+<div class="page-head">
+    <div class="page-title">
+        <h1>
+            Funcionarios
+            <small>@ViewBag.Title</small>
+        </h1>
+    </div>
+</div>
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="@Url.Action("Index", "Inicio")">Principal</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="@Url.Action("Index", "Funcionario")">Funcionarios</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span class="active">@ViewBag.Title</span>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-puzzle font-green-sharp"></i>
+                    <span class="caption-subject font-green-sharp bold uppercase">Datos Funcionario</span>
+                </div>
+            </div>
+
+            <div class="portlet-body">
+                @if (imagen64 == "")
+                {
+                    @Html.Hidden("ExisteImagen", false)
+                }
+                else
+                {
+                    @Html.Hidden("ExisteImagen", true)
+                }
+                @Html.HiddenFor(x => x.nFuncionarioId)
+                @Html.Hidden("PermisosUsuario")
+
+                <div class="alert alert-danger" style="display:none" role="alert" id="mensajeError"></div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="portlet box green">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-image"></i> Imagen
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form-group">
+                                    <div id="contenedorImagen" class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="fileinput-new thumbnail">
+                                            <img src="@Url.Content("~/Content/Slices/noimages.jpg")" alt="" />
+                                        </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail"> </div>
+                                        <div>
+                                            <span class="btn default btn-file">
+                                                <span class="fileinput-new"> Seleccionar Imagen </span>
+                                                <span class="fileinput-exists"> Cambiar Imagen </span>
+                                                <input type="file" name="...">
+                                            </span>
+                                            <br />
+                                            <br />
+                                            <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Eliminar Imagen </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group form-md-line-input form-md-floating-label">
+                                    @Html.TextBoxFor(x => x.sNombre, new { @class = "form-control", @maxlength = "100" })
+                                    @Html.LabelFor(x => x.sNombre, "Nombres")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group form-md-line-input form-md-floating-label">
+                                    @Html.TextBoxFor(x => x.sApellido, new { @class = "form-control", @maxlength = "50" })
+                                    @Html.LabelFor(x => x.sApellido, "Apellidos")
+                                </div>
+                            </div>
+                            @*<div class="col-sm-6">
+                                <div class="form-group form-md-line-input form-md-floating-label">
+                                    @Html.TextBoxFor(x => x.Cargo, new { @class = "form-control", @maxlength = "50" })
+                                    @Html.LabelFor(x => x.Cargo, "Cargo del funcionario")
+                                </div>
+                            </div>*@
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group form-md-line-input form-md-floating-label">
+                                    @Html.TextBoxFor(x => x.sCi, new { @class = "form-control quantity", @type = "number", @min = 0, @max = 9999999999, @maxlength = "10" })
+                                    @Html.LabelFor(x => x.sCi, "Número Documento de Identidad")
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="control-label"> Género </label>
+                                <div class="form-group">
+                                    <select id="sexo_selector" class="bs-select form-control">
+                                        @{
+                                            <option value="-1"> Seleccionar </option>
+                                            foreach (Sexo item in Enum.GetValues(typeof(Sexo)))
+                                            {
+                                                <option value="@((int)item)"> @item.ToString() </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-user font-green-sharp"></i>
+                    <span class="caption-subject font-green-sharp bold uppercase">Datos Usuario</span>
+                </div>
+            </div>
+
+            <div class="portlet-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group form-md-line-input form-md-floating-label">
+                            @Html.TextBoxFor(x => x.Usuario.NickName, new { @class = "form-control", @maxlength = "30" })
+                            @Html.LabelFor(x => x.Usuario.NickName, "Usuario")
+                        </div>
+                    </div>
+                </div>
+                @{
+                    if (oUsuario.TipoUsuario != (int)TipoUsuario.TipoNormal)
+                    {
+                        <label class="control-label"> Tipo </label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <select id="tipo_selector" class="bs-select form-control">
+                                        @if (oUsuario.TipoUsuario <= (int)TipoUsuario.TipoCC)
+                                        {
+                                            <option value="0">Super Administrador</option>
+                                        }
+                                        @if (oUsuario.TipoUsuario <= (int)TipoUsuario.TipoAdministrador)
+                                        {
+                                            <option value="1">Administrador</option>
+                                        }
+                                        <option value="2">Normal</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h4>Perfiles</h4>
+                        <div class="form-group ">
+                            @Html.Partial("_ListaPerfiles", PerfilesDisponibles)
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <h4> Permisos </h4>
+                        <div id="contenedorPermisoArbol">
+                            @Html.Partial("_PermisosArbol", Permisos)
+                        </div>
+                    </div>
+                </div>
+                @{if (Model == null || Model.nFuncionarioId == 0)
+                    {
+                        <span class="labelsAzul">Contraseña asignada:  </span><span id="labelPassAsignada" class="labels">NickName (El que introduzca) + "123"</span><br />
+                    }
+                    else
+                    {
+                        <button type="button" onclick="onClickRPass()" class="btn btn-flat btn-blue" data-toggle="modal" data-target="#dialogoResetearContrasena">Resetear contraseña</button>
+                    }
+                }
+                
+                <br><br>
+
+                @*<div class="md-checkbox">
+                    <input type="checkbox" id="Habilitado" class="md-check">
+                    <label for="Habilitado" title="Habilite o Deshabilite el acceso a la aplicación móvil">
+                        <span></span>
+                        <span class="check"></span>
+                        <span class="box"></span> Acceso a la aplicación móvil
+                    </label>
+                </div>*@
+                <br />
+
+                <button class="btn btn-default" data-toggle="modal" data-target="#dialogoVolverUsuario">Volver</button>
+                <input type="button" value="@lblBotonGuardar" class="btn btn-success" onclick="ProcesarUsuario()" />
+            </div>
+        </div><!--.panel-->
+    </div><!--.row-->
+</div>
+
+<div class="modal scale fade" id="dialogoVolverUsuario" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Diálogo de confirmación</h4>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro que desea cancelar la operación y volver a la lista de funcionarios sin guardar los cambios?
+            </div>
+            <div class="modal-footer">
+                <button id="btn_cancelar_v" type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-flat btn-primary" onclick="volverUsuario()">Aceptar</button>
+            </div>
+        </div><!--.modal-content-->
+    </div><!--.modal-dialog-->
+</div><!--.modal-->
+
+<div class="modal scale fade" id="dialogoResetearContrasena" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Diálogo de confirmación</h4>
+            </div>
+            <div class="modal-body">
+                <span class="labels">
+                    Su contraseña será reinicializada y se le asignará una por defecto.<br />
+                    <br />
+                    @*<span>Nueva contraseña: </span><span id="nueva_pass"></span>*@
+                </span>
+            </div>
+            <div class="modal-footer">
+                <button id="btn_cancelar" type="button" class="btn btn-flat btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-flat btn-primary" onclick="resetear()">Aceptar</button>
+            </div>
+        </div><!--.modal-content-->
+    </div><!--.modal-dialog-->
+</div><!--.modal-->

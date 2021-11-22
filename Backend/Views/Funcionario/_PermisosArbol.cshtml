@@ -1,0 +1,14 @@
+﻿@model List<Entidad.EPermiso>
+<div id="usuariosPermisos" class="arbolContenedor" style="width: 260px">
+    <ul>
+        @{
+            if (Model != null)
+            {
+                foreach (var p in Model)
+                {
+                    @Html.Partial("_ListadoPermisos", p)
+                }
+            }
+        }
+    </ul>
+</div>
