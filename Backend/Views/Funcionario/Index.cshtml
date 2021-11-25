@@ -5,12 +5,10 @@
 @using Logica;
 
 @model List<EFuncionario>
-@{
-    ViewBag.Title = "Funcionarios";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
-    List<Permiso> HijosMenu = ViewBag.PermisosH;
-}
+@{ ViewBag.Title = "Funcionarios";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+                List<Permiso> HijosMenu = ViewBag.PermisosH; }
 @section EtiquetaHead
 {
     <link href="@Url.Content("~/Content/metronic/global/plugins/datatables/datatables.min.css")" rel="stylesheet" />
@@ -18,6 +16,7 @@
     <script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
     <script src="@Url.Content("~/Content/metronic/global/plugins/datatables/datatables.min.js")"></script>
     <script src="@Url.Content("~/Content/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
+    <link href="@Url.Content("~/Content/button/bttons.css")" rel="stylesheet" />    
 
     <script type="text/javascript">
         var TableDatatablesRowreorder = function () {
@@ -219,7 +218,7 @@
                 @Html.Hidden("ToastT")
                 @Html.Hidden("ToastM")
                 @Html.Hidden("Habilitar")
-                @Html.Hidden("Id")                
+                @Html.Hidden("Id")
                 <span class="labelsAzul">Estado</span>
                 <div class="md-radio-inline">
                     <div class="md-radio">
@@ -247,27 +246,22 @@
                         </label>
                     </div>
                 </div>
-                @{
-                    if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
-                    {
-                        @Html.ActionLink("Nuevo funcionario", "Funcionario", "funcionario", new { id = 0 }, new { @class = "btn btn-primary pull-right", @onclick = "BloquearPantalla();" })
-                    }
-                }
+                @{ if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
+                                {
+                    @Html.ActionLink("Nuevo funcionario", "Funcionario", "funcionario", new { id = 0 }, new { @class = "btn btn-pink pull-right", @onclick = "BloquearPantalla();" }) } }
+
                 <br />
                 <br />
-                <br />                
+                <br />
                 <br />
                 <br />
                 <br />
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet light ">
                     <div id="ContenedorLista" class="portlet-body">
-                        @{
-                            if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar))
-                            {
-                                @Html.Partial("_ListadoFuncionarios", Model)
-                            }
-                        }
+                        @{ if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar))
+                                        {
+                            @Html.Partial("_ListadoFuncionarios", Model) } }
                     </div>
                 </div>
                 <!-- END EXAMPLE TABLE PORTLET-->

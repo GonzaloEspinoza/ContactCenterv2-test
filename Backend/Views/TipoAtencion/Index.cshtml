@@ -4,17 +4,16 @@
 @using DataP;
 @using Backend.Models;
 @model List<ETipoAtencion>
-@{
-    ViewBag.Title = "Tipo de Atención";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
-    List<Permiso> HijosMenu = ViewBag.PermisosH;
-}
+@{ ViewBag.Title = "Tipo de Atención";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+                List<Permiso> HijosMenu = ViewBag.PermisosH; }
 @section EtiquetaHead
 {
     <link href="@Url.Content("~/Content/card-item.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/metronic/global/plugins/datatables/datatables.min.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/button/bttons.css")" rel="stylesheet" />
 }
 <div class="page-head">
     <div class="page-title">
@@ -70,20 +69,14 @@
                         </label>
                     </div>
                 </div>
-                @{
-                    if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
-                    {
-                        @Html.ActionLink("Nuevo Tipo de Atencion", "TipoAtencion", "TipoAtencion", new { id = 0 }, new { @class = "btn btn-primary pull-left", @onclick = "BloquearPantalla();" })
-                    }
-                }
+                @{ if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
+                                {
+                    @Html.ActionLink("Nuevo Tipo de Atencion", "TipoAtencion", "TipoAtencion", new { id = 0 }, new { @class = "btn btn-pink pull-left", @onclick = "BloquearPantalla();" }) } }
                 <div class="portlet light">
                     <div id="ContenedorLista" class="portlet-body">
-                        @{
-                            if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar))
-                            {
-                                @Html.Partial("_ListadoTipoAtencion", Model)
-                            }
-                        }
+                        @{ if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar))
+                                        {
+                            @Html.Partial("_ListadoTipoAtencion", Model) } }
                     </div>
                 </div>
             </div>

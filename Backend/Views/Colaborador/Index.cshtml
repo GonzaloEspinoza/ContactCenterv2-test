@@ -18,7 +18,7 @@
     <script src="@Url.Content("~/Scripts/metronic/global/scripts/datatable.js")"></script>
     <script src="@Url.Content("~/Content/metronic/global/plugins/datatables/datatables.min.js")"></script>
     <script src="@Url.Content("~/Content/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js")"></script>
-
+    <link href="@Url.Content("~/Content/button/bttons.css")" rel="stylesheet" />
     <script type="text/javascript">
         var TableDatatablesRowreorder = function () {
 
@@ -250,7 +250,7 @@
                 @{
                     if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
                     {
-                        @Html.ActionLink("Nuevo colaborador", "Colaborador", "colaborador", new { id = 0 }, new { @class = "btn btn-primary pull-right", @onclick = "BloquearPantalla();" })
+                        @Html.ActionLink("Nuevo colaborador", "Colaborador", "colaborador", new { id = 0 }, new { @class = "btn btn-pink pull-right", @onclick = "BloquearPantalla();" })
                     }
                 }
                 <br />

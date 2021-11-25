@@ -41,6 +41,7 @@
     <link href="@Url.Content("~/Content/metronic/layouts/layout4/css/layout.min.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/metronic/layouts/layout4/css/themes/light.min.css")" rel="stylesheet" id="style_color" />
     <link href="@Url.Content("~/Content/metronic/layouts/layout4/css/custom.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/navbar/styles.css")" rel="stylesheet" />
     <!-- END THEME LAYOUT STYLES -->
     <!-- BEGIN CORE PLUGINS -->
     <script src="@Url.Content("~/Scripts/metronic/global/plugins/jquery.min.js")"></script>
@@ -348,27 +349,28 @@
         toasts.push(toast);
         </script>
     }
-    <div class="page-header navbar navbar-fixed-top">
-        <div class="page-header-inner ">
+    <div class="page-header navbar navbar-fixed-top bg-navbar">
+        <div class="page-header-inner">
             <div class="page-logo">
                 <a href="@Url.Action("Index","Inicio")">
-                    <img style="width:174px; height:auto;" src="@Url.Content("~/Content/img/logo.png")" alt="logo" class="logo-default" />
+                    <img style="width:300px; height:75px;" src="@Url.Content("~/Content/img/icon-mecinets-navbar.png")" alt="logo" class="logo-default" />
                 </a>
-                <div id="botonToggler" class="menu-toggler sidebar-toggler"></div>
+                @* menu-toggler sidebar-toggler visible-md visible-sm *@
+                <div id="botonToggler" class="menu-toggler sidebar-toggler visible-md visible-sm toggle-navbar"></div>
             </div>
             <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
             <div class="page-top">
                 <div class="top-menu">
-                    <ul class="nav navbar-nav pull-right">
+                    <ul class="nav navbar-nav pull-right navbar-blue">
                         <li class="separator hide"> </li>
-
-                        <li class="dropdown dropdown-extended dropdown-inbox dropdown-dark" id="contenedorNotificaciones">
+                        <li class="dropdown dropdown-extended dropdown-inbox dropdown-dark "  id="contenedorNotificaciones" >
                            
                         </li>
 
                         <li class="separator hide"> </li>
                         <li class="dropdown dropdown-user">
-                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+            
+                            <a href="javascript:;" class="dropdown-toggle bg-admin hover-bg" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 @if (imageUsuario == null)
                                 {
                                     <img src="@Url.Content("~/Content/Slices/profile.png")" class="img-circle" />
@@ -380,6 +382,7 @@
                                 <span class="username username-hide-on-mobile"> @oUsuario.NickName </span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
+                           
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li>
                                     <a href="@Url.Action("Index", "CambioContrasena")">
@@ -404,10 +407,14 @@
             </div>
         </div>
     </div>
+
+    @* :::::::::menu lataral:::::::::::::::::::: *@
     <div class="clearfix"> </div>
     <div class="page-container">
         <div class="page-sidebar-wrapper">
+         
             <div class="page-sidebar navbar-collapse collapse">
+               
                 @if (oUsuario != null)
                 {
                     @Html.Partial("_Menu", NUsuarioAdministrativo.DevolverMenu(oUsuario))

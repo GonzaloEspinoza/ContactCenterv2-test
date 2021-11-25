@@ -39,7 +39,7 @@
 
     <link href="@Url.Content("~/Content/jquery-ui.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/metronic/pages/css/login-4.css")" rel="stylesheet" />
-    <link rel="shortcut icon" type="image/x-icon" href="~/Content/img/logo.png " />
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/img/logo_mecinets.png" />
     <style>
         .backstretch {
             opacity: 0.3 !important;
@@ -52,19 +52,21 @@
 <body class="login">
     <!-- BEGIN LOGO -->
    <div class="logo">
-        <img src="~/Content/slices/logo_login.png" alt="CONTACT CENTER"/>
+        <img src="~/Content/slices/logo_login_medicinets_2.png" alt="CONTACT CENTER"/>
     </div>
     <!-- END LOGO -->
+
     <!-- BEGIN LOGIN -->
     <div id="blockui_sample_3_2_element" class="content">
         <!-- BEGIN LOGIN FORM -->
         <form class="login-form" action="javascript:;" method="post">
-            <h3 class="form-title">FORMULARIO DE LOGIN</h3>
+            <h3 class="form-title">FORMULARIO DE ACCESO</h3>
+           
+
             <div class="alert alert-danger" id="mensajeError" hidden>
                 @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
                 {
-                    <text>@ViewBag.Mensaje</text>
-                }
+        <text>@ViewBag.Mensaje</text>}
             </div>
             <div class="form-group">
                 <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
@@ -91,7 +93,7 @@
     </div>
     <!-- END LOGIN -->
     <!-- BEGIN COPYRIGHT -->
-    <div class="copyright"> Copyright &copy; Yaigo @DateTime.Now.Year</div>
+    <div class="copyright"> Copyright &copy; Medicinets @DateTime.Now.Year</div>
 
     <div class="modal fade" id="dialogoContrasena" tabindex="-1" role="basic" aria-hidden="true">
         <div class="modal-dialog">

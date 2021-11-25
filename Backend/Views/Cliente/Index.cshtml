@@ -15,6 +15,7 @@
     <link href="@Url.Content("~/Content/card-item.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/metronic/global/plugins/datatables/datatables.min.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/button/bttons.css")" rel="stylesheet" />
 }
 <div class="page-head">
     <div class="page-title">
@@ -72,7 +73,7 @@
                 @{
                     if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
                     {
-                        @Html.ActionLink("Nuevo cliente", "cliente", "cliente", new { id = 0 }, new { @class = "btn btn-primary pull-left", @onclick = "BloquearPantalla();" })
+                        @Html.ActionLink("Nuevo cliente", "cliente", "cliente", new { id = 0 }, new { @class = "btn btn-pink pull-left", @onclick = "BloquearPantalla();" })
                     }
                 }
                 <div class="portlet light">
@@ -166,7 +167,7 @@
                             "mRender": function (data, type, row) {
                                 var url = "@Url.Action("detalle", "Cliente")";
                                 var detalle = "";
-                                detalle = `<a href="` + url +'/' + row.ClienteId + `" onclick="BloquearPantalla();" class="btn btn-outline btn-circle dark btn-sm black"> <i class="fa fa-eye"></i> Ver</a>`
+                                detalle = `<a href="` + url +'/' + row.ClienteId + `" onclick="BloquearPantalla();" class="btn btn-outline btn-circle  btn-sm "> <i class="fa fa-eye"></i> Ver</a>`
                                 return detalle;
 
                             }
@@ -175,7 +176,7 @@
                             "mRender": function (data, type, row) {
                                 var url = "@Url.Action("cliente", "Cliente")";
                                 var editar = "";
-                                editar = `<a href="` + url +'/' + row.ClienteId + `" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple"><i class="fa fa-edit"></i> Editar</a>`
+                                editar = `<a href="` + url +'/' + row.ClienteId + `" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm "><i class="fa fa-edit"></i> Editar</a>`
                                 return editar;
                             }
                         },
@@ -183,7 +184,7 @@
                             "mRender": function (data, type, row) {
                                 var url = "@Url.Action("CambiarEstado", "Cliente")";
                                 var eliminar = "";
-                                eliminar = `<a onclick="changeestate('` + row.Nombres + ' ' + row.Apellidos + `','eliminar','eliminado','2','` + row.ClienteId + `' ,'` + url + `')" class="btn btn-outline btn-circle dark btn-sm black"><i class="fa fa-trash-o"></i> Eliminar</a>`
+                                eliminar = `<a onclick="changeestate('` + row.Nombres + ' ' + row.Apellidos + `','eliminar','eliminado','2','` + row.ClienteId + `' ,'` + url + `')" class="btn btn-outline btn-circle red btn-sm danger"><i class="fa fa-trash-o"></i> Eliminar</a>`
                                 return eliminar;
                             }
                         }

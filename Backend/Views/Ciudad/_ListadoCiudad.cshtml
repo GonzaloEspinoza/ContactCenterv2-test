@@ -5,16 +5,16 @@
 @using DataP;
 @using Backend.Models;
 @model List<ECiudad>
-@{
-    LPermiso LPermiso = LPermiso.Instancia.LPermiso;
-    List<Permiso> HijosMenu = ViewBag.PermisosH;
-    bool PermisoModificar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Modificar);
-    bool PermisoEliminar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Eliminar);
-    bool PermisoListar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar);
-    bool PermisoVer = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Ver);
-
-    
+@{ LPermiso LPermiso = LPermiso.Instancia.LPermiso;
+                List<Permiso> HijosMenu = ViewBag.PermisosH;
+                bool PermisoModificar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Modificar);
+                bool PermisoEliminar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Eliminar);
+                bool PermisoListar = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar);
+                bool PermisoVer = LPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Ver); 
 }
+
+
+
 <table class="table table-striped table-bordered table-hover" id="sample_2">
     <thead>
         <tr>
@@ -30,63 +30,45 @@
         </tr>
     </thead>
     <tbody>
-        @{
+        @{ foreach (var p in Model)
+                        {
+            <tr>
+                <td>@p.CiudadId</td>
+                <td>@p.Nombre</td>
+                <td>@p.Pais.sNombre</td>
+                <td><img src="data:image/png;base64,@p.Base64Bandera" alt="@p.Nombre" style="width: 50px;height: auto;" /> </td>
+                <td>
+                    @{ if (p.Estado == (int)Estado.Habilitado)
+                                        {
+                        <span class="label label-sm label-success"> Habilitado </span> }
+                                        else if (p.Estado == (int)Estado.Desabilitado)
+                                        {
+                        <span class="label label-sm label-danger"> Deshabilitado </span> } }
+                </td>
 
-            foreach (var p in Model)
-            {
-                <tr>
-                    <td>@p.CiudadId</td>
-                    <td>@p.Nombre</td>
-                    <td>@p.Pais.sNombre</td>
-                    <td><img src="data:image/png;base64,@p.Base64Bandera" alt="@p.Nombre" style="width: 50px;height: auto;" /> </td>
-                    <td>
-                        @{
-                            if (p.Estado == (int)Estado.Habilitado)
-                            {
-                                <span class="label label-sm label-success"> Habilitado </span>
-                            }
-                            else if (p.Estado == (int)Estado.Desabilitado)
-                            {
-                                <span class="label label-sm label-danger"> Deshabilitado </span>
-                            }
-                        }
-                    </td>
-
-                    <td>
-                        @{
-
-                            if (PermisoVer)
-                            {
-                                <a href="@Url.Action("detalle", "Ciudad", new { id = p.CiudadId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle dark btn-sm black">
-                                    <i class="fa fa-eye"></i> Ver
-                                </a>
-                            }
-                        }
-                    </td>
-                    <td>
-                        @{
-                            if (PermisoModificar)
-                            {
-                                <a href="@Url.Action("ciudad", "Ciudad", new { id = p.CiudadId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple">
-                                    <i class="fa fa-edit"></i> Editar
-                                </a>
-                            }
-                        }
-                    </td>
-                    <td>
-                        @{
-                            if (PermisoEliminar)
-                            {
-                                <a onclick="changeestate('@p.Nombre','eliminar','eliminado','2','@p.CiudadId' ,'@Url.Action("CambiarEstado", "Ciudad")')" class="btn btn-outline btn-circle dark btn-sm black">
-                                    <i class="fa fa-trash-o"></i> Eliminar
-                                </a>
-                            }
-                        }
-                    </td>
+                <td>
+                    @{ if (PermisoVer)
+                                        {
+                        <a href="@Url.Action("detalle", "Ciudad", new { id = p.CiudadId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle  btn-sm">
+                            <i class="fa fa-eye"></i> Ver
+                        </a> } }
+                </td>
+                <td>
+                    @{ if (PermisoModificar)
+                                        {
+                        <a href="@Url.Action("ciudad", "Ciudad", new { id = p.CiudadId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm ">
+                            <i class="fa fa-edit"></i> Editar
+                        </a> } }
+                </td>
+                <td>
+                    @{ if (PermisoEliminar)
+                                        {
+                        <a onclick="changeestate('@p.Nombre','eliminar','eliminado','2','@p.CiudadId' ,'@Url.Action("CambiarEstado", "Ciudad")')" class="btn btn-outline btn-circle red btn-sm danger">
+                            <i class="fa fa-trash-o"></i> Eliminar
+                        </a> } }
+                </td>
 
 
-                </tr>
-                            }
-        }
+            </tr> } }
     </tbody>
 </table>

@@ -72,7 +72,7 @@
                             @{
                                 if (PermisoModificar && u.Usuario != null)
                                 {
-                                    <a class="btn btn-outline btn-circle dark btn-sm red" onclick="resetearPassword('@u.sNombre','@u.nFuncionarioId','@Url.Action("ResetearContrasena", "funcionario")')">
+                                    <a class="btn btn-outline btn-circle text-danger btn-sm " onclick="resetearPassword('@u.sNombre','@u.nFuncionarioId','@Url.Action("ResetearContrasena", "funcionario")')">
                                         <i class="fa fa-key"></i> Resetear Contraseña
                                     </a>
                                 }
@@ -82,7 +82,7 @@
                             @{
                                 if (PermisoModificar)
                                 {
-                                    <a href="@Url.Action("Funcionario", "funcionario", new { id = u.nFuncionarioId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple">
+                                    <a href="@Url.Action("Funcionario", "funcionario", new { id = u.nFuncionarioId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm ">
                                         <i class="fa fa-edit"></i> Editar
                                     </a>
                                 }
@@ -92,7 +92,7 @@
                             @{
                                 if (PermisoEliminar && string.IsNullOrWhiteSpace(u.TituloEliminar))
                                 {
-                                    <a class="btn btn-outline btn-circle dark btn-sm black" onclick="eliminar('@u.sNombre','@u.nFuncionarioId','@Url.Action("Eliminar", "Funcionario")')">
+                                    <a class="btn btn-outline btn-circle dark btn-sm red" onclick="eliminar('@u.sNombre','@u.nFuncionarioId','@Url.Action("Eliminar", "Funcionario")')">
                                         <i class="fa fa-trash-o"></i> Eliminar
                                     </a>
                                 }

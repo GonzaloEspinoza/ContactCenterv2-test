@@ -427,6 +427,7 @@
     <Content Include="Content\bootstrap-datetimepicker.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\button\bttons.css" />
     <Content Include="Content\card-item.css" />
     <Content Include="Content\Estilos\ico_-.png" />
     <Content Include="Content\Estilos\ico_-_2.png" />
@@ -451,7 +452,11 @@
     <Content Include="Content\img\file-excel.png" />
     <Content Include="Content\img\file-pdf.png" />
     <Content Include="Content\img\file-word.png" />
+    <Content Include="Content\img\icon-mecinets-navbar.png" />
+    <Content Include="Content\img\logo_login_medicinets_2.png" />
+    <Content Include="Content\img\logo_mecinets.png" />
     <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\logo_medicinets.png" />
     <Content Include="Content\img\switch.png" />
     <Content Include="Content\img\switch_original.png" />
     <Content Include="Content\img\user.png" />
@@ -1352,6 +1357,7 @@
     <Content Include="Content\metronic\pages\scripts\inbox.js" />
     <Content Include="Content\moment.js" />
     <Content Include="Content\multi-select.css" />
+    <Content Include="Content\navbar\styles.css" />
     <Content Include="Content\slices\32px.png" />
     <Content Include="Content\slices\Check1.png" />
     <Content Include="Content\slices\Check2.png" />
@@ -1367,6 +1373,8 @@
     <Content Include="Content\slices\logo3.png" />
     <Content Include="Content\slices\logopsd.png" />
     <Content Include="Content\slices\logo_login.png" />
+    <Content Include="Content\slices\logo_login_medicinets.png" />
+    <Content Include="Content\slices\logo_login_medicinets_2.png" />
     <Content Include="Content\slices\noimages.jpg" />
     <Content Include="Content\slices\profile.png" />
     <Content Include="Content\slices\throbber.gif" />

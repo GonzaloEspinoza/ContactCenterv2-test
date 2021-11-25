@@ -59,7 +59,7 @@
 
                                     if (PermisoVer)
                                     {
-                                        <a class="btn btn-outline btn-circle dark btn-sm black green-haze" href="@Url.Action("detalle", "TipoAtencion", new { id = p.TipoAtencionID})">
+                                        <a class="btn btn-outline btn-circle  btn-sm  " href="@Url.Action("detalle", "TipoAtencion", new { id = p.TipoAtencionID})">
                                             <i class="fa fa-eye"></i> Ver
                                         </a>
                                     }
@@ -70,7 +70,7 @@
 
                                     if (PermisoModificar)
                                     {
-                                    <a href="@Url.Action("TipoAtencion", "TipoAtencion", new { id = p.TipoAtencionID })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple">
+                                    <a href="@Url.Action("TipoAtencion", "TipoAtencion", new { id = p.TipoAtencionID })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm ">
                                         <i class="fa fa-edit"></i> Editar
                                     </a>
                                     }
@@ -81,7 +81,7 @@
 
                                     if (PermisoEliminar)
                                     {
-                                        <a onclick="changeestate('@p.Nombre','eliminar','eliminado','2','@p.TipoAtencionID' ,'@Url.Action("CambiarEstado", "TipoAtencion")')" class="btn btn-outline btn-circle dark btn-sm black">
+                                        <a onclick="changeestate('@p.Nombre','eliminar','eliminado','2','@p.TipoAtencionID' ,'@Url.Action("CambiarEstado", "TipoAtencion")')" class="btn btn-outline btn-circle red btn-sm danger">
                                             <i class="fa fa-trash-o"></i> Eliminar
                                         </a>
                                     }

@@ -1,0 +1,44 @@
+﻿
+/*:::stilos personalizados de los botones ::::::*/
+.btn-pink {
+    background: #ED6B79 !important;
+    color: white !important;
+}
+.btn-pink:hover {
+    background: #E56576 !important;
+    color: white !important;
+}
+.btn-pink:active {
+    background: #fa8692 !important;
+    color: white !important;
+}
+
+
+
+.btn-blue {
+    background: #0F4F90;
+    color:white !important;
+}
+.btn-blue:hover {
+    background: #03478C;
+}
+.btn-blue:active {
+    background: #1964b0;
+}
+
+
+.btn-red {
+    background: white;
+    color: red !important;
+}
+
+    .btn-red:hover {
+        background: #DC3545;
+        color: white !important;
+    }
+
+.btn-red:active {
+    background: #ea2d2d;
+}
+
+/*::::::::::::::::end:::::::::::::::*/

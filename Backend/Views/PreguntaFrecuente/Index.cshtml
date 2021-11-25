@@ -15,6 +15,7 @@
     <link href="@Url.Content("~/Content/card-item.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/metronic/global/plugins/datatables/datatables.min.css")" rel="stylesheet" />
     <link href="@Url.Content("~/Content/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/button/bttons.css")" rel="stylesheet" />
 }
 <div class="page-head">
     <div class="page-title">
@@ -72,7 +73,7 @@
                 @{
                     if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
                     {
-                        @Html.ActionLink("Nueva categoria", "categoria", "preguntafrecuente", new { id = 0 }, new { @class = "btn btn-primary pull-left", @onclick = "BloquearPantalla();" })
+                        @Html.ActionLink("Nueva categoria", "categoria", "preguntafrecuente", new { id = 0 }, new { @class = "btn btn-pink pull-left", @onclick = "BloquearPantalla();" })
                     }
                 }
                 <div class="portlet light">

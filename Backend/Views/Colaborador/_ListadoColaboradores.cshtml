@@ -3,17 +3,22 @@
 @using Entidad.Enums;
 @using DataP;
 @model List<EFuncionario>
-@{
-    LPermiso NPermiso = LPermiso.Instancia.LPermiso;
-    List<Permiso> HijosMenu = ViewBag.PermisosH;
-    bool PermisoModificar = NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Modificar);
-    bool PermisoEliminar = NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Eliminar);
+@{ LPermiso NPermiso = LPermiso.Instancia.LPermiso;
+                List<Permiso> HijosMenu = ViewBag.PermisosH;
+                bool PermisoModificar = NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Modificar);
+                bool PermisoEliminar = NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Eliminar); 
+    }
+
+@section EtiquetaHead
+{
+    <link href="@Url.Content("~/Content/button/bttons.css")" rel="stylesheet" />
 }
+
 <table class="table table-striped table-bordered table-hover" id="sample_1">
     <thead>
         <tr>
             <th>USUARIO</th>
-            <th>NOMBRE COMPLETO</th>            
+            <th>NOMBRE COMPLETO</th>
             <th>NRO CI</th>
             <th>ESTADO</th>
             <th></th>
@@ -24,96 +29,69 @@
         </tr>
     </thead>
     <tbody>
-        @{
-           
-                foreach (var u in Model)
-                {
-                    <tr>
-                        @{
-                            if (u.Usuario != null)
-                            {
-                                <td>@u.Usuario.NickName</td>
-                            }
-                            else
-                            {
-                                <td></td>
-                            }
-                        }
-
-                        <td>@u.sNombre @u.sApellido</td>                        
-                        <td>@u.sCi</td>
-                        <td>
-                            @{
-                                if (PermisoModificar && string.IsNullOrWhiteSpace(u.TituloDeshabilitar))
-                                {
-                                    if (u.nEstado == (int)Estado.Habilitado)
+        @{ foreach (var u in Model)
+                        {
+            <tr>
+                @{ if (u.Usuario != null)
                                     {
-                                        <span class="label label-sm label-success" onclick="deshabilitar('@u.nFuncionarioId','@u.sNombre @u.sApellido' ,'@Url.Action("Deshabilitar", "colaborador")')"> Habilitado </span>
-                                    }
+                    <td>@u.Usuario.NickName</td> }
                                     else
                                     {
-                                        <span class="label label-sm label-danger" onclick="habilitar('@u.nFuncionarioId','@u.sNombre @u.sApellido', '@Url.Action("Habilitar", "colaborador")')"> Bloqueado </span>
-                                    }
-                                }
-                                else
-                                {
-                                    if (u.nEstado == (int)Estado.Habilitado)
-                                    {
-                                        <span title="@u.TituloDeshabilitar" class="label label-sm label-default"> Habilitado </span>
-                                    }
-                                    else
-                                    {
-                                        <span title="@u.TituloDeshabilitar" class="label label-sm label-default"> Bloqueado </span>
-                                    }
-                                }
-                            }
+                    <td></td> } }
 
-                        </td>
-                        <td>
-                            @{
-                                if (PermisoModificar && u.Usuario != null)
-                                {
-                                    <a class="btn btn-outline btn-circle dark btn-sm red" onclick="resetearPassword('@u.sNombre','@u.nFuncionarioId','@Url.Action("ResetearContrasena", "colaborador")')">
-                                        <i class="fa fa-key"></i> Resetear Contraseña
-                                    </a>
-                                }
-                            }
-                        </td>
-                        <td>
-                            @{
-                                if (PermisoModificar)
-                                {
-                                    <a href="@Url.Action("Colaborador", "colaborador", new { id = u.nFuncionarioId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple">
-                                        <i class="fa fa-edit"></i> Editar
-                                    </a>
-                                }
-                            }
-                        </td>
-                        <td>
-                            @{
-                                if (PermisoModificar)
-                                {
-                                    <a href="@Url.Action("Horarios", "Colaborador", new { id = u.nFuncionarioId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm primary">
-                                        <i class="fa fa-list"></i> Horarios
-                                    </a>
-                                }
-                            }
-                        </td>
+                <td>@u.sNombre @u.sApellido</td>
+                <td>@u.sCi</td>
+                <td>
+                    @{ if (PermisoModificar && string.IsNullOrWhiteSpace(u.TituloDeshabilitar))
+                                        {
+                                            if (u.nEstado == (int)Estado.Habilitado)
+                                            {
+                        <span class="label label-sm label-success" onclick="deshabilitar('@u.nFuncionarioId','@u.sNombre @u.sApellido' ,'@Url.Action("Deshabilitar", "colaborador")')"> Habilitado </span> }
+                                            else
+                                            {
+                        <span class="label label-sm label-danger" onclick="habilitar('@u.nFuncionarioId','@u.sNombre @u.sApellido', '@Url.Action("Habilitar", "colaborador")')"> Bloqueado </span> }
+                                        }
+                                        else
+                                        {
+                                            if (u.nEstado == (int)Estado.Habilitado)
+                                            {
+                        <span title="@u.TituloDeshabilitar" class="label label-sm label-default"> Habilitado </span> }
+                                            else
+                                            {
+                        <span title="@u.TituloDeshabilitar" class="label label-sm label-default"> Bloqueado </span> }
+                                        } }
 
-                        <td>
-                            @{
-                                if (PermisoEliminar && string.IsNullOrWhiteSpace(u.TituloEliminar))
-                                {
-                                    <a class="btn btn-outline btn-circle dark btn-sm black" onclick="eliminar('@u.sNombre','@u.nFuncionarioId','@Url.Action("Eliminar", "Colaborador")')">
-                                        <i class="fa fa-trash-o"></i> Eliminar
-                                    </a>
-                                }
-                            }
-                        </td>
+                </td>
+                <td>
+                    @{ if (PermisoModificar && u.Usuario != null)
+                                        {
+                        <a class="btn btn-outline btn-circle text-danger  btn-sm light" onclick="resetearPassword('@u.sNombre','@u.nFuncionarioId','@Url.Action("ResetearContrasena", "colaborador")')">
+                            <i class="fa fa-key"></i> Resetear Contraseña
+                        </a> } }
+                </td>
+                <td>
+                    @{ if (PermisoModificar)
+                                        {
+                        <a href="@Url.Action("Colaborador", "colaborador", new { id = u.nFuncionarioId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm">
+                            <i class="fa fa-edit"></i> Editar
+                        </a> } }
+                </td>
+                <td>
+                    @{ if (PermisoModificar)
+                                        {
+                        <a href="@Url.Action("Horarios", "Colaborador", new { id = u.nFuncionarioId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm primary">
+                            <i class="fa fa-list"></i> Horarios
+                        </a> } }
+                </td>
 
-                    </tr>
-                                    }
-                               
-        }
+                <td>
+                    @{ if (PermisoEliminar && string.IsNullOrWhiteSpace(u.TituloEliminar))
+                                        {
+                        <a class="btn btn-outline btn-circle red btn-sm red" onclick="eliminar('@u.sNombre','@u.nFuncionarioId','@Url.Action("Eliminar", "Colaborador")')">
+                            <i class="fa fa-trash-o"></i> Eliminar
+                        </a> } }
+                </td>
+
+            </tr> } }
     </tbody>
 </table>
