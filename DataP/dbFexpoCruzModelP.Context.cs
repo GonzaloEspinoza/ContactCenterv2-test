@@ -16,7 +16,7 @@ namespace DataP
     public partial class dbFexpoCruzEntities : DbContext
     {
         public dbFexpoCruzEntities()
-            : base("name=dbFexpoCruzEntities")
+            : base("name=dbFexpoCruzEntities2")
         {
         }
     

@@ -11,15 +11,24 @@ using Entidad.Enums;
 
 namespace Service.Controllers
 {
+
+    //[AllowAnonymous]
     public class areaController : ApiController
     {
         [Route("api/area/listar")]
+        //[HttpGet]
+        //public IHttpActionResult Get()
+        //{
+        //    string[] data = new string[] { "carlos", "marco", "freddy" };
+        //    return Ok(data);
+        //}
+
         [HttpPost]
         public IHttpActionResult listar(ReqListarArea form)
         {
             try
             {
-                List<ResArea> resultado = LArea.Instancia.LArea.ObtenerListaPorIdEmpresa(Estado.Habilitado,form.EmpresaId);
+                List<ResArea> resultado = LArea.Instancia.LArea.ObtenerListaPorIdEmpresa(Estado.Habilitado, form.EmpresaId);
                 return Ok(RespuestaApi<List<ResArea>>.createRespuestaSuccess(resultado));
             }
             catch (BussinessException ex)
@@ -31,7 +40,7 @@ namespace Service.Controllers
                 return Ok(RespuestaApi<string>.createRespuestaError(ex.Message));
             }
         }
-       
+
 
     }
 }

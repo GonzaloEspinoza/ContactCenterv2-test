@@ -11,9 +11,18 @@ using Entidad.Enums;
 
 namespace Service.Controllers
 {
+
     public class ciudadController : ApiController
     {
         [Route("api/ciudad/listar")]
+
+        //[HttpGet]
+        //public IHttpActionResult Get()
+        //{
+        //    string[] data = new string[] { "carlos", "marco", "freddy" };
+        //    return Ok(data);
+        //}
+
         [HttpPost]
         public IHttpActionResult listar(ReqListarCiudad form)
         {
@@ -31,7 +40,7 @@ namespace Service.Controllers
                 return Ok(RespuestaApi<string>.createRespuestaError(ex.Message));
             }
         }
-       
+
 
     }
 }
