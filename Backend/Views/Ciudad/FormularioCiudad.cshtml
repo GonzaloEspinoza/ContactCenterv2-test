@@ -4,38 +4,35 @@
 @using DataP;
 @using Backend.Models;
 @model ECiudad
-@{
-    ViewBag.Title = ViewBag.Titulo;
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    string accion = "Nuevo";
-    string imagen64 = "";
-    if (Model != null && Model.Base64Bandera != "")
-    {
-        imagen64 = Model.Base64Bandera;
-    }
-    try
-    {
-        accion = ViewBag.Accion;
-    }
-    catch
-    {
-        accion = "Nuevo";
-    }
-    string lblBotonGuardar = "Guardar";
-    if (accion.ToUpper().Equals("NUEVO"))
-    {
-        lblBotonGuardar = "Guardar";
-    }
-    else
-    {
-        lblBotonGuardar = "Actualizar";
-    }
-    bool Habilitado = true;
-    Habilitado = Model == null || (Model != null && Model.CiudadId == 0) ? true : Model.Estado == (int)Estado.Habilitado ? true : false;
-    string check = Habilitado ? "true" : "false";
-    List<EPais> Paises = (List<EPais>)ViewBag.Paises;
-
-}
+@{ ViewBag.Title = ViewBag.Titulo;
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                string accion = "Nuevo";
+                string imagen64 = "";
+                if (Model != null && Model.Base64Bandera != "")
+                {
+                    imagen64 = Model.Base64Bandera;
+                }
+                try
+                {
+                    accion = ViewBag.Accion;
+                }
+                catch
+                {
+                    accion = "Nuevo";
+                }
+                string lblBotonGuardar = "Guardar";
+                if (accion.ToUpper().Equals("NUEVO"))
+                {
+                    lblBotonGuardar = "Guardar";
+                }
+                else
+                {
+                    lblBotonGuardar = "Actualizar";
+                }
+                bool Habilitado = true;
+                Habilitado = Model == null || (Model != null && Model.CiudadId == 0) ? true : Model.Estado == (int)Estado.Habilitado ? true : false;
+                string check = Habilitado ? "true" : "false";
+                List<EPais> Paises = (List<EPais>)ViewBag.Paises; }
 @section EtiquetaHead
 {
 
@@ -59,6 +56,8 @@
     <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js")"></script>
     <script src="@Url.Content("~/Content/metronic/global/plugins/jquery-minicolors/jquery.minicolors.min.js")"></script>
     <script src="@Url.Content("~/Content/metronic/pages/scripts/components-color-pickers.min.js")"></script>
+    <link href="@Url.Content("~/Content/button/bttons.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/medicinets-style/global.css")" rel="stylesheet" />
 
 
     <script type="text/javascript">
@@ -99,7 +98,7 @@
                 iconBase: 'fa',
                 tickIcon: 'fa-check'
             });
-           
+
         });
         function base64ToDataUri(base64) {
             return 'data:image/png;base64,' + base64;
@@ -176,24 +175,22 @@
             <div class="panel-body">
                 @if (imagen64 == "")
                 {
-                    @Html.Hidden("ExisteImagen", false)
-                }
+    @Html.Hidden("ExisteImagen", false) }
                 else
                 {
-                    @Html.Hidden("ExisteImagen", true)
-                }
+    @Html.Hidden("ExisteImagen", true)}
                 @Html.HiddenFor(x => x.CiudadId)
                 <div class="alert alert-danger" style="display:none" role="alert" id="mensajeError"></div>
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="col-sm-12">
-                            <div class="portlet box green">
+                            <div class="portlet box image-box-head">
                                 <div class="portlet-title">
                                     <div class="caption">
-                                        <i class="fa fa-image"></i> Bandera
+                                        <i class="fa fa-image icon-white"></i> Bandera
                                     </div>
                                 </div>
-                                <div class="portlet-body">
+                                <div class="portlet-body image-box">
                                     <div class="form-group">
                                         <div id="contenedorImagen" class="fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-new thumbnail">
@@ -227,30 +224,25 @@
                             <label>Pais</label>
                             <div class="form-group">
                                 <select class="bs-select form-control" id="PaisId" data-live-search="true">
-                                    @{
-                                        if (Model.Pais != null)
-                                        {
-                                            foreach (var item in Paises)
-                                            {
-                                                if (Model.Pais.nPaisId == item.PaisId)
-                                                {
-                                                    <option selected value="@item.PaisId">@item.Nombre</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@item.PaisId">@item.Nombre</option>
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            foreach (var item in Paises)
-                                            {
-                                                <option value="@item.PaisId"> @item.Nombre </option>
-                                            }
+                                    @{ if (Model.Pais != null)
+                                                    {
+                                                        foreach (var item in Paises)
+                                                        {
+                                                            if (Model.Pais.nPaisId == item.PaisId)
+                                                            {
+                                        <option selected value="@item.PaisId">@item.Nombre</option> }
+                                                            else
+                                                            {
+                                        <option value="@item.PaisId">@item.Nombre</option> }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        foreach (var item in Paises)
+                                                        {
+                                        <option value="@item.PaisId"> @item.Nombre </option> }
 
-                                        }
-                                    }
+                                                    } }
                                 </select>
                             </div>
                         </div>
@@ -271,8 +263,8 @@
 
                     <div class="col-md-12">
                         <br />
-                        <button class="btn btn-default" onclick="volver();">Volver</button>
-                        <input type="button" value="@lblBotonGuardar" class="btn btn-success" onclick="Procesar()" />
+                        <button class="btn btn-default btn-blue" onclick="volver();">Volver</button>
+                        <input type="button" value="@lblBotonGuardar" class="btn btn-success btn-pink" onclick="Procesar()" />
                     </div>
                 </div>
                 <br><br>

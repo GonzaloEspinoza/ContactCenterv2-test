@@ -42,3 +42,24 @@
 }
 
 /*::::::::::::::::end:::::::::::::::*/
+
+
+/*  ::::::::::chat eventos:::::::::::: */
+
+
+@media  (max-width:768px) {
+    .chat{
+        margin-top:50px;
+        padding-bottom:23px;
+        padding-left:0;
+        padding-right:0;
+    }
+
+    .page-content-wrapper .page-content {
+        overflow-y: auto !important;
+        padding-bottom: 30px;
+        /*background: #ff6a00 !important;*/
+    }
+}
+
+/* :::::::::::::::::::end::::::::......*/

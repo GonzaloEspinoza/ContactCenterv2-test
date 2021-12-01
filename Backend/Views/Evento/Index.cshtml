@@ -22,6 +22,8 @@
 <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/js/bootstrap-select.js")"></script>
 <link href="@Url.Content("~/Content/metronic/global/plugins/bootstrap-select/css/bootstrap-select.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/button/bttons.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/medicinets/global.css")" rel="stylesheet" />
 }
 
 
@@ -100,7 +102,7 @@
                                 }
                                 else if (item.EstadoEvento.nEstadoEventoId == (int)EstadoDeEvento.Asignado)
                                 {
-                                    <span class="messaging-member__message label label-sm label-success">
+                                    <span class="messaging-member__message label label-sm btn-pink">
                                         @item.EstadoEvento.sNombre
                                     </span>
                                 }
@@ -123,9 +125,9 @@
                 </div>
                 <!-- end message list section  -->
                 <!-- start content section  -->
-                <div class="chat col-md-8">
-                    <div class="chat__container">
-                        <div class="chat__wrapper py-2 pt-mb-2 pb-md-3" id="contenedorMensajes">
+                <div class="chat col-md-8 ">
+                    <div class="chat__container message-content">
+                        <div class="chat__wrapper py-2 pt-mb-2 pb-md-3 " id="contenedorMensajes">
 
                         </div>
                     </div>

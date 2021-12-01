@@ -464,6 +464,7 @@
     <Content Include="Content\jquery.multi-select.js" />
     <Content Include="Content\jstree.min.css" />
     <Content Include="Content\map-google.css" />
+    <Content Include="Content\medicinets-style\global.css" />
     <Content Include="Content\metronic\global\css\components-md.css" />
     <Content Include="Content\metronic\global\css\components-md.min.css" />
     <Content Include="Content\metronic\global\css\components-rounded.css" />
