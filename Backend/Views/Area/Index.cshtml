@@ -18,8 +18,8 @@
 <div class="page-head">
     <div class="page-title">
         <h1>
-            Areas
-            <small>Areas</small>
+            Áreas
+            <small>Áreas</small>
         </h1>
     </div>
 </div>
@@ -29,7 +29,7 @@
         <i class="fa fa-circle"></i>
     </li>
     <li>
-        <span class="active">Areas</span>
+        <span class="active">Áreas</span>
     </li>
 </ul>
 
@@ -71,7 +71,7 @@
                 </div>
                 @{ if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
                                 {
-                    @Html.ActionLink("Nueva Area", "Area", "Area", new { id = 0 }, new { @class = "btn btn-pink pull-left", @onclick = "BloquearPantalla();" }) } }
+                    @Html.ActionLink("Nueva Área", "Area", "Area", new { id = 0 }, new { @class = "btn btn-pink pull-left", @onclick = "BloquearPantalla();" }) } }
                 <div class="portlet light">
                     <div id="ContenedorLista" class="portlet-body">
                         @{ if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar))

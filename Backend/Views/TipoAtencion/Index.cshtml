@@ -71,7 +71,7 @@
                 </div>
                 @{ if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
                                 {
-                    @Html.ActionLink("Nuevo Tipo de Atencion", "TipoAtencion", "TipoAtencion", new { id = 0 }, new { @class = "btn btn-pink pull-left", @onclick = "BloquearPantalla();" }) } }
+                    @Html.ActionLink("Nuevo Tipo de Atención", "TipoAtencion", "TipoAtencion", new { id = 0 }, new { @class = "btn btn-pink pull-left", @onclick = "BloquearPantalla();" }) } }
                 <div class="portlet light">
                     <div id="ContenedorLista" class="portlet-body">
                         @{ if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Listar))

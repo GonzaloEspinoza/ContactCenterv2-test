@@ -18,8 +18,8 @@
 <div class="page-head">
     <div class="page-title">
         <h1>
-            Paises
-            <small>Paises</small>
+            Países
+            <small>Países</small>
         </h1>
     </div>
 </div>
@@ -29,7 +29,7 @@
         <i class="fa fa-circle"></i>
     </li>
     <li>
-        <span class="active">Paises</span>
+        <span class="active">Países</span>
     </li>
 </ul>
 <div class="row">
@@ -70,7 +70,7 @@
                 </div>
                 @{ if (NPermiso.TienePermisoEspecifico(HijosMenu, AccionPermiso.Crear))
                                 {
-                    @Html.ActionLink("Nuevo Pais", "Pais", "Pais", new { id = 0 }, new { @class = "btn btn-pink pull-left", @onclick = "BloquearPantalla();" }) } }
+                    @Html.ActionLink("Nuevo País", "Pais", "Pais", new { id = 0 }, new { @class = "btn btn-pink pull-left", @onclick = "BloquearPantalla();" }) } }
 
                 <div class="portlet light">
                     <div id="ContenedorLista" class="portlet-body">
@@ -220,9 +220,9 @@
         }
         function changeestate(nombre, accion, accionado, estado, id, url) {
             LimpiarMensaje();
-            $("#dialogoHabilitarMensaje").html('¿Está seguro que desea ' + accion + ' el pais "' + nombre + '" ?');
+            $("#dialogoHabilitarMensaje").html('¿Está seguro que desea ' + accion + ' el pa'is "' + nombre + '" ?');
             $("#ToastT").val(accion.charAt(0).toUpperCase() + accion.slice(1) + ' el pais');
-            $("#ToastM").val('Se ha ' + accionado + ' el pais "' + nombre + '" correctamente.');
+            $("#ToastM").val('Se ha ' + accionado + ' el país "' + nombre + '" correctamente.');
             $("#Habilitar").val(url);
             $("#Id").val(id);
             $("#Estate").val(estado);

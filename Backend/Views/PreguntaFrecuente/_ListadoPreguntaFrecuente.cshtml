@@ -55,7 +55,7 @@
 
                             if (PermisoVer)
                             {
-                                <a href="@Url.Action("detalle", "PreguntaFrecuente", new { id = p.PreguntaFrecuenteId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle dark btn-sm black">
+                                <a href="@Url.Action("detalle", "PreguntaFrecuente", new { id = p.PreguntaFrecuenteId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle  btn-sm ">
                                     <i class="fa fa-eye"></i> Ver
                                 </a>
                             }
@@ -65,7 +65,7 @@
                         @{
                             if (PermisoModificar)
                             {
-                                <a href="@Url.Action("preguntafrecuente", "PreguntaFrecuente", new { id = p.PreguntaFrecuenteId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm purple">
+                                <a href="@Url.Action("preguntafrecuente", "PreguntaFrecuente", new { id = p.PreguntaFrecuenteId })" onclick="BloquearPantalla();" class="btn btn-outline btn-circle btn-sm">
                                     <i class="fa fa-edit"></i> Editar
                                 </a>
                             }
@@ -75,7 +75,7 @@
                         @{
                             if (PermisoEliminar)
                             {
-                                <a onclick="changeestate('@p.Pregunta','eliminar','eliminado','2','@p.PreguntaFrecuenteId' ,'@Url.Action("CambiarEstado", "PreguntaFrecuente")')" class="btn btn-outline btn-circle dark btn-sm black">
+                                <a onclick="changeestate('@p.Pregunta','eliminar','eliminado','2','@p.PreguntaFrecuenteId' ,'@Url.Action("CambiarEstado", "PreguntaFrecuente")')" class="btn btn-outline btn-circle dark btn-sm red">
                                     <i class="fa fa-trash-o"></i> Eliminar
                                 </a>
                             }
